@@ -115,6 +115,9 @@ const gestioSubmit = async (e) => {
                 </div>
 
                 <div class="divider"></div>
+                <div class="register-link">
+                    <p>No tens un compte? <a @click.prevent="router.push('/register')"> <b class="cursor-pointer">Registrar-se</b></a></p>
+                </div>
 
                 <SocialLogin />
             </form>

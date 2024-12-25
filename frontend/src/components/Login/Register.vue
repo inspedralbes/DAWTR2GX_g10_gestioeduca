@@ -76,7 +76,7 @@ const gestioSubmit = async (e) => {
         }
 
         // Registro exitoso
-        console.log('Usuari registrat!', data);
+        // console.log('Usuari registrat!', data);
 
     } catch (err) {
         msgError.value = err.message || "No s'ha pogut registrar l'usuari. Si us plau, torna-ho a provar.";
@@ -105,6 +105,11 @@ const gestioSubmit = async (e) => {
                 <button type="submit" class="sign-in-button" :disabled="isLoading">
                     {{ isLoading ? 'Registrant...' : 'Registrar-se' }}
                 </button>
+
+
+                <div class="login-link">
+                    <p>Ja tens un compte? <router-link to="/login"><b>Inicia sessió</b></router-link></p>
+                </div>
 
                 <div v-if="msgError" class="msgError-message">
                     {{ msgError }}
