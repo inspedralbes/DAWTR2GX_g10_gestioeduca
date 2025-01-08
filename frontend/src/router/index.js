@@ -80,12 +80,6 @@ const router = createRouter({
       ]
     },
     {
-      path: '/studentProfile/:id',
-      name: 'studentProfile',
-      component: () => import('../components/StudentProfile/StudentProfileComponent.vue'),
-      meta: { requiresAuth: true },
-    },
-    {
       path: '/formularios',
       name: 'FormList',
       component: FormList,

@@ -19,6 +19,7 @@ export const useStudentsStore = defineStore('students', {
 
                 const data = await response.json();
                 this.students = data; // Guarda los estudiantes en el estado
+                console.log('Datos recibidos de la API:', data);
             } catch (error) {
                 this.error = error.message;
                 console.error('Error fetching students:', error);
@@ -26,6 +27,12 @@ export const useStudentsStore = defineStore('students', {
                 this.loading = false; // Termina la carga
             }
         },
+        getStudentById(id) {
+            console.log('Buscando estudiante con ID:', id, typeof id);
+            const found = this.students.find(student => student.id === Number(id));
+            console.log('Estudiante encontrado:', found);
+            return found;
+        }
     },
     getters: {
         studentCount: (state) => {

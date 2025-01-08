@@ -12,6 +12,9 @@ class CourseDivisionSeeder extends Seeder
      */
     public function run(): void
     {
+        // Eliminar todos los registros de la tabla 'course_division'
+        DB::table('course_division')->truncate();
+
         // Datos de ejemplo para course_division
         $courseDivisions = [
             ['course_id' => 1, 'division_id' => 3],
@@ -26,22 +29,14 @@ class CourseDivisionSeeder extends Seeder
             ['course_id' => 5, 'division_id' => 4],
         ];
 
+        // Insertar los nuevos registros
         foreach ($courseDivisions as $data) {
-            // Verificar si el registro ya existe para evitar duplicados
-            $exists = DB::table('course_division')
-                ->where('course_id', $data['course_id'])
-                ->where('division_id', $data['division_id'])
-                ->exists();
-
-            if (!$exists) {
-                // Insertar si no existe el registro
-                DB::table('course_division')->insert([
-                    'course_id' => $data['course_id'],
-                    'division_id' => $data['division_id'],
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
-            }
+            DB::table('course_division')->insert([
+                'course_id' => $data['course_id'],
+                'division_id' => $data['division_id'],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
         }
     }
 }

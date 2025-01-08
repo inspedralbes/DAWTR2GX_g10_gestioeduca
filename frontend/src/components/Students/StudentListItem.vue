@@ -1,21 +1,19 @@
 <script setup>
 import { useRouter } from 'vue-router'
-import { EyeIcon } from '@heroicons/vue/24/outline' // Importamos un ícono de "ojo" de Heroicons
+import { EyeIcon } from '@heroicons/vue/24/outline' 
 import { useStudentsStore } from '@/stores/studentsStore'
 import { onMounted, computed } from 'vue'
 
 const studentsStore = useStudentsStore()
-
 onMounted(() => {
   // Llamar a la API al montar el componente
   studentsStore.fetchStudents()
 })
 
-
 const router = useRouter()
 
 const viewProfile = (studentId) => {
-  router.push(`/alumnos/${studentId}`)
+  router.push({ name: 'StudentProfile', params: { id: studentId } })
 }
 // Declara la prop 'student' en este componente
 defineProps({

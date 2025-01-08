@@ -1,18 +1,7 @@
 <script setup>
-defineProps({
-  name: {
-    type: String,
-    required: true
-  },
-  course: {
-    type: String,
-    required: true
-  },
-  email: {
-    type: String,
-    required: true
-  }
-})
+import { ref, onMounted } from 'vue'
+
+
 </script>
 
 <template>
