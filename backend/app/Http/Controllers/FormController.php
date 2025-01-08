@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Form;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Services\FormService;
+
 
 /**
  * @OA\Tag(
@@ -14,6 +16,34 @@ use Illuminate\Support\Facades\Validator;
  */
 class FormController extends Controller
 {
+
+    public function storeFormWithQuestions(Request $request, FormService $formService)
+    {
+        // Validación de los datos enviados en el request
+        $validatedData = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'questions' => 'required|array',
+            'questions.*.type' => 'required|string|in:multiple,text,checkbox,number',
+            'questions.*.title' => 'required|string|max:255',
+            'questions.*.options' => 'nullable|array',
+            'questions.*.options.*.text' => 'required_with:questions.*.options|string',
+            'questions.*.options.*.value' => 'required_with:questions.*.options|integer',
+        ]);
+
+        // Llamamos al servicio para crear el formulario con sus preguntas y opciones
+        $form = $formService->create($validatedData);
+
+        // Devolvemos el formulario con sus preguntas y opciones
+        return response()->json($form->load('questions.options'), 201);
+    }
+
+    protected $formService;
+
+    public function __construct(FormService $formService)
+    {
+        $this->formService = $formService;
+    }
     /**
      * @OA\Get(
      *     path="/api/forms/{formId}/questions-and-answers",
@@ -60,7 +90,7 @@ class FormController extends Controller
      */
     public function index()
     {
-        $forms = Form::all();
+        $forms = $this->formService->getAllForms();
         return response()->json($forms);
     }
 
@@ -88,10 +118,12 @@ class FormController extends Controller
      */
     public function show($id)
     {
-        $form = Form::find($id);
-        if (is_null($form)) {
+        $form = $this->formService->getFormWithQuestionsAndAnswers($id);
+
+        if (!$form) {
             return response()->json(['message' => 'Formulari no trobat'], 404);
         }
+
         return response()->json($form);
     }
 
@@ -123,8 +155,7 @@ class FormController extends Controller
             'title' => 'required|string|max:255'
         ]);
 
-        $form = Form::create($validatedData);
-
+        $form = $this->formService->createForm($validatedData);
         return response()->json($form, 201);
     }
 
@@ -157,16 +188,12 @@ class FormController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(), [
+        $validatedData = $request->validate([
             'title' => 'sometimes|required|string|max:255'
         ]);
 
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
-        }
-
         $form = Form::findOrFail($id);
-        $form->update($validator->validated());
+        $form = $this->formService->updateForm($form, $validatedData);
 
         return response()->json($form, 200);
     }
@@ -195,11 +222,9 @@ class FormController extends Controller
      */
     public function destroy($id)
     {
-        $form = Form::find($id);
-        if (is_null($form)) {
-            return response()->json(['message' => 'Formulari no trobat'], 404);
-        }
-        $form->delete();
+        $form = Form::findOrFail($id);
+        $this->formService->deleteForm($form);
+
         return response()->json(null, 204);
     }
 }
