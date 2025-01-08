@@ -16,6 +16,7 @@ return new class extends Migration
                 $table->id();
                 $table->string('question');
                 $table->unsignedBigInteger('form_id');
+                $table->enum('type', ['text', 'number', 'multiple', 'checkbox']); // Tipo de pregunta, con enum hacemos que pueda ser uno de los valores de la lista.
                 $table->foreign('form_id')->references('id')->on('forms')->onDelete('cascade');
                 $table->timestamps();
             });
