@@ -58,11 +58,18 @@ class FormController extends Controller
      *     )
      * )
      */
-    public function index()
-    {
-        $forms = Form::all();
-        return response()->json($forms);
-    }
+    
+     public function index(Request $request)
+     {
+         $forms = Form::all();
+ 
+         if ($request->expectsJson()) {
+             return response()->json($forms, 200);
+         }
+ 
+         return view('forms', compact('forms'));
+     }
+    
 
     /**
      * @OA\Get(
@@ -86,13 +93,23 @@ class FormController extends Controller
      *     )
      * )
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
         $form = Form::find($id);
+
         if (is_null($form)) {
-            return response()->json(['message' => 'Formulari no trobat'], 404);
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Formulario no encontrado'], 404);
+            }
+
+            return redirect()->route('forms.index')->with('error', 'Formulario no encontrado');
         }
-        return response()->json($form);
+
+        if ($request->expectsJson()) {
+            return response()->json($form, 200);
+        }
+
+        return view('forms.show', compact('form'));
     }
 
     /**
@@ -117,15 +134,22 @@ class FormController extends Controller
      *     )
      * )
      */
+     /**
+     * Guardar un nuevo formulario
+     */
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'title' => 'required|string|max:255'
+            'title' => 'required|string|max:255',
         ]);
 
         $form = Form::create($validatedData);
 
-        return response()->json($form, 201);
+        if ($request->expectsJson()) {
+            return response()->json($form, 201);
+        }
+
+        return redirect()->route('forms.index')->with('success', 'Formulario creado correctamente');
     }
 
     /**
@@ -157,18 +181,35 @@ class FormController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $form = Form::find($id);
+
+        if (is_null($form)) {
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Formulario no encontrado'], 404);
+            }
+
+            return redirect()->route('forms.index')->with('error', 'Formulario no encontrado');
+        }
+
         $validator = Validator::make($request->all(), [
-            'title' => 'sometimes|required|string|max:255'
+            'title' => 'required|string|max:255',
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
+            if ($request->expectsJson()) {
+                return response()->json($validator->errors(), 400);
+            }
+
+            return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $form = Form::findOrFail($id);
         $form->update($validator->validated());
 
-        return response()->json($form, 200);
+        if ($request->expectsJson()) {
+            return response()->json($form, 200);
+        }
+
+        return redirect()->route('forms.index')->with('success', 'Formulario actualizado correctamente');
     }
 
     /**
@@ -193,13 +234,24 @@ class FormController extends Controller
      *     )
      * )
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $form = Form::find($id);
+
         if (is_null($form)) {
-            return response()->json(['message' => 'Formulari no trobat'], 404);
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Formulario no encontrado'], 404);
+            }
+
+            return redirect()->route('forms.index')->with('error', 'Formulario no encontrado');
         }
+
         $form->delete();
-        return response()->json(null, 204);
+
+        if ($request->expectsJson()) {
+            return response()->json(null, 204);
+        }
+
+        return redirect()->route('forms.index')->with('success', 'Formulario eliminado correctamente');
     }
 }

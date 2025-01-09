@@ -25,10 +25,14 @@ class QuestionController extends Controller
      *     )
      * )
      */
-    public function index()
+    public function index(Request $request)
     {
         $questions = Question::all();
-        return response()->json($questions);
+        
+        if ($request->expectsJson()) {
+            return response()->json($questions, 200);
+        }
+        return view('questions', compact('questions'));
     }
 
     /**
@@ -53,12 +57,21 @@ class QuestionController extends Controller
      *     )
      * )
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
         $question = Question::find($id);
+        
         if (is_null($question)) {
-            return response()->json(['message' => 'Pregunta no trobada'], 404);
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Pregunta no trobada'], 404);
+            }
+            return redirect()->route('questions.index')->with('error', 'Pregunta no trobada');
         }
+
+        if (!$request->expectsJson()) {
+            return view('questions.show', compact('question'));
+        }
+
         return response()->json($question);
     }
 
@@ -92,7 +105,11 @@ class QuestionController extends Controller
 
         $question = Question::create($validatedData);
 
-        return response()->json($question, 201);
+        if ($request->expectsJson()) {
+            return response()->json($question, 201);
+        }
+
+        return redirect()->route('questions.index')->with('success', 'Pregunta creada correctament');
     }
 
     /**
@@ -131,8 +148,12 @@ class QuestionController extends Controller
     public function update(Request $request, $id)
     {
         $question = Question::find($id);
+
         if (is_null($question)) {
-            return response()->json(['message' => 'Pregunta no trobada'], 404);
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Pregunta no trobada'], 404);
+            }
+            return redirect()->route('questions.index')->with('error', 'Pregunta no trobada');
         }
 
         $validator = Validator::make($request->all(), [
@@ -141,12 +162,19 @@ class QuestionController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
+            if ($request->expectsJson()) {
+                return response()->json($validator->errors(), 400);
+            }
+            return redirect()->route('questions.index')->withErrors($validator)->withInput();
         }
 
         $question->update($validator->validated());
 
-        return response()->json($question, 200);
+        if ($request->expectsJson()) {
+            return response()->json($question, 200);
+        }
+
+        return redirect()->route('questions.index')->with('success', 'Pregunta actualitzada correctament');
     }
 
     /**
@@ -171,13 +199,23 @@ class QuestionController extends Controller
      *     )
      * )
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $question = Question::find($id);
+
         if (is_null($question)) {
-            return response()->json(['message' => 'Pregunta no trobada'], 404);
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Pregunta no trobada'], 404);
+            }
+            return redirect()->route('questions.index')->with('error', 'Pregunta no trobada');
         }
+
         $question->delete();
-        return response()->json(null, 204);
+
+        if ($request->expectsJson()) {
+            return response()->json(null, 204);
+        }
+
+        return redirect()->route('questions.index')->with('success', 'Pregunta eliminada correctament');
     }
 }
