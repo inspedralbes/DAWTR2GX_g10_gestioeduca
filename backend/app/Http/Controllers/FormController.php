@@ -17,8 +17,18 @@ use App\Services\FormService;
 class FormController extends Controller
 {
 
-    public function storeFormWithQuestions(Request $request, FormService $formService)
+
+
+    protected $formService;
+
+    public function __construct(FormService $formService)
     {
+        $this->formService = $formService;
+    }
+
+        public function storeFormWithQuestions(Request $request, FormService $formService)
+    {
+
         // Validación de los datos enviados en el request
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
@@ -37,13 +47,6 @@ class FormController extends Controller
 
         // Devolvemos el formulario con sus preguntas y opciones
         return response()->json($form->load('questions.options'), 201);
-    }
-
-    protected $formService;
-
-    public function __construct(FormService $formService)
-    {
-        $this->formService = $formService;
     }
     /**
      * @OA\Get(
