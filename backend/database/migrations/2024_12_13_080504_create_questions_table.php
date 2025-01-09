@@ -14,7 +14,7 @@ return new class extends Migration
         if (!Schema::hasTable('questions')) {
             Schema::create('questions', function (Blueprint $table) {
                 $table->id();
-                $table->string('question');
+                $table->string('title');
                 $table->unsignedBigInteger('form_id');
                 $table->enum('type', ['text', 'number', 'multiple', 'checkbox']); // Tipo de pregunta, con enum hacemos que pueda ser uno de los valores de la lista.
                 $table->foreign('form_id')->references('id')->on('forms')->onDelete('cascade');

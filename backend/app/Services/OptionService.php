@@ -10,11 +10,11 @@ class OptionService
 
     public function createOptionForQuestion($question, $data)
     {
-        // Creamos la opción asociada a la pregunta
+        // Crear la opción asociada a la pregunta
         Option::create([
             'text' => $data['text'],
             'value' => $data['value'],
-            'question_id' => $question->id,  // Se asigna automáticamente
+            'question_id' => $question->id,
         ]);
     }
 

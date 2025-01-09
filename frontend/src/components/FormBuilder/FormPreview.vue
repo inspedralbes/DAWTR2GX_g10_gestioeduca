@@ -57,9 +57,35 @@ const handleRegenerateQuestion = async (question) => {
   loadingQuestionId.value = null
 }
 
-const handleSave = () => {
-  emit('save')
-}
+const handleSave = async () => {
+  const formData = {
+    title: props.title,
+    description: props.description,
+    questions: props.questions,
+  };
+
+  try {
+    const response = await fetch('http://localhost/api/forms', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error en la solicitud: ${response.statusText}`);
+    }
+
+    const result = await response.json();
+    console.log('Formulario guardado con éxito:', result);
+    alert('Formulario guardado con éxito.');
+  } catch (error) {
+    console.error('Error al guardar el formulario:', error);
+    alert('Hubo un error al guardar el formulario. Por favor, inténtalo de nuevo.');
+  }
+};
+
 
 const handleSend = () => {
   emit('send')

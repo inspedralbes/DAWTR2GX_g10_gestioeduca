@@ -11,7 +11,7 @@ class QuestionService
 
     public function createQuestionForForm($form, $data)
     {
-        // Creamos la pregunta asociada al formulario
+        // Crear la pregunta asociada al formulario
         $question = $form->questions()->create([
             'title' => $data['title'],
             'type' => $data['type'],
@@ -20,12 +20,14 @@ class QuestionService
         // Si la pregunta tiene opciones, las creamos
         if (!empty($data['options'])) {
             foreach ($data['options'] as $optionData) {
+                // Usamos OptionService para crear las opciones
                 app(OptionService::class)->createOptionForQuestion($question, $optionData);
             }
         }
 
         return $question;
     }
+
 
     public function getAllQuestions()
     {

@@ -29,6 +29,7 @@ class FormController extends Controller
             'questions.*.options' => 'nullable|array',
             'questions.*.options.*.text' => 'required_with:questions.*.options|string',
             'questions.*.options.*.value' => 'required_with:questions.*.options|integer',
+            'questions.*.options.*' => 'required_if:questions.*.type,multiple|string|max:255', // Solo si el tipo es "multiple"
         ]);
 
         // Llamamos al servicio para crear el formulario con sus preguntas y opciones

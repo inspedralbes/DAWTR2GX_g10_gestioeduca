@@ -9,22 +9,24 @@ use App\Models\Option;
 class FormService
 {
     public function create(array $data)
-    {
-        // Creamos el formulario
-        $form = Form::create([
-            'title' => $data['title'],
-            'description' => $data['description'] ?? null,
-        ]);
+{
+    // Crear el formulario
+    $form = Form::create([
+        'title' => $data['title'],
+        'description' => $data['description'] ?? null,
+    ]);
 
-        // Si hay preguntas, las creamos
-        if (!empty($data['questions'])) {
-            foreach ($data['questions'] as $questionData) {
-                $question = app(QuestionService::class)->createQuestionForForm($form, $questionData);
-            }
+    // Crear las preguntas del formulario
+    if (!empty($data['questions'])) {
+        foreach ($data['questions'] as $questionData) {
+            // Usamos el servicio para crear las preguntas asociadas
+            $question = app(QuestionService::class)->createQuestionForForm($form, $questionData);
         }
-
-        return $form;
     }
+
+    return $form;
+}
+
 
     public function getAllForms()
     {
