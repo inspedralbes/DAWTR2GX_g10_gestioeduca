@@ -19,7 +19,6 @@ defineProps({
   }
 })
 
-// Utilizar computed para asegurar que reaccionen cambios en el estado
 </script>
 
 <template>

@@ -12,9 +12,12 @@ class CourseDivisionSeeder extends Seeder
      */
     public function run(): void
     {
+        // Deshabilitar las restricciones de clave foránea
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         // Eliminar todos los registros de la tabla 'course_division'
         DB::table('course_division')->truncate();
-
+        // Habilitar las restricciones de clave foránea
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         // Datos de ejemplo para course_division
         $courseDivisions = [
             ['course_id' => 1, 'division_id' => 3],

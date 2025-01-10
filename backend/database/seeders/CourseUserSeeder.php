@@ -16,29 +16,27 @@ class CourseUserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Obtener todos los usuarios con role_id = 2 (estudiantes)
+        // Obtener estudiantes y profesores
         $students = User::where('role_id', 2)->get();
+        $teachers = User::where('role_id', 1)->get();
 
         // Obtener todos los cursos y divisiones disponibles
         $courses = Course::all();
         $divisions = Division::all();
 
-        // Array para insertar las relaciones en course_user y course_division
+        // Arrays para insertar relaciones en course_user y course_division
         $courseUsers = [];
         $courseDivisions = [];
 
-        // Instanciar Faker para generar divisiones aleatorias si es necesario
+        // Instanciar Faker para generar divisiones aleatorias
         $faker = Faker::create();
 
         // Asignar curso y división aleatoria a los estudiantes
         foreach ($students as $student) {
-            // Asignar un curso aleatorio
-            $randomCourse = $courses->random();
+            $randomCourse = $courses->random(); // Curso aleatorio
+            $randomDivision = $divisions->random(); // División aleatoria
 
-            // Asignar una división aleatoria para ese curso
-            $randomDivision = $divisions->random();
-
-            // Crear la relación en course_user
+            // Crear relación en course_user
             $courseUsers[] = [
                 'course_id' => $randomCourse->id,
                 'user_id' => $student->id,
@@ -46,12 +44,11 @@ class CourseUserSeeder extends Seeder
                 'updated_at' => now(),
             ];
 
-            // Evitar duplicados en course_division (verificar existencia previa)
+            // Verificar y crear relación en course_division
             if (!DB::table('course_division')
                     ->where('course_id', $randomCourse->id)
                     ->where('division_id', $randomDivision->id)
                     ->exists()) {
-                // Crear la relación en course_division
                 $courseDivisions[] = [
                     'course_id' => $randomCourse->id,
                     'division_id' => $randomDivision->id,
@@ -61,10 +58,23 @@ class CourseUserSeeder extends Seeder
             }
         }
 
-        // Insertar las relaciones de estudiantes con cursos
+        // Asignar cursos a los profesores (sin divisiones)
+        foreach ($teachers as $teacher) {
+            $randomCourse = $courses->random(); // Curso aleatorio
+
+            // Crear relación en course_user
+            $courseUsers[] = [
+                'course_id' => $randomCourse->id,
+                'user_id' => $teacher->id,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+
+        // Insertar relaciones en course_user
         DB::table('course_user')->insert($courseUsers);
 
-        // Insertar las relaciones entre cursos y divisiones (sin duplicados)
+        // Insertar relaciones en course_division (sin duplicados)
         DB::table('course_division')->insert($courseDivisions);
     }
 }

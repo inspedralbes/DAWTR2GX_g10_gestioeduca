@@ -39,6 +39,16 @@ const router = createRouter({
       component: StudentProfile
     },
     {
+      path: '/profesores',
+      name: 'TeacherViewList',
+      component: () =>import ('@/views/TeachersView/TeacherViewList.vue'),
+    },
+    {
+      path: '/profesores/:id',
+      name: 'TeacherViewProfile',
+      component: () =>import ('@/views/TeachersView/TeacherViewProfile.vue'),
+    },
+    {
       path: '/crear-formulario',
       name: 'CreateForm',
       component: CreateForm,

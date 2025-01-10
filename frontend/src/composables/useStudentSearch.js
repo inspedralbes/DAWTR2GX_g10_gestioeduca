@@ -4,7 +4,7 @@ export function useStudentSearch(students) {
   const searchQuery = ref('')
   const selectedCourse = ref('all')
   const selectedDivision = ref('all')
-
+  
   const filteredStudents = computed(() => {
     return students.value.filter(student => {
       const matchesSearch = student.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||

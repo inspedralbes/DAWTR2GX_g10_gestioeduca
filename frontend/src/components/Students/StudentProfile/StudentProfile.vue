@@ -1,7 +1,7 @@
 <script setup>
 import StudentAvatar from './StudentAvatar.vue'
-import StudentInfo from './StudentInfo.vue'
-import { useStudentSkills } from '../../../composables/useStudentSkills'
+//import StudentInfo from './StudentInfo.vue'
+//import { useStudentSkills } from '../../../composables/useStudentSkills'
 import { useStudentsStore } from '@/stores/studentsStore'
 import { useRoute } from 'vue-router'
 import { onMounted, ref } from 'vue'
@@ -14,7 +14,6 @@ onMounted(() => {
   student.value = studentsStore.getStudentById(studentId)
 })
 
-const { getSkillLevel, getSkillColor } = useStudentSkills()
 </script>
 
 <template>

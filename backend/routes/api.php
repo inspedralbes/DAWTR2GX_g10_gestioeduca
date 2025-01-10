@@ -28,7 +28,8 @@ Route::resource('groups', GroupController::class);
 Route::get('forms/{formId}/questions', [FormController::class, 'getQuestionsAndAnswers']);
 //ruta para obtener los datos de un estudiante (curso, division)
 Route::get('/get-students', [UserController::class, 'getStudents']);
-
+//ruta para obtener los datos de un profesor (curso, division)
+Route::get('/get-teachers', [UserController::class, 'getTeachers']);
 
 
 //Route::post('/login', [AuthenticatedSessionController::class, 'login']);
