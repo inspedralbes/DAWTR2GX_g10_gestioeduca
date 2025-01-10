@@ -37,4 +37,9 @@ class FormService
             return $form;
         });
     }
+
+    public function getAllForms()
+    {
+        return Form::all();
+    }
 }

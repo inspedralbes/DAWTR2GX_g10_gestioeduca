@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref,onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { 
   PlusIcon, 
@@ -19,25 +19,27 @@ const selectedStatus = ref('all')
 const selectedDate = ref('all')
 const showAssignModal = ref(false)
 const selectedForm = ref(null)
+const forms = ref([])
 
-const forms = ref([
-  {
-    id: 1,
-    title: 'Evaluación Trimestral',
-    description: 'Evaluación del primer trimestre',
-    status: 'active',
-    responses: 24,
-    createdAt: '2024-02-15'
-  },
-  {
-    id: 2,
-    title: 'Cuestionario de Hábitos de Estudio',
-    description: 'Evaluación de hábitos y técnicas de estudio',
-    status: 'active',
-    responses: 12,
-    createdAt: '2024-02-20'
+
+onMounted(async () => {
+  try {
+    const response = await fetch('http://localhost:8000/api/forms', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Error obteniendo los datos.');
+    }
+
+    forms.value = await response.json();
+  } catch (error) {
+    console.error('Error:', error);
   }
-])
+});
 
 const students = ref([
   {
@@ -66,7 +68,7 @@ const viewResponses = (formId) => {
 }
 
 const openAssignModal = (form) => {
-  selectedForm.value = form
+  selectedForm.value = form  // Asigna el formulario específico
   showAssignModal.value = true
 }
 
@@ -153,21 +155,20 @@ const handleFormAssigned = (assignments) => {
                 <div class="text-sm font-medium text-gray-900">{{ form.title }}</div>
                 <div class="text-sm text-gray-500">{{ form.description }}</div>
               </td>
-              <td class="px-6 py-4">
+                <td class="px-6 py-4">
                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
                   :class="{
-                    'bg-green-100 text-green-800': form.status === 'active',
-                    'bg-gray-100 text-gray-800': form.status === 'draft',
-                    'bg-red-100 text-red-800': form.status === 'closed'
+                  'bg-green-100 text-green-800': form.status === 1,
+                  'bg-red-100 text-red-800': form.status === 0
                   }">
-                  {{ form.status }}
+                  {{ form.status === 1 ? 'activo' : 'inactivo' }}
                 </span>
-              </td>
+                </td>
               <td class="px-6 py-4 text-sm text-gray-500">
                 {{ form.responses }}
               </td>
               <td class="px-6 py-4 text-sm text-gray-500">
-                {{ new Date(form.createdAt).toLocaleDateString() }}
+                {{ new Date(form.created_at).toLocaleDateString() }}
               </td>
               <td class="px-6 py-4 text-right text-sm font-medium">
                 <div class="flex justify-end space-x-3">
@@ -208,7 +209,7 @@ const handleFormAssigned = (assignments) => {
     <!-- Assignment Modal -->
     <AssignFormModal
       v-model="showAssignModal"
-      :form="selectedForm"
+      :form="selectedForm || {}"
       :students="students"
       @assigned="handleFormAssigned"
     />
