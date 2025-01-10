@@ -28,14 +28,15 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             UserSeeder::class,
             DivisionSeeder::class,
-            FormSeeder::class,
-            QuestionSeeder::class,
-            AnswerSeeder::class,
             GroupSeeder::class,
             GroupDivisionSeeder::class,
             GroupUserSeeder::class,
             GroupSubjectSeeder::class,
             GroupCourseSeeder::class,
+            FormSeeder::class,   // Crear formularios primero
+            QuestionSeeder::class, // Crear preguntas después
+            OptionSeeder::class,   // Opciones relacionadas a preguntas
+            AnswerSeeder::class,
         ]);
     }
 }

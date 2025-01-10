@@ -1,84 +1,142 @@
 <script setup>
-import { ref, watch } from 'vue'
-import { useTypingEffect } from '../utils/chat'
-import QuestionActions from './QuestionActions.vue'
-import QuestionEditorModal from './QuestionEditorModal.vue'
+import { ref, watch } from 'vue';
+import { useTypingEffect } from '../utils/chat';
+import QuestionActions from './QuestionActions.vue';
+import QuestionEditorModal from './QuestionEditorModal.vue';
 
 const props = defineProps({
   questions: {
     type: Array,
-    required: true
+    required: true,
   },
   title: String,
   description: String,
-  context: String
-})
+  context: String,
+});
 
-const emit = defineEmits(['edit-question', 'regenerate-question', 'save', 'send'])
-const visibleQuestions = ref([])
-const loadingQuestionId = ref(null)
-const showEditorModal = ref(false)
-const selectedQuestion = ref(null)
-const { content: titleContent, typeMessage: typeTitle } = useTypingEffect(50)
-const { content: descriptionContent, typeMessage: typeDescription } = useTypingEffect(30)
+const emit = defineEmits(['edit-question', 'regenerate-question', 'save', 'send']);
+const localQuestions = ref([...props.questions]); // Copia local de las preguntas
+const visibleQuestions = ref([]);
+const loadingQuestionId = ref(null);
+const showEditorModal = ref(false);
+const selectedQuestion = ref(null);
+const { content: titleContent, typeMessage: typeTitle } = useTypingEffect(50);
+const { content: descriptionContent, typeMessage: typeDescription } = useTypingEffect(30);
 
-watch(() => props.title, async (newTitle) => {
-  if (newTitle) {
-    await typeTitle(newTitle)
-  }
-}, { immediate: true })
+// Sincronizar cambios en props con la copia local
+watch(
+  () => props.questions,
+  (newQuestions) => {
+    localQuestions.value = [...newQuestions];
+  },
+  { immediate: true }
+);
 
-watch(() => props.description, async (newDescription) => {
-  if (newDescription) {
-    await typeDescription(newDescription)
-  }
-}, { immediate: true })
+watch(
+  () => props.title,
+  async (newTitle) => {
+    if (newTitle) {
+      await typeTitle(newTitle);
+    }
+  },
+  { immediate: true }
+);
 
-watch(() => props.questions, async (newQuestions) => {
-  visibleQuestions.value = []
-  for (let i = 0; i < newQuestions.length; i++) {
-    await new Promise(resolve => setTimeout(resolve, 500))
-    visibleQuestions.value.push(newQuestions[i])
-  }
-}, { immediate: true })
+watch(
+  () => props.description,
+  async (newDescription) => {
+    if (newDescription) {
+      await typeDescription(newDescription);
+    }
+  },
+  { immediate: true }
+);
+
+watch(
+  () => localQuestions.value,
+  async (newQuestions) => {
+    visibleQuestions.value = [];
+    for (let i = 0; i < newQuestions.length; i++) {
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      visibleQuestions.value.push(newQuestions[i]);
+    }
+  },
+  { immediate: true }
+);
 
 const handleEditQuestion = (question) => {
-  selectedQuestion.value = question
-  showEditorModal.value = true
-}
+  selectedQuestion.value = question;
+  showEditorModal.value = true;
+};
 
 const handleSaveQuestion = (editedQuestion) => {
-  emit('edit-question', { question: editedQuestion })
-}
+  const index = localQuestions.value.findIndex((q) => q.id === editedQuestion.id);
+  if (index !== -1) {
+    localQuestions.value.splice(index, 1, editedQuestion);
+  }
+  emit('edit-question', { question: editedQuestion });
+};
 
 const handleRegenerateQuestion = async (question) => {
-  loadingQuestionId.value = question.id
-  await emit('regenerate-question', question)
-  loadingQuestionId.value = null
-}
+  loadingQuestionId.value = question.id;
+  await emit('regenerate-question', question);
+  loadingQuestionId.value = null;
+};
 
-const handleSave = () => {
-  emit('save')
-}
+const handleSave = async () => {
+  const formData = {
+    title: props.title,
+    description: props.description,
+    questions: localQuestions.value,
+  };
+
+  console.log('Datos que se enviarán:', JSON.stringify(formData, null, 2)); // Verifica la estructura del objeto
+
+  try {
+    const response = await fetch('http://localhost:8000/api/forms-save', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Errores de validación:', errorData);
+      alert('Errores en los datos enviados: ' + JSON.stringify(errorData.errors, null, 2));
+      return;
+    }
+
+    const result = await response.json();
+    console.log('Respuesta del servidor:', result);
+    alert('Formulario guardado con éxito.');
+
+  } catch (error) {
+    console.error('Error al guardar el formulario:', error);
+    alert('Hubo un error al guardar el formulario. Por favor, inténtalo de nuevo.');
+  }
+};
+
 
 const handleSend = () => {
-  emit('send')
-}
+  emit('send');
+};
 
 const handleDownload = () => {
   const formData = {
     title: props.title,
     description: props.description,
-    questions: props.questions
-  }
+    questions: localQuestions.value,
+  };
 
-  const json = JSON.stringify(formData, null, 2) // Convertir a JSON con formato legible
-  const blob = new Blob([json], { type: 'application/json' })
-  const link = document.createElement('a')
-  link.href = URL.createObjectURL(blob)
-  link.download = 'formulario.json' // Nombre del archivo a descargar
-  link.click()
-}
+  const json = JSON.stringify(formData, null, 2); // Convertir a JSON con formato legible
+  const blob = new Blob([json], { type: 'application/json' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = 'formulario.json'; // Nombre del archivo a descargar
+  link.click();
+};
 </script>
 
 <template>
@@ -87,7 +145,6 @@ const handleDownload = () => {
       <div class="flex justify-between items-center">
         <h2 class="text-2xl font-bold mb-2">{{ titleContent }}</h2>
         <button @click="handleDownload" class="text-gray-600 hover:text-primary transition duration-200">
-          <!-- Ícono de descarga (Heroicons) -->
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
             stroke="currentColor" class="size-6">
             <path stroke-linecap="round" stroke-linejoin="round"
@@ -129,8 +186,7 @@ const handleDownload = () => {
       </div>
     </div>
 
-    <!-- Action Buttons -->
-    <div v-if="questions.length > 0" class="flex justify-end space-x-4 pt-4">
+    <div v-if="localQuestions.length > 0" class="flex justify-end space-x-4 pt-4">
       <button @click="handleSave" class="btn bg-gray-100 text-gray-700 hover:bg-gray-200">
         Guardar
       </button>
@@ -139,7 +195,6 @@ const handleDownload = () => {
       </button>
     </div>
 
-    <!-- Question Editor Modal -->
     <QuestionEditorModal v-model="showEditorModal" :question="selectedQuestion" @save="handleSaveQuestion" />
   </div>
 </template>

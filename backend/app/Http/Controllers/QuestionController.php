@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Question;
 use Illuminate\Support\Facades\Validator;
+use App\Services\QuestionService;
+
 
 /**
  * @OA\Tag(
@@ -13,7 +15,16 @@ use Illuminate\Support\Facades\Validator;
  * )
  */
 class QuestionController extends Controller
+
 {
+
+    protected $questionService;
+
+    public function __construct(QuestionService $questionService)
+    {
+        $this->questionService = $questionService;
+    }
+
     /**
      * @OA\Get(
      *     path="/api/questions",
@@ -27,7 +38,7 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        $questions = Question::all();
+        $questions = $this->questionService->getAllQuestions();
         return response()->json($questions);
     }
 
@@ -55,10 +66,12 @@ class QuestionController extends Controller
      */
     public function show($id)
     {
-        $question = Question::find($id);
+        $question = $this->questionService->getQuestionById($id);
+
         if (is_null($question)) {
             return response()->json(['message' => 'Pregunta no trobada'], 404);
         }
+
         return response()->json($question);
     }
 
@@ -87,10 +100,10 @@ class QuestionController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'question' => 'required|string|max:255'
+            'question' => 'required|string|max:255',
         ]);
 
-        $question = Question::create($validatedData);
+        $question = $this->questionService->createQuestion($validatedData);
 
         return response()->json($question, 201);
     }
@@ -130,21 +143,11 @@ class QuestionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $question = Question::find($id);
-        if (is_null($question)) {
-            return response()->json(['message' => 'Pregunta no trobada'], 404);
-        }
-
-        $validator = Validator::make($request->all(), [
+        $validatedData = $request->validate([
             'question' => 'sometimes|required|string|max:255',
-            'form_id' => 'sometimes|required|integer',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
-        }
-
-        $question->update($validator->validated());
+        $question = $this->questionService->updateQuestion($id, $validatedData);
 
         return response()->json($question, 200);
     }
@@ -173,11 +176,7 @@ class QuestionController extends Controller
      */
     public function destroy($id)
     {
-        $question = Question::find($id);
-        if (is_null($question)) {
-            return response()->json(['message' => 'Pregunta no trobada'], 404);
-        }
-        $question->delete();
+        $this->questionService->deleteQuestion($id);
         return response()->json(null, 204);
     }
 }

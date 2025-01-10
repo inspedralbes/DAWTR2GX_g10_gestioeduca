@@ -3,7 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Answer;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\User;  // Para acceder a los usuarios
+use App\Models\Question;  // Para acceder a las preguntas
 use Illuminate\Database\Seeder;
 
 class AnswerSeeder extends Seeder
@@ -13,106 +14,28 @@ class AnswerSeeder extends Seeder
      */
     public function run(): void
     {
-        Answer::create([
-            'answer' => 'Madrid',
-            'question_id' => 1,
-            'student_id' => 1,
-        ]);
-        Answer::create([
-            'answer' => 'Barcelona',
-            'question_id' => 2,
-            'student_id' => 2,
-        ]);
-        Answer::create([
-            'answer' => 'Valencia',
-            'question_id' => 3,
-            'student_id' => 2,
-        ]);
-        Answer::create([
-            'answer' => 'Sevilla',
-            'question_id' => 4,
-            'student_id' => 2,
-        ]);
-        Answer::create([
-            'answer' => 'Zaragoza',
-            'question_id' => 5,
-            'student_id' => 3,
-        ]);
-        Answer::create([
-            'answer' => 'Malaga',
-            'question_id' => 6,
-            'student_id' => 3,
-        ]);
-        Answer::create([
-            'answer' => 'Murcia',
-            'question_id' => 7,
-            'student_id' => 3,
+        // Obtén algunas preguntas y usuarios existentes
+        $users = User::all();
+        $questions = Question::all();
 
-        ]);
-        Answer::create([
-            'answer' => 'Palma',
-            'question_id' => 8,
-            'student_id' => 3,
-        ]);
-        Answer::create([
-            'answer' => 'Bilbao',
-            'question_id' => 9,
-            'student_id' => 5,
-        ]);
-        Answer::create([
-            'answer' => 'Alicante',
-            'question_id' => 10,
-            'student_id' => 5,
-        ]);
-        Answer::create([
-            'answer' => 'Cordoba',
-            'question_id' => 11,
-            'student_id' => 5,
-        ]);
-        Answer::create([
-            'answer' => 'Valladolid',
-            'question_id' => 1,
-            'student_id' => 11,
-        ]);
-        Answer::create([
-            'answer' => 'Vigo',
-            'question_id' => 2,
-            'student_id' => 11,
-        ]);
-        Answer::create([
-            'answer' => 'Gijon',
-            'question_id' => 3,
-            'student_id' => 11,
-        ]);
-        Answer::create([
-            'answer' => 'L\'Hospitalet',
-            'question_id' => 4,
-            'student_id' => 21,
-        ]);
-        Answer::create([
-            'answer' => 'Vitoria',
-            'question_id' => 9,
-            'student_id' => 21,
-        ]);
-        Answer::create([
-            'answer' => 'Granada',
-            'question_id' => 7,
-            'student_id' => 21,
-        ]);
-        Answer::create([
-            'answer' => 'Elche',
-            'question_id' => 1,
-            'student_id' => 10,
-        ]);
-        Answer::create([
-            'answer' => 'Oviedo',
-            'question_id' => 5,
-            'student_id' => 10,
-        ]);
-        Answer::create([
-            'answer' => 'Badalona',
-            'question_id' => 6,
-            'student_id' => 10,
-        ]);
+        // Verifica que haya usuarios y preguntas
+        if ($users->isEmpty() || $questions->isEmpty()) {
+            echo "No hay usuarios o preguntas suficientes para insertar respuestas.";
+            return;
+        }
+
+        // Inserta respuestas de ejemplo
+        foreach ($questions as $question) {
+            // Para cada pregunta, asigna una respuesta aleatoria a un usuario aleatorio
+            foreach ($users as $user) {
+                Answer::create([
+                    'answer' => 'Respuesta de ejemplo',  // Respuesta básica
+                    'question_id' => $question->id,     // Relación con la pregunta
+                    'student_id' => $user->id,          // Relación con el usuario (estudiante)
+                ]);
+            }
+        }
+
+        echo "Respuestas creadas correctamente.\n";
     }
 }

@@ -2,60 +2,30 @@
 
 namespace Database\Seeders;
 
-use App\Models\Question;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Question;
+use App\Models\Form;
 
 class QuestionSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
+    public function run()
     {
+        // Obtén el formulario con ID 1 (asegúrate de que existe)
+        $form = Form::first(); // Usa Form::find(1) si sabes que el ID es 1
+
+        if (!$form) {
+            throw new \Exception('No se encontró un formulario en la base de datos.');
+        }
+
+        // Inserta preguntas asociadas al formulario
         Question::create([
-            'question' => '¿Cuál es la capital de España?',
-            'form_id' => 1,
+            'form_id' => $form->id,
+            'title' => '¿Cuál es tu color favorito?',
         ]);
+
         Question::create([
-            'question' => '¿Cuál es la capital de Francia?',
-            'form_id' => 1,
-        ]);
-        Question::create([
-            'question' => '¿Cuál es la capital de Italia?',
-            'form_id' => 2,
-        ]);
-        Question::create([
-            'question' => '¿Cuál es la capital de Alemania?',
-            'form_id' => 2,
-        ]);
-        Question::create([
-            'question' => '¿Cuál es la capital de Portugal?',
-            'form_id' => 3,
-        ]);
-        Question::create([
-            'question' => '¿Cuál es la capital de Reino Unido?',
-            'form_id' => 3,
-        ]);
-        Question::create([
-            'question' => '¿Cuál es la capital de Japón?',
-            'form_id' => 4,
-        ]);
-        Question::create([
-            'question' => '¿Cuál es la capital de China?',
-            'form_id' => 4,
-        ]);
-        Question::create([
-            'question' => '¿Cuál es la capital de Rusia?',
-            'form_id' => 5,
-        ]);
-        Question::create([
-            'question' => '¿Cuál es la capital de Brasil?',
-            'form_id' => 5,
-        ]);
-        Question::create([
-            'question' => '¿Cuál es la capital de Argentina?',
-            'form_id' => 5,
+            'form_id' => $form->id,
+            'title' => '¿Qué opinas sobre la inteligencia artificial?',
         ]);
     }
 }

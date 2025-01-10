@@ -40,6 +40,7 @@ const removeOption = (index) => {
 }
 
 const handleSave = () => {
+  
   emit('save', localQuestion.value)
   emit('update:modelValue', false)
 }
