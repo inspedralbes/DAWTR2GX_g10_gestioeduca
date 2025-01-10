@@ -38,7 +38,7 @@ Route::resource('users', UserController::class)->names([
 
 
 //RUTA PARA GUARDAR FORUMALIO EN BBDD
-Route::post('/forms', [FormController::class, 'storeFormWithQuestions']);
+Route::post('forms-save', [FormController::class, 'storeFormWithQuestions']);
 
 
 Route::resource('divisions', DivisionController::class);

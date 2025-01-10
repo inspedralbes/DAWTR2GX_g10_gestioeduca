@@ -93,7 +93,7 @@ const handleSave = async () => {
   console.log('Datos que se enviarán:', JSON.stringify(formData, null, 2)); // Verifica la estructura del objeto
 
   try {
-    const response = await fetch('http://localhost:8000/forms', {
+    const response = await fetch('http://localhost:8000/api/forms-save', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -102,12 +102,16 @@ const handleSave = async () => {
     });
 
     if (!response.ok) {
-      throw new Error(`Error en la solicitud: ${response.statusText}`);
+      const errorData = await response.json();
+      console.error('Errores de validación:', errorData);
+      alert('Errores en los datos enviados: ' + JSON.stringify(errorData.errors, null, 2));
+      return;
     }
 
     const result = await response.json();
     console.log('Respuesta del servidor:', result);
     alert('Formulario guardado con éxito.');
+
   } catch (error) {
     console.error('Error al guardar el formulario:', error);
     alert('Hubo un error al guardar el formulario. Por favor, inténtalo de nuevo.');
@@ -151,7 +155,8 @@ const handleDownload = () => {
       <p class="text-gray-600">{{ descriptionContent }}</p>
     </div>
 
-    <div v-for="(question, index) in visibleQuestions" :key="index" class="border rounded-lg p-6 bg-white animate-slide-up">
+    <div v-for="(question, index) in visibleQuestions" :key="index"
+      class="border rounded-lg p-6 bg-white animate-slide-up">
       <div class="flex justify-between items-start mb-4">
         <h3 class="text-lg font-medium">{{ question.title }}</h3>
         <QuestionActions :question="question" :is-loading="loadingQuestionId === question.id" @edit="handleEditQuestion"

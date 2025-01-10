@@ -6,6 +6,7 @@ use App\Models\Form;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Services\FormService;
+use Illuminate\Support\Facades\Log;
 
 
 /**
@@ -17,8 +18,6 @@ use App\Services\FormService;
 class FormController extends Controller
 {
 
-
-
     protected $formService;
 
     public function __construct(FormService $formService)
@@ -26,28 +25,28 @@ class FormController extends Controller
         $this->formService = $formService;
     }
 
-        public function storeFormWithQuestions(Request $request, FormService $formService)
+    public function storeFormWithQuestions(Request $request, FormService $formService)
     {
-
-        // Validación de los datos enviados en el request
         $validatedData = $request->validate([
-            'title' => 'required|string|max:255',
+            'title' => 'required|string|unique:forms,title',
             'description' => 'nullable|string',
             'questions' => 'required|array',
-            'questions.*.type' => 'required|string|in:multiple,text,checkbox,number',
-            'questions.*.title' => 'required|string|max:255',
+            'questions.*.title' => 'required|string',
+            'questions.*.type' => 'required|string|in:text,number,multiple,checkbox',
+            'questions.*.placeholder' => 'nullable|string',
+            'questions.*.context' => 'nullable|string',
             'questions.*.options' => 'nullable|array',
             'questions.*.options.*.text' => 'required_with:questions.*.options|string',
-            'questions.*.options.*.value' => 'required_with:questions.*.options|integer',
-            'questions.*.options.*' => 'required_if:questions.*.type,multiple|string|max:255', // Solo si el tipo es "multiple"
+            'questions.*.options.*.value' => 'nullable|integer',
         ]);
 
-        // Llamamos al servicio para crear el formulario con sus preguntas y opciones
-        $form = $formService->create($validatedData);
+        $form = $this->formService->createForm($validatedData);
 
-        // Devolvemos el formulario con sus preguntas y opciones
-        return response()->json($form->load('questions.options'), 201);
+        return response()->json(['form' => $form], 201);
     }
+
+
+
     /**
      * @OA\Get(
      *     path="/api/forms/{formId}/questions-and-answers",
@@ -160,7 +159,7 @@ class FormController extends Controller
         ]);
 
         $form = $this->formService->createForm($validatedData);
-        return response()->json($form, 201);
+        return response()->json(201);
     }
 
     /**

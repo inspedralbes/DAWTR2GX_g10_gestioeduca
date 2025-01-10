@@ -3,54 +3,38 @@
 namespace App\Services;
 
 use App\Models\Form;
-use App\Models\Question;
-use App\Models\Option;
+use Illuminate\Support\Facades\DB;
 
 class FormService
 {
-    public function create(array $data)
-{
-    // Crear el formulario
-    $form = Form::create([
-        'title' => $data['title'],
-        'description' => $data['description'] ?? null,
-    ]);
-
-    // Crear las preguntas del formulario
-    if (!empty($data['questions'])) {
-        foreach ($data['questions'] as $questionData) {
-            // Usamos el servicio para crear las preguntas asociadas
-            $question = app(QuestionService::class)->createQuestionForForm($form, $questionData);
-        }
-    }
-
-    return $form;
-}
-
-
-    public function getAllForms()
+    public function createForm(array $formData): Form
     {
-        return Form::all();
-    }
+        return DB::transaction(function () use ($formData) {
+            $form = Form::create([
+                'title' => $formData['title'],
+                'description' => $formData['description'] ?? null,
+                'status' => true,
+            ]);
 
-    public function getFormWithQuestionsAndAnswers($formId)
-    {
-        return Form::with(['questions.answers'])->find($formId);
-    }
+            foreach ($formData['questions'] as $questionData) {
+                $question = $form->questions()->create([
+                    'title' => $questionData['title'],
+                    'type' => $questionData['type'],
+                    'placeholder' => $questionData['placeholder'] ?? null,
+                    'context' => $questionData['context'] ?? null,
+                ]);
 
-    public function createForm(array $data)
-    {
-        return Form::create($data);
-    }
+                if (!empty($questionData['options'])) {
+                    foreach ($questionData['options'] as $optionData) {
+                        $question->options()->create([
+                            'text' => $optionData['text'],
+                            'value' => $optionData['value'] ?? 0,
+                        ]);
+                    }
+                }
+            }
 
-    public function updateForm(Form $form, array $data)
-    {
-        $form->update($data);
-        return $form;
-    }
-
-    public function deleteForm(Form $form)
-    {
-        $form->delete();
+            return $form;
+        });
     }
 }
