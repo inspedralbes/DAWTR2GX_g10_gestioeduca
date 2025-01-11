@@ -63,5 +63,6 @@ onMounted(() => {
       <h2 class="text-2xl font-bold text-gray-800">{{ userData.name }} {{ userData.last_name }}</h2>
       <p class="text-gray-500 text-sm">{{ userData.email }}</p>
     </div>
+    </div>
   </div>
 </template>
