@@ -1,8 +1,59 @@
+<script setup>
+import { ref, onMounted } from 'vue';
+import { defineStore } from 'pinia';
+
+// Crear un store Pinia para los grupos
+const useGroupStore = defineStore('groups', {
+  state: () => ({
+    groups: []
+  }),
+  actions: {
+    async fetchGroups() {
+      try {
+        const token = localStorage.getItem('auth_token');
+        const response = await fetch('http://localhost:8000/api/groups', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/json'
+          }
+        });
+        
+        if (!response.ok) {
+          throw new Error('Error fetching groups');
+        }
+
+        const data = await response.json();
+        this.groups = data;
+      } catch (error) {
+        console.error('Error fetching groups:', error);
+      }
+    }
+  }
+});
+
+const groupStore = useGroupStore();
+
+onMounted(() => {
+  groupStore.fetchGroups();
+});
+
+// Función para obtener la clase de estado
+const getStatusClass = (status) => {
+  const classes = {
+    'Activo': 'bg-green-100 text-green-800',
+    'Pendiente': 'bg-yellow-100 text-yellow-800',
+    'Próximo': 'bg-blue-100 text-blue-800'
+  }
+  return `px-3 py-1 rounded-full text-sm font-medium ${classes[status] || ''}`
+}
+</script>
+
 <template>
   <div class="space-y-6">
     <h2 class="text-2xl font-bold">Mis Grupos</h2>
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <div v-for="group in groups" :key="group.id" 
+      <div v-for="group in groupStore.groups" :key="group.id" 
         class="bg-white rounded-lg shadow p-6">
         <div class="flex justify-between items-start mb-4">
           <div>
@@ -42,70 +93,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import { ref } from 'vue'
-import { ChevronDownIcon } from '@heroicons/vue/24/outline'
-
-const groups = ref([
-  {
-    id: 1,
-    name: 'Grupo Proyecto Historia',
-    subject: 'Historia',
-    status: 'Activo',
-    isExpanded: false,
-    members: [
-      { id: 1, name: 'Ana García', initials: 'AG' },
-      { id: 2, name: 'Carlos Ruiz', initials: 'CR'},
-      { id: 3, name: 'María López', initials: 'ML' }
-    ]
-  },
-  {
-    id: 2,
-    name: 'Equipo Matemáticas',
-    subject: 'Algebra',
-    status: 'Pendiente',
-    isExpanded: false,
-    members: [
-      { id: 4, name: 'Juan Pérez', initials: 'JP' },
-      { id: 5, name: 'Laura Martínez', initials: 'LM' },
-      { id: 6, name: 'Pedro Sánchez', initials: 'PS' }
-    ]
-  },
-  {
-    id: 3,
-    name: 'Laboratorio Ciencias',
-    subject: 'Biology',
-    status: 'Próximo',
-    isExpanded: false,
-    members: [
-      { id: 7, name: 'Sofia Rodríguez', initials: 'SR' },
-      { id: 8, name: 'Diego Moreno', initials: 'DM' },
-      { id: 9, name: 'Elena Pérez', initials: 'EP' }
-    ]
-  }
-])
-
-const toggleMembers = (groupId) => {
-  const group = groups.value.find(g => g.id === groupId)
-  if (group) {
-    group.isExpanded = !group.isExpanded
-  }
-}
-
-const getStatusClass = (status) => {
-  const classes = {
-    'Activo': 'bg-green-100 text-green-800',
-    'Pendiente': 'bg-yellow-100 text-yellow-800',
-    'Próximo': 'bg-blue-100 text-blue-800'
-  }
-  return `px-3 py-1 rounded-full text-sm font-medium ${classes[status] || ''}`
-}
-</script>
-
-<style scoped>
-.animate-fade-in {
-  animation: fadeIn 0.2s ease-out forwards;
-}
-
-</style>

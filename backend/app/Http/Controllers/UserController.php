@@ -255,4 +255,12 @@ class UserController extends Controller
 
         return response()->json(null, 204);
     }
+
+    public function getAuthenticatedUser(Request $request)
+    {
+        // Obtener el usuario autenticado (suponiendo que estás usando Sanctum o Passport para la autenticación)
+        return response()->json($request->user());  // Esto devuelve los datos del usuario autenticado
+    }
+
+    
 }

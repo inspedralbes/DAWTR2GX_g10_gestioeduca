@@ -46,24 +46,16 @@ import {
   HomeIcon,
   UserGroupIcon,
   DocumentTextIcon,
+  PowerIcon,
 } from '@heroicons/vue/24/outline'
-
-// Información del usuario
-const studentName = ref('Ana García')
-const studentClass = ref('1º ESO A')
-const studentEmail = ref('ana.garcia@inspedralbes.cat')
-
-// Iniciales del usuario
-const userInitials = computed(() => {
-  const names = studentName.value.split(' ')
-  return names.map((n) => n[0]).join('').toUpperCase()
-})
 
 // Elementos del menú
 const menuItems = [
   { name: 'Dashboard', path: '/student/dashboard', icon: HomeIcon },
-  { name: 'Mi Grupo', path: '/student/group', icon: UserGroupIcon },
+  { name: 'Mis Grupos', path: '/student/group', icon: UserGroupIcon },
   { name: 'Formularios', path: '/student/forms', icon: DocumentTextIcon },
+  { name: 'Log out', path: '/landing', icon: PowerIcon },
+
 ]
 
 // Estado del menú móvil
