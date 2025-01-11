@@ -5,7 +5,7 @@
       <div v-for="form in forms" :key="form.id" 
         class="bg-white rounded-lg shadow p-6">
         <h3 class="text-lg font-semibold mb-2">{{ form.title }}</h3>
-        <p class="text-gray-600 mb-4">{{ form.description }}</p>
+        <p class="text-gray-600 mb-4">{{ forms.description }}</p>
         <div class="flex justify-between items-center">
           <span class="text-sm text-gray-500">Fecha límite: {{ form.dueDate }}</span>
           <button 
@@ -20,43 +20,31 @@
 </template>
   
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router' 
 
 const router = useRouter() 
 
-const forms = ref([
-  {
-    id: 1,
-    title: 'Evaluación del Curso',
-    description: 'Formulario para evaluar el contenido y metodología del curso',
-    dueDate: '20 Mayo'
-  },
-  {
-    id: 2,
-    title: 'Encuesta de Satisfacción',
-    description: 'Comparte tu opinión sobre las instalaciones y servicios',
-    dueDate: '25 Mayo'
-  },
-  {
-    id: 3,
-    title: 'Autoevaluación',
-    description: 'Reflexiona sobre tu desempeño en el curso',
-    dueDate: '30 Mayo'
-  },
-  {
-    id: 4,
-    title: 'CESC- Conducta y Experiencias Sociales en Clase',
-    description: 'Formulario para la detección e intervención en casos de acoso escolar',
-    dueDate: '20 Mayo'
-  },
-  {
-    id: 5,
-    title: 'Evaluación de Sociagrama',
-    description: 'Formulario para evaluar la estructura de las relaciones grupales',
-  }
-])
+const forms = ref([]);
 
+  onMounted(async () => {
+  try {
+    const response = await fetch('http://localhost:8000/api/forms', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Error obteniendo los datos.');
+    }
+
+    forms.value = await response.json();
+  } catch (error) {
+    console.error('Error:', error);
+  }
+});
 const handleFormClick = (formId) => {
   if (formId === 4) {
     // Redirigir al formulario CESC

@@ -36,6 +36,8 @@ Route::resource('users', UserController::class)->names([
     'destroy' => 'users.destroy'
 ]);
 
+// Ruta para obtener los cursos de un usuario
+Route::get('/users/{id}/courses', [UserController::class, 'getUserCourses']);
 
 //RUTA PARA GUARDAR FORUMALIO EN BBDD
 Route::post('forms-save', [FormController::class, 'storeFormWithQuestions']);
