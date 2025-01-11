@@ -8,18 +8,19 @@ import { useStudentSearch } from '../../composables/useStudentSearch'
 const students = ref([])
 onMounted(async () => {
   try {
-    const response = await fetch('http://localhost:8000/api/users')
-    if (response.ok) {
-      const data = await response.json()
-      // Filtrar estudiantes solo con rol 2
-      students.value = data.filter(student => student.role_id === 2)
-    } else {
-      console.error('Error fetching students:', response.statusText)
-    }
+    const response = await fetch('http://localhost:8000/api/users', {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+        'Accept': 'application/json',
+      }
+    });
+    
+    if (!response.ok) throw new Error('Error al cargar los formularios');
+    students.value = await response.json();
   } catch (error) {
-    console.error('Error fetching students:', error)
+    console.error('Error:', error);
   }
-}) 
+});
 
 const {
   searchQuery,

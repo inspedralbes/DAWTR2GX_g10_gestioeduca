@@ -18,17 +18,17 @@ onMounted(async () => {
     const response = await fetch('http://localhost:8000/api/users', {
       method: 'GET',
       headers: {
-        'Accept': 'application/json', // Asegúrate de aceptar respuestas JSON
+        'Accept': 'application/json',
       },
     });
 
-    // Comprobar si la respuesta es exitosa
+
     if (!response.ok) {
       throw new Error('Error obteniendo los datos.');
     }
 
-    // Parsear la respuesta JSON
     students.value = await response.json();
+    console.log(students.value)
   } catch (error) {
     console.error('Error:', error);
   } finally {

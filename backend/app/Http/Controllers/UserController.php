@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Division;
+use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -57,52 +59,71 @@ class UserController extends Controller
      * )
      */
 
-    public function create()
-    {
-        $roles = Role::all();
-        return view('users.create', compact('roles'));  // Devuelve la vista 'create' con los roles disponibles
-    }
+     public function create()
+     {
+         // Obtener todos los cursos y divisiones disponibles
+         $courses = Course::all();
+         $divisions = Division::all();
 
-    public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8',
-            'role_id' => 'required|exists:roles,id',
-            'image' => 'nullable|string|max:255' // Hacer la imagen opcional
-        ]);
+         // Obtener los roles disponibles
+         $roles = Role::all();
 
-        if ($validator->fails()) {
-            if ($request->wantsJson()) {
-                return response()->json($validator->errors(), 400);
-            } else {
-                return redirect()->back()->withErrors($validator)->withInput();
-            }
-        }
+         // Pasar los datos a la vista
+         return view('users.create', compact('courses', 'divisions', 'roles'));
+     }
 
-        $userData = [
-            'name' => $request->name,
-            'last_name' => $request->last_name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'role_id' => $request->role_id,
-        ];
 
-        // Solo agregar la imagen si está presente en la solicitud
-        if ($request->has('image')) {
-            $userData['image'] = $request->image;
-        }
+     public function store(Request $request)
+     {
+         $validator = Validator::make($request->all(), [
+             'name' => 'required|string|max:255',
+             'last_name' => 'required|string|max:255',
+             'email' => 'required|string|email|max:255|unique:users',
+             'password' => 'required|string|min:8',
+             'role_id' => 'required|exists:roles,id',
+             'image' => 'nullable|string|max:255', // Imagen opcional
+             'courses' => 'required_if:role_id,3|array', // Solo si el rol es Alumno
+             'divisions' => 'required_if:role_id,3|array', // Solo si el rol es Alumno
+         ]);
 
-        $user = User::create($userData);
+         if ($validator->fails()) {
+             if ($request->wantsJson()) {
+                 return response()->json($validator->errors(), 400);
+             } else {
+                 return redirect()->back()->withErrors($validator)->withInput();
+             }
+         }
 
-        if ($request->wantsJson()) {
-            return response()->json($user, 201);
-        }
+         // Crear el usuario
+         $userData = [
+             'name' => $request->name,
+             'last_name' => $request->last_name,
+             'email' => $request->email,
+             'password' => bcrypt($request->password),
+             'role_id' => $request->role_id,
+         ];
 
-        return redirect()->route('users.index')->with('success', 'User created successfully');
-    }
+         // Solo agregar la imagen si está presente en la solicitud
+         if ($request->has('image')) {
+             $userData['image'] = $request->image;
+         }
+
+         $user = User::create($userData);
+
+         // Si el rol es Alumno (ID = 3), asociar cursos y divisiones
+         if ($request->role_id == 3) {
+             $user->courses()->sync($request->courses); // Asociar cursos
+             $user->divisions()->sync($request->divisions); // Asociar divisiones
+         }
+
+         if ($request->wantsJson()) {
+             return response()->json($user, 201);
+         }
+
+         return redirect()->route('users.index')->with('success', 'User created successfully');
+     }
+
+
 
 
     /**
@@ -255,12 +276,4 @@ class UserController extends Controller
 
         return response()->json(null, 204);
     }
-
-    public function getAuthenticatedUser(Request $request)
-    {
-        // Obtener el usuario autenticado (suponiendo que estás usando Sanctum o Passport para la autenticación)
-        return response()->json($request->user());  // Esto devuelve los datos del usuario autenticado
-    }
-
-    
 }
