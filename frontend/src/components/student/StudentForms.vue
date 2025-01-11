@@ -27,7 +27,7 @@ onMounted(async () => {
       <div v-for="form in formsData" :key="form.id" 
         class="bg-white rounded-lg shadow p-6">
         <h3 class="text-lg font-semibold mb-2">{{ form.title }}</h3>
-        <p class="text-gray-600 mb-4">{{ forms.description }}</p>
+        <p class="text-gray-600 mb-4">{{ form.description }}</p>
         <div class="flex justify-between items-center">
           <span class="text-sm text-gray-500">Fecha límite: {{ form.due_date }}</span>
           <button 
