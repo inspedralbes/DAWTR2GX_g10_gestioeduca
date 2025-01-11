@@ -6,54 +6,40 @@ import FormAssignments from '../../components/Students/StudentProfile/FormAssign
 
 const route = useRoute()
 const student = ref(null)
-const formAssignments = ref([
-  {
-    id: 1,
-    formId: 1,
-    formTitle: 'Evaluación Trimestral de Matemáticas',
-    assignedDate: '2024-03-10',
-    dueDate: '2024-03-17',
-    status: 'pending'
-  },
-  {
-    id: 2,
-    formId: 2,
-    formTitle: 'Cuestionario de Hábitos de Estudio',
-    assignedDate: '2024-03-05',
-    dueDate: '2024-03-12',
-    status: 'completed'
-  },
-  {
-    id: 3,
-    formId: 3,
-    formTitle: 'Evaluación de Física y Química',
-    assignedDate: '2024-02-28',
-    dueDate: '2024-03-07',
-    status: 'expired'
-  }
-])
+const studentId = ref(Number(route.params.id))
+const formAssignments = ref([])
 
 onMounted(async () => {
-  // In a real application, this would be an API call
-  // For now, we'll use mock data
-  student.value = {
-    id: Number(route.params.id),
-    name: 'Ana García',
-    grade: '1º ESO A',
-    email: 'ana.garcia@escuela.edu',
-    image: '',
-    skills: {
-      Colaboración: 85,
-      Comunicación: 78,
-      Responsabilidad: 92,
-      Liderazgo: 70,
-      'Resolución de Problemas': 88,
-      'Pensamiento Crítico': 82,
-      Adaptabilidad: 75,
-      Empatía: 90
-    }
+  try {
+    const response = await fetch('http://localhost:8000/api/forms', {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+        'Accept': 'application/json',
+      }
+    });
+    
+    if (!response.ok) throw new Error('Error al cargar los formularios');
+    formAssignments.value = await response.json();
+  } catch (error) {
+    console.error('Error:', error);
   }
-})
+});
+
+onMounted(async () => {
+  try {
+    const response = await fetch(`http://localhost:8000/api/users/${studentId.value}`, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+        'Accept': 'application/json',
+      }
+    });
+    
+    if (!response.ok) throw new Error('Error al cargar los usuarios');
+    student.value = await response.json();
+  } catch (error) {
+    console.error('Error:', error);
+  }
+});
 </script>
 
 <template>

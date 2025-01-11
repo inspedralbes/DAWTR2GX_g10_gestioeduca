@@ -49,7 +49,10 @@ import ProfileHeader from "./ProfileHeader.vue";
 import ProfileEducation from "./ProfileEducation.vue";
 import { useRoute } from "vue-router";
 
+
+
 export default {
+  
   name: "StudentProfileComponent",
   components: {
     Footer,
@@ -66,26 +69,29 @@ export default {
     };
   },
   created() {
-    const route = useRoute();
-    this.studentId = route.params.id; 
-    this.fetchStudentData(this.studentId);
+    const route = useRoute(); // Acceder a los parámetros de la ruta
+    this.studentId = route.params.id; // Obtener el id del estudiante desde la ruta
+    this.fetchStudentData(this.studentId); // Cargar los datos del estudiante
   },
   methods: {
     async fetchStudentData(id) {
       try {
-        const response = await fetch("/students.json");
+        // Usar correctamente this.studentId para la URL de la API
+        const response = await fetch(`http://localhost:8000/api/users/${id}`);
+        
         if (!response.ok) throw new Error("Error al cargar los datos");
 
         const students = await response.json();
         const student = students.find((s) => s.id_student === id); 
         if (!student) throw new Error("Estudiante no encontrado");
 
+        // Asignar los valores del estudiante
         this.studentName = `${student.name} ${student.surname}`;
         this.studentCurs = student.curs || "Curso no especificado.";
       } catch (error) {
-        this.error = error.message;
+        this.error = error.message; // Mostrar el mensaje de error
       } finally {
-        this.isLoading = false;
+        this.isLoading = false; // Detener el indicador de carga
       }
     },
     getAvatar(id) {
