@@ -29,27 +29,24 @@
   </template>
   
   <script setup>
-  const forms = [
-    {
-      id: 1,
-      title: 'Evaluación del Curso',
-      description: 'Formulario para evaluar el contenido y metodología',
-      urgency: 'Urgente',
-      urgencyColor: 'bg-red-100 text-red-800',
-    },
-    {
-      id: 2,
-      title: 'Encuesta de Satisfacción',
-      description: 'Comparte tu opinión sobre las instalaciones',
-      urgency: 'Normal',
-      urgencyColor: 'bg-blue-100 text-blue-800',
-    },
-    {
-      id: 3,
-      title: 'Autoevaluación',
-      description: 'Reflexiona sobre tu desempeño',
-      urgency: 'Próximo',
-      urgencyColor: 'bg-green-100 text-green-800',
+import { ref, onMounted } from 'vue';
+const forms = ref([]);
+  onMounted(async () => {
+  try {
+    const response = await fetch('http://localhost:8000/api/forms', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Error obteniendo los datos.');
     }
-  ];
+
+    forms.value = await response.json();
+  } catch (error) {
+    console.error('Error:', error);
+  }
+});
   </script>
