@@ -20,6 +20,9 @@ Route::middleware(['auth:sanctum', 'role:admin'])->get('/admin-dashboard', [Dash
 Route::middleware(['auth:sanctum', 'role:teacher'])->get('/teacher-dashboard', [DashboardController::class, 'teacherDashboard']);
 Route::middleware(['auth:sanctum', 'role:student'])->get('/student-dashboard', [DashboardController::class, 'studentDashboard']);
 
+// Ruta para obtener el usuario autenticado
+Route::middleware('auth:sanctum')->get('/user', [UserController::class, 'getAuthenticatedUser']);
+
 
 Route::resource('roles', RoleController::class);
 Route::resource('courses', CourseController::class);
