@@ -35,7 +35,8 @@ defineProps({
         </thead>
         <tbody>
           <StudentListItem
-            v-for="student in students.filter(f => f.role_id === 2)" :key="student.id_student"
+            v-for="student in students"
+            :key="student.id"
             :student="student"
           />
         </tbody>

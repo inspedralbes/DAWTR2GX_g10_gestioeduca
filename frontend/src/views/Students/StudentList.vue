@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import { PlusIcon } from '@heroicons/vue/24/outline'
-import StudentListComponent from '../../components/Students/StudentList.vue'
+import StudentList from '../../components/Students/StudentList.vue'
 import StudentFilters from '../../components/Students/StudentFilters.vue'
 import { useStudentSearch } from '../../composables/useStudentSearch'
 import { useStudentsStore } from '@/stores/studentsStore'
@@ -15,7 +15,6 @@ onMounted(async () => {
 })
 // Utilizar computed para asegurar que reaccionen cambios en el estado
 const students = computed(() => studentsStore.students || [])
-
 const {
   searchQuery,
   selectedCourse,
@@ -40,7 +39,7 @@ console.log(filteredStudents.value)
       v-model:selectedCourse="selectedCourse"
       v-model:selectedDivision="selectedDivision"
     />
-    <StudentListComponent :students="filteredStudents" />
+    <StudentList :students="filteredStudents" />
   </div>
   </div>
 </template>
