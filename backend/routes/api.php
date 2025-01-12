@@ -45,7 +45,6 @@ Route::get('/users/{id}/courses', [UserController::class, 'getUserCourses']);
 //RUTA PARA GUARDAR FORUMALIO EN BBDD
 Route::post('forms-save', [FormController::class, 'storeFormWithQuestions']);
 
-//joselnyyyy
 Route::get('/roles', [RoleController::class, 'index']);
 
 
