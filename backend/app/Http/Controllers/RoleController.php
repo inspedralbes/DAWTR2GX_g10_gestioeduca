@@ -22,9 +22,10 @@ class RoleController extends Controller
     public function index(Request $request)
     {
         $roles = Role::all();
-        if ($request->expectsJson()) {
+        if ($request->is('api/*')) {
             return response()->json($roles, 200);
         }
+
         return view('roles', compact('roles'));
     }
 
@@ -50,7 +51,7 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        if ($request->expectsJson()) {
+        if ($request->is('api/*')) {
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string|max:255',
             ]);
@@ -89,9 +90,9 @@ class RoleController extends Controller
      *     )
      * )
      */
-    public function show(Role $role)
+    public function show(Request $request, Role $role)
     {
-        if ($request->expectsJson()) {
+        if ($request->is('api/*')) {
             return response()->json($role, 200);
         }
         return view('roles.show', compact('role'));
@@ -130,7 +131,7 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
-        if ($request->expectsJson()) {
+        if ($request->is('api/*')) {
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string|max:255',
             ]);
@@ -171,7 +172,7 @@ class RoleController extends Controller
     public function destroy(Request $request, Role $role)
     {
         $role->delete();
-        if ($request->expectsJson()) {
+        if ($request->is('api/*')) {
             return response()->json(null, 204);
         }
         return redirect()->route('roles.index')->with('success', 'Rol eliminado exitosamente');
