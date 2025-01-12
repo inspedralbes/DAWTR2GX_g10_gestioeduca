@@ -21,7 +21,7 @@ class CourseController extends Controller
     public function index(Request $request)
     {
         $courses = Course::all();
-        if ($request->expectsJson()) {
+        if ($request->is('api/*')) {
             return response()->json($courses, 200);
         }
         return view('courses', compact('courses'));
@@ -50,25 +50,29 @@ class CourseController extends Controller
      * )
      */
     public function store(Request $request)
-    {
-        if ($request->expectsJson()) {
-            $validator = Validator::make($request->all(), [
-                'name' => 'required|string|max:255',
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json($validator->errors(), 400);
-            }
-            $course = Course::create($validator->validated());
-            return response()->json($course, 201);
-        }
-
+{
+    // Verifica si es una solicitud API
+    if ($request->is('api/*')) {
+        // Valida la entrada
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
         ]);
-        Course::create($validatedData);
-        return redirect()->route('courses.index')->with('success', 'Curso creado exitosamente');
+
+        // Crea el curso
+        $course = Course::create($validatedData);
+
+        // Responde con JSON
+        return response()->json($course, 201);
     }
+
+    // Si no es API, maneja como una solicitud web
+    $validatedData = $request->validate([
+        'name' => 'required|string|max:255',
+    ]);
+
+    Course::create($validatedData);
+    return redirect()->route('courses.index')->with('success', 'Curso creado exitosamente');
+}
 
 
     /**
@@ -88,7 +92,7 @@ class CourseController extends Controller
      */
     public function show(Request $request, Course $course)
     {
-        if ($request->expectsJson()) {
+        if ($request->is('api/*')) {
             return response()->json($course, 200);
         }
         return view('courses.show', compact('course'));
@@ -127,7 +131,7 @@ class CourseController extends Controller
      */
     public function update(Request $request, Course $course)
     {
-        if ($request->expectsJson()) {
+        if ($request->is('api/*')) {
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string|max:255',
             ]);
@@ -170,7 +174,7 @@ class CourseController extends Controller
     public function destroy(Request $request, Course $course)
     {
         $course->delete();
-        if ($request->expectsJson()) {
+        if ($request->is('api/*')) {
             return response()->json(null, 204);
         }
         return redirect()->route('courses.index')->with('success', 'Curso eliminado exitosamente');

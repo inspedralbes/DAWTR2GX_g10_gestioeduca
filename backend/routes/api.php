@@ -23,6 +23,8 @@ Route::middleware(['auth:sanctum', 'role:student'])->get('/student-dashboard', [
 // Ruta para obtener el usuario autenticado
 Route::middleware('auth:sanctum')->get('/user', [UserController::class, 'getAuthenticatedUser']);
 
+//asegurará que la solicitud sea procesada como una solicitud de la API
+Route::middleware('api')->resource('courses', CourseController::class);
 
 Route::resource('roles', RoleController::class);
 Route::resource('courses', CourseController::class);
@@ -45,9 +47,7 @@ Route::get('/users/{id}/courses', [UserController::class, 'getUserCourses']);
 //RUTA PARA GUARDAR FORUMALIO EN BBDD
 Route::post('forms-save', [FormController::class, 'storeFormWithQuestions']);
 
-//joselnyyyy
 Route::get('/roles', [RoleController::class, 'index']);
-
 
 
 Route::resource('divisions', DivisionController::class);
