@@ -177,4 +177,18 @@ class GroupController extends Controller
         $group->delete();
         return response()->json(['message' => 'Grup eliminat']);
     }
+
+    public function getMembers($id)
+    {
+        $group = Group::find($id);
+    
+        if (!$group) {
+        return response()->json(['message' => 'Grupo no encontrado'], 404);
+        }
+
+        $members = $group->users;  // Suponiendo que la relación 'users' está definida en el modelo `Group`
+
+        return response()->json($members);
+    }
+
 }

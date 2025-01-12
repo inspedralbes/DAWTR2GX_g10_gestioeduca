@@ -13,14 +13,19 @@ class Form extends Model
     ];
 
     public function course() {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'course_user', 'form_id', 'user_id');
     }
 
     public function divisions(){
-        return $this->belongsToMany(Division::class);
+        return $this->belongsToMany(Division::class, 'division_form', 'form_id', 'division_id');
     }
 
     public function questions(){
         return $this->hasMany(Question::class);
+    }
+
+    public function answers()
+    {
+        return $this->hasMany(Answer::class, Question::class);
     }
 }

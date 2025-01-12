@@ -71,14 +71,15 @@ class FormController extends Controller
      */
     public function getQuestionsAndAnswers($formId)
     {
-        $form = Form::with(['questions.answers'])->find($formId);
+        $form = Form::with('questions.answers')->find($formId);
 
         if (!$form) {
-            return response()->json(['message' => 'Formulari no trobat'], 404);
+            return response()->json(['message' => 'Formulario no encontrado'], 404);
         }
 
         return response()->json($form, 200);
     }
+
 
     /**
      * @OA\Get(
@@ -93,8 +94,8 @@ class FormController extends Controller
      */
     public function index()
     {
-        $forms = $this->formService->getAllForms();
-        return response()->json($forms);
+        $forms = Form::all(); // Cargar todos los formularios
+        return response()->json($forms, 200);
     }
 
     /**
@@ -121,8 +122,8 @@ class FormController extends Controller
      */
     public function show($id)
     {
-        $form = $this->formService->getFormWithQuestionsAndAnswers($id);
-
+        $form = Form::with('questions.answers')->find($id);
+        
         if (!$form) {
             return response()->json(['message' => 'Formulari no trobat'], 404);
         }
