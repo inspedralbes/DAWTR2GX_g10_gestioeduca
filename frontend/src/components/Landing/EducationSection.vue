@@ -3,16 +3,16 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <h2 class="text-3xl font-semibold text-gray-900 text-center mb-12">Grados Educativos</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8 justify-items-center">
-        <div v-for="grade in grades" :key="grade.title" 
+        <div v-for="course in courses" :key="course.title" 
           class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 max-w-md w-full">
           <div class="aspect-w-16 aspect-h-9 mb-6">
-            <img :src="grade.image" :alt="grade.title" 
+            <img :src="course.image" :alt="course.title" 
               class="w-full h-48 object-cover rounded-lg shadow-md">
           </div>
-          <h3 class="text-2xl font-bold text-gray-900 mb-4">{{ grade.title }}</h3>
-          <p class="text-gray-600 mb-6">{{ grade.description }}</p>
+          <h3 class="text-2xl font-bold text-gray-900 mb-4">{{ course.title }}</h3>
+          <p class="text-gray-600 mb-6">{{ course.description }}</p>
           <ul class="space-y-2">
-            <li v-for="(detail, index) in grade.details" :key="index" 
+            <li v-for="(detail, index) in course.details" :key="index" 
               class="text-gray-600 flex items-center">
               <svg class="w-4 h-4 mr-2 text-indigo-600" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" 
@@ -33,7 +33,7 @@ export default {
   name: 'EducationSection',
   data() {
     return {
-      grades: [
+      courses: [
         {
           title: 'ESO',
           image: '../../../public/img/eso.jpg',

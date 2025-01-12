@@ -59,11 +59,11 @@ const formatAnswer = (answer, question) => {
             <span 
               class="px-2 py-1 text-xs rounded-full"
               :class="{
-                'bg-success/10 text-success': response.status === 'completed',
-                'bg-warning/10 text-warning': response.status === 'partial'
+                'bg-success/10 text-success': response.division === 'completed',
+                'bg-warning/10 text-warning': response.division === 'partial'
               }"
             >
-              {{ response.status === 'completed' ? 'Completado' : 'Parcial' }}
+              {{ response.division === 'completed' ? 'Completado' : 'Parcial' }}
             </span>
           </div>
         </div>

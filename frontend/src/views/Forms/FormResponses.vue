@@ -22,8 +22,8 @@ const showResponseDetails = ref(false);
 const selectedResponse = ref(null);
 const selectedResponses = ref([]);
 const searchQuery = ref('');
-const selectedGrade = ref('all');
-const selectedStatus = ref('all');
+const selectedCourse = ref('all');
+const selectedDivision = ref('all');
 const showDownloadMenu = ref(false);
 
 // Mock data
@@ -67,9 +67,9 @@ const responses = ref([
     id: 1,
     studentId: 1,
     studentName: 'Ana García',
-    grade: '1º ESO',
+    course: '1º ESO',
     submittedAt: '2024-03-10T10:30:00',
-    status: 'completed',
+    division: 'completed',
     answers: [
       { questionId: 1, value: 'Buena' },
       { questionId: 2, value: 'Necesito reforzar álgebra y ecuaciones' },
@@ -80,9 +80,9 @@ const responses = ref([
     id: 2,
     studentId: 2,
     studentName: 'Carlos Rodríguez',
-    grade: '2º ESO',
+    course: '2º ESO',
     submittedAt: '2024-03-11T09:15:00',
-    status: 'completed',
+    division: 'completed',
     answers: [
       { questionId: 1, value: 'Regular' },
       { questionId: 2, value: 'Geometría y trigonometría' },
@@ -93,9 +93,9 @@ const responses = ref([
     id: 3,
     studentId: 3,
     studentName: 'Laura Martínez',
-    grade: '1º ESO',
+    course: '1º ESO',
     submittedAt: '2024-03-11T11:45:00',
-    status: 'partial',
+    division: 'partial',
     answers: [
       { questionId: 1, value: 'Excelente' },
       { questionId: 2, value: 'Ninguno en particular' }
@@ -106,9 +106,9 @@ const responses = ref([
 const filteredResponses = computed(() => {
   return responses.value.filter(response => {
     const matchesSearch = response.studentName.toLowerCase().includes(searchQuery.value.toLowerCase());
-    const matchesGrade = selectedGrade.value === 'all' || response.grade === selectedGrade.value;
-    const matchesStatus = selectedStatus.value === 'all' || response.status === selectedStatus.value;
-    return matchesSearch && matchesGrade && matchesStatus;
+    const matchesCourse = selectedCourse.value === 'all' || response.course === selectedCourse.value;
+    const matchesDivision = selectedDivision.value === 'all' || response.division === selectedDivision.value;
+    return matchesSearch && matchesCourse && matchesDivision;
   });
 });
 
@@ -144,9 +144,9 @@ const generatePDF = (responses) => {
   const tableData = responses.map(response => {
     const row = [
       response.studentName,
-      response.grade,
+      response.course,
       new Date(response.submittedAt).toLocaleString(),
-      response.status
+      response.division
     ];
 
     form.value.questions.forEach(question => {
@@ -182,9 +182,9 @@ const generateCSV = (responses) => {
   const rows = responses.map(response => {
     const row = [
       response.studentName,
-      response.grade,
+      response.course,
       new Date(response.submittedAt).toLocaleString(),
-      response.status
+      response.division
     ];
     
     form.value.questions.forEach(question => {
@@ -265,8 +265,8 @@ const downloadFile = (content, filename, type) => {
     <div class="flex justify-between items-center mb-6">
       <ResponseFilters
         v-model:searchQuery="searchQuery"
-        v-model:selectedGrade="selectedGrade"
-        v-model:selectedStatus="selectedStatus"
+        v-model:selectedCourse="selectedCourse"
+        v-model:selectedDivision="selectedDivision"
       />
       
       <BulkActionsMenu

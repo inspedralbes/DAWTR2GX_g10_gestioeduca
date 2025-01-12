@@ -78,7 +78,7 @@ const formState = ref('active')
 const studentInfo = ref({
   name: '',
   gender: null,
-  grade: '',
+  course: '',
   tutorName: '',
   school: '',
   city: ''
@@ -128,8 +128,8 @@ if (currentStep.value >= 0 && responses.value[currentStep.value].length !== 3) {
 }
 
 if (currentStep.value === questions.value.length - 1) {
-  const { name, gender, grade, tutorName, school, city } = studentInfo.value
-  if (!name || !gender || !grade || !tutorName || !school || !city) {
+  const { name, gender, course, tutorName, school, city } = studentInfo.value
+  if (!name || !gender || !course || !tutorName || !school || !city) {
     // Mostrar pantalla de error o mensaje en lugar de alerta
     validationScreen.value = {
       type: 'error',
@@ -178,7 +178,7 @@ const resetForm = () => {
   studentInfo.value = {
     name: '',
     gender: null,
-    grade: '',
+    course: '',
     tutorName: '',
     school: '',
     city: ''

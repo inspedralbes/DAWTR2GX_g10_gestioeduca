@@ -1,11 +1,11 @@
 <script setup>
 defineProps({
   searchQuery: String,
-  selectedGrade: String,
-  selectedStatus: String
+  selectedCourse: String,
+  selectedDivision: String
 })
 
-defineEmits(['update:searchQuery', 'update:selectedGrade', 'update:selectedStatus'])
+defineEmits(['update:searchQuery', 'update:selectedCourse', 'update:selectedDivision'])
 </script>
 
 <template>
@@ -19,8 +19,8 @@ defineEmits(['update:searchQuery', 'update:selectedGrade', 'update:selectedStatu
     />
     
     <select
-      :value="selectedGrade"
-      @change="$emit('update:selectedGrade', $event.target.value)"
+      :value="selectedCourse"
+      @change="$emit('update:selectedCourse', $event.target.value)"
       class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
     >
       <option value="all">Todos los cursos</option>
@@ -31,8 +31,8 @@ defineEmits(['update:searchQuery', 'update:selectedGrade', 'update:selectedStatu
     </select>
 
     <select
-      :value="selectedStatus"
-      @change="$emit('update:selectedStatus', $event.target.value)"
+      :value="selectedDivision"
+      @change="$emit('update:selectedDivision', $event.target.value)"
       class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
     >
       <option value="all">Todos los estados</option>

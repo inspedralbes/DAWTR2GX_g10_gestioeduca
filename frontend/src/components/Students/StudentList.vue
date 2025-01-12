@@ -1,12 +1,24 @@
 <script setup>
 import StudentListItem from './StudentListItem.vue';
+import { useStudentsStore } from '@/stores/studentsStore'
+import { onMounted, computed } from 'vue';
 
+// Usar store
+const studentsStore = useStudentsStore()
+
+// Llamar a la API al montar el componente
+onMounted(() => {
+  studentsStore.fetchStudents()
+})
+
+// Declara la prop 'student' en este componente
 defineProps({
   students: {
-    type: Array,
+    type: Object,
     required: true
   }
-});
+})
+
 </script>
 
 <template>
@@ -17,10 +29,8 @@ defineProps({
           <tr class="border-b">
             <th class="text-left py-3">Nombre</th>
             <th class="text-left py-3">Curso</th>
-            <th class="text-left py-3">Asistencia</th>
-            <th class="text-left py-3">Rendimiento</th>
-            <th class="text-left py-3">Estado</th>
-            <th class="text-left py-3">Acciones</th>
+            <th class="text-left py-3">Clase</th>
+            <th class="text-left py-3">Ficha</th>
           </tr>
         </thead>
         <tbody>
@@ -31,7 +41,6 @@ defineProps({
         </tbody>
       </table>
     </div>
-    
     <div v-if="students.length === 0" class="text-center py-8 text-gray-500">
       No se encontraron estudiantes con los filtros seleccionados
     </div>

@@ -1,17 +1,19 @@
 <script setup>
 import StudentAvatar from './StudentAvatar.vue'
-import SkillTags from './SkillTags.vue'
-import StudentInfo from './StudentInfo.vue'
-import { useStudentSkills } from '../../../composables/useStudentSkills'
+//import StudentInfo from './StudentInfo.vue'
+//import { useStudentSkills } from '../../../composables/useStudentSkills'
+import { useStudentsStore } from '@/stores/studentsStore'
+import { useRoute } from 'vue-router'
+import { onMounted, ref } from 'vue'
 
-const props = defineProps({
-  student: {
-    type: Object,
-    required: true
-  }
+const studentsStore = useStudentsStore()
+const route = useRoute()
+const student = ref(null)
+onMounted(() => {
+  const studentId = route.params.id
+  student.value = studentsStore.getStudentById(studentId)
 })
 
-const { getSkillLevel, getSkillColor } = useStudentSkills()
 </script>
 
 <template>
@@ -26,17 +28,8 @@ const { getSkillLevel, getSkillColor } = useStudentSkills()
         
         <StudentInfo
           :name="student.name"
-          :grade="student.grade"
+          :course="student.course"
           :email="student.email"
-        />
-      </div>
-
-      <div class="mt-6">
-        <h3 class="text-lg font-medium text-gray-900 mb-4">Habilidades Blandas</h3>
-        <SkillTags
-          :skills="student.skills"
-          :get-level="getSkillLevel"
-          :get-color="getSkillColor"
         />
       </div>
     </div>

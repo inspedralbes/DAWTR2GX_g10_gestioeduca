@@ -18,7 +18,7 @@ const props = defineProps({
 const totalResponses = computed(() => props.responses.length)
 
 const completedResponses = computed(() => 
-  props.responses.filter(r => r.status === 'completed').length
+  props.responses.filter(r => r.division === 'completed').length
 )
 
 const completionRate = computed(() => 

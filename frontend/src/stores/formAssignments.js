@@ -13,7 +13,7 @@ export const useFormAssignmentsStore = defineStore('formAssignments', () => {
       studentName: student.name,
       assignedDate: new Date().toISOString(),
       dueDate: dueDate?.toISOString(),
-      status: 'pending'
+      division: 'pending'
     }))
 
     assignments.value.push(...newAssignments)

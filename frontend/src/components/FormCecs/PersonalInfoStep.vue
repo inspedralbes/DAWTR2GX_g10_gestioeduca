@@ -46,8 +46,8 @@
         <div>
           <label class="block mb-2">Clase</label>
           <select 
-            :value="studentInfo.grade"
-            @change="updateField('grade', $event.target.value)"
+            :value="studentInfo.course"
+            @change="updateField('course', $event.target.value)"
             required
             class="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           >

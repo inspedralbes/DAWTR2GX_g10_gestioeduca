@@ -60,8 +60,8 @@ const getStatusClass = (status) => {
             <h3 class="text-lg font-semibold">{{ group.name }}</h3>
             <p class="text-gray-600">{{ group.subject }}</p>
           </div>
-          <span :class="getStatusClass(group.status)">
-            {{ group.status }}
+          <span :class="getdivisionClass(group.division)">
+            {{ group.division }}
           </span>
         </div>
 

@@ -9,7 +9,7 @@
             <h3 class="font-semibold text-blue-800 mb-2">Resumen</h3>
             <ul class="list-disc list-inside text-sm">
               <li>Nombre: {{ studentInfo.name }}</li>
-              <li>Curso: {{ studentInfo.grade }}</li>
+              <li>Curso: {{ studentInfo.course }}</li>
               <li>Centro: {{ studentInfo.school }}</li>
               <li>Preguntas respondidas: {{ totalQuestions }}/{{ totalQuestions }}</li>
             </ul>

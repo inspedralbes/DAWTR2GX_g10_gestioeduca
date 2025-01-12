@@ -56,7 +56,10 @@ Route::resource('answers', AnswerController::class);
 Route::resource('groups', GroupController::class);
 // ruta para pedir todas las preguntas y respuestas de un formulario
 Route::get('forms/{formId}/questions', [FormController::class, 'getQuestionsAndAnswers']);
-
+//ruta para obtener los datos de un estudiante (curso, division)
+Route::get('/get-students', [UserController::class, 'getStudents']);
+//ruta para obtener los datos de un profesor (curso, division)
+Route::get('/get-teachers', [UserController::class, 'getTeachers']);
 
 
 

@@ -30,7 +30,7 @@
           <h3 class="font-semibold text-blue-800 mb-2">Detalles del Envío</h3>
           <ul class="text-gray-700 text-left max-w-xs mx-auto">
             <li><strong>Centro:</strong> {{ studentInfo.school }}</li>
-            <li><strong>Curso:</strong> {{ studentInfo.grade }}</li>
+            <li><strong>Curso:</strong> {{ studentInfo.course }}</li>
             <li><strong>Fecha de envío:</strong> {{ formattedDate }}</li>
           </ul>
         </div>

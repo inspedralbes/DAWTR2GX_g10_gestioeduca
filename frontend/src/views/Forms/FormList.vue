@@ -15,7 +15,7 @@ import AssignFormModal from '../../components/Forms/AssignFormModal.vue'
 
 const router = useRouter()
 const searchQuery = ref('')
-const selectedStatus = ref('all')
+const selectedDivision = ref('all')
 const selectedDate = ref('all')
 const showAssignModal = ref(false)
 const selectedForm = ref(null)
@@ -45,17 +45,17 @@ const students = ref([
   {
     id: 1,
     name: 'Ana García',
-    grade: '1º ESO'
+    course: '1º ESO'
   },
   {
     id: 2,
     name: 'Carlos Rodríguez',
-    grade: '2º ESO'
+    course: '2º ESO'
   },
   {
     id: 3,
     name: 'Laura Martínez',
-    grade: '1º ESO'
+    course: '1º ESO'
   }
 ])
 
@@ -105,7 +105,7 @@ const handleFormAssigned = (assignments) => {
         </div>
         <div class="flex space-x-4">
           <select
-            v-model="selectedStatus"
+            v-model="selectedDivision"
             class="px-4 py-2 border rounded-lg"
           >
             <option value="all">Todos los estados</option>

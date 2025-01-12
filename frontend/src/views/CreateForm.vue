@@ -19,17 +19,17 @@ const students = ref([
   {
     id: 1,
     name: 'Ana García',
-    grade: '1º ESO'
+    course: '1º ESO'
   },
   {
     id: 2,
     name: 'Carlos Rodríguez',
-    grade: '2º ESO'
+    course: '2º ESO'
   },
   {
     id: 3,
     name: 'Laura Martínez',
-    grade: '1º ESO'
+    course: '1º ESO'
   }
 ])
 
@@ -80,7 +80,7 @@ const saveForm = () => {
     title: formTitle.value,
     description: formDescription.value,
     questions: questions.value,
-    status: 'active',
+    division: 'active',
     responses: 0,
     createdAt: new Date().toISOString()
   }

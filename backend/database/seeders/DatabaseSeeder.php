@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Answer;
+use App\Models\Course;
 use App\Models\Division;
 use App\Models\Group;
 use App\Models\Question;
@@ -37,6 +38,8 @@ class DatabaseSeeder extends Seeder
             QuestionSeeder::class, // Crear preguntas después
             OptionSeeder::class,   // Opciones relacionadas a preguntas
             AnswerSeeder::class,
+            CourseDivisionSeeder::class,
+            CourseUserSeeder::class,
         ]);
     }
 }

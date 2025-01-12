@@ -9,18 +9,21 @@ class Form extends Model
     protected $fillable = [
         'title',
         'description',
-        'status'
+        'division'
     ];
 
-    public function course() {
+    public function course()
+    {
         return $this->belongsToMany(User::class);
     }
 
-    public function divisions(){
+    public function divisions()
+    {
         return $this->belongsToMany(Division::class);
     }
 
-    public function questions(){
+    public function questions()
+    {
         return $this->hasMany(Question::class);
     }
 }
