@@ -26,7 +26,11 @@ class GroupController extends Controller
      */
     public function index()
     {
-        return response()->json(Group::all());
+        $groups = Group::all();
+        if ($request->expectsJson()) {
+            return response()->json($groups, 200);
+        }
+        return view('groups', compact('groups'));
     }
 
     /**
