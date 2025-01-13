@@ -21,6 +21,7 @@ Route::get('/', function () {
     return view('dashboard');
 })->name('dashboard');
 
+Route::get('/forms/{id}', [FormController::class, 'show'])->name('forms.show');
 
 Route::resource('roles', RoleController::class);
 Route::resource('courses', CourseController::class);

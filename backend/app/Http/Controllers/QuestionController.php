@@ -36,10 +36,18 @@ class QuestionController extends Controller
      *     )
      * )
      */
-    public function index()
+    public function index(Request $request)
     {
+        // Obtener todas las preguntas
         $questions = $this->questionService->getAllQuestions();
-        return response()->json($questions);
+
+        // Si la solicitud es una API, devolver las preguntas como JSON
+        if ($request->is('api/*')) {
+            return response()->json($questions);
+        }
+
+        // Si la solicitud es web, mostrar las preguntas en la vista 'questions.blade.php'
+        return view('questions', compact('questions'));
     }
 
     /**
@@ -64,15 +72,23 @@ class QuestionController extends Controller
      *     )
      * )
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
+        // Obtener la pregunta por ID
         $question = $this->questionService->getQuestionById($id);
 
+        // Si la pregunta no existe, retornar error
         if (is_null($question)) {
-            return response()->json(['message' => 'Pregunta no trobada'], 404);
+            return response()->json(['message' => 'Pregunta no encontrada'], 404);
         }
 
-        return response()->json($question);
+        // Si la solicitud es una API, devolver la pregunta como JSON
+        if ($request->is('api/*')) {
+            return response()->json($question);
+        }
+
+        // Si la solicitud es web, mostrar la pregunta en la vista 'question.show.blade.php'
+        return view('question.show', compact('question'));
     }
 
     /**
@@ -99,13 +115,22 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
+        // Validación de los datos recibidos
         $validatedData = $request->validate([
             'question' => 'required|string|max:255',
+            //'form_id' => 'required|integer|exists:forms,id',  // Relación con el formulario
         ]);
 
+        // Llamar al servicio para crear la nueva pregunta
         $question = $this->questionService->createQuestion($validatedData);
 
-        return response()->json($question, 201);
+        // Retornar respuesta en función de la solicitud
+        if ($request->is('api/*')) {
+            return response()->json($question, 201);
+        }
+
+        // Redirigir a la lista de preguntas con un mensaje de éxito
+        return redirect()->route('questions.index')->with('success', 'Pregunta creada correctamente');
     }
 
     /**
@@ -143,13 +168,21 @@ class QuestionController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // Validación de los datos recibidos
         $validatedData = $request->validate([
             'question' => 'sometimes|required|string|max:255',
         ]);
 
+        // Actualizar la pregunta utilizando el servicio
         $question = $this->questionService->updateQuestion($id, $validatedData);
 
-        return response()->json($question, 200);
+        // Si la solicitud es una API, devolver la respuesta en formato JSON
+        if ($request->is('api/*')) {
+            return response()->json($question, 200);
+        }
+
+        // Redirigir a la lista de preguntas con un mensaje de éxito
+        return redirect()->route('questions.index')->with('success', 'Pregunta actualizada correctamente');
     }
 
     /**
@@ -174,9 +207,17 @@ class QuestionController extends Controller
      *     )
      * )
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
+        // Llamar al servicio para eliminar la pregunta
         $this->questionService->deleteQuestion($id);
-        return response()->json(null, 204);
+
+        // Si la solicitud es una API, devolver respuesta vacía con código 204
+        if ($request->is('api/*')) {
+            return response()->json(null, 204);
+        }
+
+        // Redirigir a la lista de preguntas con un mensaje de éxito
+        return redirect()->route('questions.index')->with('success', 'Pregunta eliminada correctamente');
     }
 }

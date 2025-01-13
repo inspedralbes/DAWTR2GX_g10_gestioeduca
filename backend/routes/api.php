@@ -67,3 +67,6 @@ Route::get('/get-teachers', [UserController::class, 'getTeachers']);
 Route::post('/login', [AuthenticatedSessionController::class, 'login']);
 Route::post('/register', [RegisteredUserController::class, 'store']);
 Route::middleware('auth:sanctum')->post('/logout', [AuthenticatedSessionController::class, 'logout']);
+
+Route::get('/forms/{id}/questions-and-answers', [FormController::class, 'getQuestionsAndAnswers']);
+
