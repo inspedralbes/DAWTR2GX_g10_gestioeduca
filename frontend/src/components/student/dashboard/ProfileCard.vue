@@ -19,7 +19,7 @@ onMounted(() => {
       name: user.name,
       last_name: user.last_name,
       email: user.email,
-      image: user.image || 'https://www.example.com/path/to/default/avatar.png',  // Si no tiene imagen, ponemos una predeterminada
+      image: user.image 
     };
   } else {
     console.log("No hay usuario autenticado");

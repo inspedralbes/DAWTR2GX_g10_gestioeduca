@@ -20,9 +20,6 @@ Route::middleware(['auth:sanctum', 'role:admin'])->get('/admin-dashboard', [Dash
 Route::middleware(['auth:sanctum', 'role:teacher'])->get('/teacher-dashboard', [DashboardController::class, 'teacherDashboard']);
 Route::middleware(['auth:sanctum', 'role:student'])->get('/student-dashboard', [DashboardController::class, 'studentDashboard']);
 
-// Ruta para obtener el usuario autenticado
-Route::middleware('auth:sanctum')->get('/user', [UserController::class, 'getAuthenticatedUser']);
-
 //asegurará que la solicitud sea procesada como una solicitud de la API
 Route::middleware('api')->resource('courses', CourseController::class);
 
@@ -67,3 +64,29 @@ Route::get('/get-teachers', [UserController::class, 'getTeachers']);
 Route::post('/login', [AuthenticatedSessionController::class, 'login']);
 Route::post('/register', [RegisteredUserController::class, 'store']);
 Route::middleware('auth:sanctum')->post('/logout', [AuthenticatedSessionController::class, 'logout']);
+
+
+//AÑADIDO RECIEN 
+
+// Ruta para obtener el usuario autenticado
+Route::middleware('auth:sanctum')->get('/user', [UserController::class, 'getAuthenticatedUser']);
+
+// Rutas para formularios
+Route::resource('forms', FormController::class);
+
+// Ruta personalizada para guardar un formulario con preguntas
+Route::post('forms-save', [FormController::class, 'storeFormWithQuestions']);
+
+// Ruta para obtener las preguntas y respuestas de un formulario
+Route::get('forms/{formId}/questions', [FormController::class, 'getQuestionsAndAnswers']);
+Route::post('forms/{formId}/submit-answers', [AnswerController::class, 'storeMultipleAnswers']);
+Route::get('forms/{id}', [FormController::class, 'show']);
+Route::get('groups/{id}/members', [GroupController::class, 'getMembers']);
+
+// CRUD para preguntas y respuestas
+Route::resource('questions', QuestionController::class);
+Route::resource('answers', AnswerController::class);
+Route::resource('groups', GroupController::class);
+
+// Rutas para grupos
+Route::resource('groups', GroupController::class);
