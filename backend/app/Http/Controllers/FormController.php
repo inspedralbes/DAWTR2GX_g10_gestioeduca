@@ -101,27 +101,27 @@ class FormController extends Controller
      * )
      */
     public function show(Request $request, $id)
-    {
-        $form = Form::find($id);
+{
+    // Obtener el formulario con sus preguntas y respuestas
+    $form = Form::with(['questions.answers'])->find($id);
 
-
-        if (is_null($form)) {
-            if ($request->expectsJson()) {
-                return response()->json(['message' => 'Formulario no encontrado'], 404);
-            }
-
-
-            return redirect()->route('forms.index')->with('error', 'Formulario no encontrado');
-        }
-
-
+    if (is_null($form)) {
         if ($request->expectsJson()) {
-            return response()->json($form, 200);
+            return response()->json(['message' => 'Formulario no encontrado'], 404);
         }
 
-
-        return view('forms.show', compact('form'));
+        return redirect()->route('forms.index')->with('error', 'Formulario no encontrado');
     }
+
+    // Si es una solicitud JSON, devolver el formulario en formato JSON
+    if ($request->expectsJson()) {
+        return response()->json($form, 200);
+    }
+
+    // Pasar el formulario con las preguntas y respuestas a la vista
+    return view('questions', compact('form'));
+}
+
 
 
     /**
