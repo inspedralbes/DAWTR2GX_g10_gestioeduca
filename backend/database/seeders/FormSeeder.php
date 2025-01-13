@@ -23,5 +23,12 @@ class FormSeeder extends Seeder
                 'description' => 'Conducta y Experiencias Sociales en Clase',
             ]);
         }
+        
+        if (!Form::where('title', 'Formulario Sociograma')->exists()) {
+            Form::create([
+                'title' => 'Formulario Sociograma',
+                'description' => 'Relaciones entre estudiantes en el aula.',
+            ]);
+        }
     }
 }

@@ -13,8 +13,9 @@ class QuestionSeeder extends Seeder
         // Obtén los formularios con ID específicos
         $form1 = Form::find(1); // Formulario con ID 1
         $form2 = Form::find(2); // Formulario con ID 2
+        $form3 = Form::find(3); // Formulario con ID 3
 
-        if (!$form1 || !$form2) {
+        if (!$form1 || !$form2 || !$form3) {
             throw new \Exception('Uno o más formularios no se encontraron en la base de datos.');
         }
 
@@ -90,6 +91,36 @@ class QuestionSeeder extends Seeder
         Question::create([
             'form_id' => $form2->id,
             'title' => 'Mis amigos / amigas',
+        ]);
+
+        // Inserta preguntas asociadas al formulario 1
+        Question::create([
+            'form_id' => $form3->id,
+            'title' => '¿Con quién prefieres trabajar?',
+        ]);
+        Question::create([
+            'form_id' => $form3->id,
+            'title' => '¿Con quién prefieres no trabajar?',
+        ]);
+        Question::create([
+            'form_id' => $form3->id,
+            'title' => '¿Con quién has trabajado anteriormente?',
+        ]);
+        Question::create([
+            'form_id' => $form3->id,
+            'title' => '¿Quién tiene habilidades de liderazgo?',
+        ]);
+        Question::create([
+            'form_id' => $form3->id,
+            'title' => '¿Quién tiene habilidades de creatividad?',
+        ]);
+        Question::create([
+            'form_id' => $form3->id,
+            'title' => '¿Quién tiene habilidades de organización?',
+        ]);
+        Question::create([
+            'form_id' => $form3->id,
+            'title' => '¿Con quién no has trabajado anteriormente?',
         ]);
     }
 }

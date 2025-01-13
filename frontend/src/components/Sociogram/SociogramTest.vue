@@ -31,7 +31,7 @@ const sections = [
   {
     title: "¿Con quién prefieres trabajar?",
     description: "Selecciona 3 compañeros/as con los que prefieres trabajar en clase",
-    id: 3,
+    id: 15,
     icon: UserGroupIcon,
     selectionKey: "preferredWorkPartners",
     maxSelections: 3,
@@ -39,7 +39,7 @@ const sections = [
   {
     title: "¿Con quién prefieres no trabajar?",
     description: "Selecciona 3 compañeros/as con los que prefieres evitar trabajar",
-    id: 4,
+    id: 16,
     icon: UserIcon,
     selectionKey: "avoidWorkPartners",
     maxSelections: 3,
@@ -47,32 +47,32 @@ const sections = [
   {
     title: "¿Con quién has trabajado anteriormente?",
     description: "Selecciona 3 compañeros/as con los que hayas trabajado anteriormente",
-    id: 5,
+    id: 17,
     icon: UserIcon,
     selectionKey: "habitualWorkPartners",
     maxSelections: 3,
   },
 
   {
-    title: "Liderazgo",
+    title: "Quién tiene habilidades de liderazgo",
     description: "Selecciona 2 compañeros/as que consideras buenos líderes",
-    id: 6,
+    id: 18,
     icon: StarIcon,
     selectionKey: "potentialLeaders",
     maxSelections: 2,
   },
   {
-    title: "Creatividad",
+    title: "Quién tiene habilidades de creatividad",
     description: "Selecciona 2 compañeros/as que consideras más creativos",
-    id: 7,
+    id: 19,
     icon: LightBulbIcon,
     selectionKey: "creativePeople",
     maxSelections: 2,
   },
   {
-    title: "Organización",
+    title: "Quién tiene habilidades de organización",
     description: "Selecciona 2 compañeros/as que son más organizados",
-    id: 8,
+    id: 20,
     icon: HeartIcon,
     selectionKey: "organizedPeople",
     maxSelections: 2,
@@ -80,7 +80,7 @@ const sections = [
   {
     title: "¿Con quién no has trabajado anteriormente?",
     description: "Selecciona 2 compañeros/as con los que no hayas trabajado anteriormente",
-    id: 9,
+    id: 21,
     icon: UserIcon,
     selectionKey: "inhabitualWorkPartners",
     maxSelections: 2,
@@ -181,7 +181,7 @@ const handleFinish = async () => {
     });
 
     // Enviar los datos al backend
-    const response = await fetch("/api/sociogram-relationships", {
+    const response = await fetch("http://localhost:8000/api/sociogram-relationships", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
