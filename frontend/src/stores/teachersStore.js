@@ -18,7 +18,7 @@ export const useTeachersStore = defineStore('teachers', {
 
                 const data = await response.json();
                 this.teachers = data; // Guarda los teachers en el estado
-                console.log('Datos recibidos de la API:', data);
+                //console.log('Datos recibidos de la API:', data);
             } catch (error) {
                 this.error = error.message;
                 console.error('Error fetching teachers:', error);
@@ -27,9 +27,9 @@ export const useTeachersStore = defineStore('teachers', {
             }
         },
         getTeachersById(id) {
-            console.log('Buscando profesor con ID:', id, typeof id);
+            //console.log('Buscando profesor con ID:', id, typeof id);
             const found = this.teachers.find(teacher => teacher.id === Number(id));
-            console.log('Profesor encontrado:', found);
+           //console.log('Profesor encontrado:', found);
             return found;
         }
     },

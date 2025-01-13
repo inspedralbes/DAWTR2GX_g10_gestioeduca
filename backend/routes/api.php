@@ -15,6 +15,7 @@ use App\Http\Controllers\RegisteredUserController;
 use Illuminate\Auth\Events\Authenticated;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\SociogramRelationshipController;
 
 Route::middleware(['auth:sanctum', 'role:admin'])->get('/admin-dashboard', [DashboardController::class, 'adminDashboard']);
 Route::middleware(['auth:sanctum', 'role:teacher'])->get('/teacher-dashboard', [DashboardController::class, 'teacherDashboard']);
@@ -90,3 +91,11 @@ Route::resource('groups', GroupController::class);
 
 // Rutas para grupos
 Route::resource('groups', GroupController::class);
+
+// Rutas para relaciones sociométricas
+Route::prefix('sociogram-relationships')->group(function () {
+    Route::get('/', [SociogramRelationshipController::class, 'index']); // Listar todas las relaciones
+    Route::get('/user/{id}', [SociogramRelationshipController::class, 'byUser']); // Filtrar por usuario
+    Route::post('/', [SociogramRelationshipController::class, 'store']); // Guardar relaciones
+    Route::delete('/{id}', [SociogramRelationshipController::class, 'destroy']); // Eliminar una relación específica
+});
