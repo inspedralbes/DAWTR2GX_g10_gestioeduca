@@ -22,7 +22,8 @@
 
       <!-- Navegación -->
       <nav :class="[isMenuOpen ? 'mt-4' : 'mt-2']">
-        <router-link v-for="item in menuItems" :key="item.path" :to="item.path"
+        <router-link v-for="item in menuItems" :key="item.path" 
+          :to="item.path"
           class="flex items-center px-4 py-3 text-white transition-colors duration-200 hover:bg-white/10 hover:text-gray-200"
           :class="{ 'bg-primary/80': $route.path === item.path }">
           <component :is="item.icon" class="w-5 h-5 mr-3" />
@@ -41,7 +42,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import {
   HomeIcon,
   UserGroupIcon,
@@ -54,23 +55,19 @@ const menuItems = [
   { name: 'Dashboard', path: '/student/dashboard', icon: HomeIcon },
   { name: 'Mis Grupos', path: '/student/group', icon: UserGroupIcon },
   { name: 'Formularios', path: '/student/forms', icon: DocumentTextIcon },
-  { name: 'Log out', path: '/landing', icon: PowerIcon },
-
+  { name: 'Log out', path: '/tancar-sessio', icon: PowerIcon }
 ]
 
-// Estado del menú móvil
 const isMenuOpen = ref(true)
 
-// Detectar el tamaño de la pantalla y ajustar el estado del menú automáticamente
 const handleResize = () => {
-  if (window.innerWidth < 1024) { // Si es una pantalla pequeña (mobile/tablet)
+  if (window.innerWidth < 1024) { 
     isMenuOpen.value = false
   } else {
     isMenuOpen.value = true
   }
 }
 
-// Ejecutar la detección de tamaño al cargar la página
 onMounted(() => {
   handleResize()
   window.addEventListener('resize', handleResize)
@@ -81,13 +78,3 @@ const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value
 }
 </script>
-
-<style scoped>
-aside>div:first-child {
-  height: 4rem;
-}
-
-main {
-  will-change: margin-left;
-}
-</style>

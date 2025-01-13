@@ -186,7 +186,7 @@ class GroupController extends Controller
         return response()->json(['message' => 'Grupo no encontrado'], 404);
         }
 
-        $members = $group->users;  // Suponiendo que la relación 'users' está definida en el modelo `Group`
+        $members = $group->users; 
 
         return response()->json($members);
     }
