@@ -12,7 +12,7 @@ class QuestionSeeder extends Seeder
     {
         // Obtén los formularios con ID específicos
         $form1 = Form::find(1); // Formulario con ID 1
-        $form2 = Form::find(4); // Formulario con ID 2
+        $form2 = Form::find(2); // Formulario con ID 2
 
         if (!$form1 || !$form2) {
             throw new \Exception('Uno o más formularios no se encontraron en la base de datos.');
