@@ -1,12 +1,12 @@
 <?php
 
+
 namespace App\Http\Controllers;
+
 
 use App\Models\Form;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Services\FormService;
-use Illuminate\Support\Facades\Log;
 
 
 /**
@@ -17,36 +17,6 @@ use Illuminate\Support\Facades\Log;
  */
 class FormController extends Controller
 {
-
-    protected $formService;
-
-    public function __construct(FormService $formService)
-    {
-        $this->formService = $formService;
-    }
-
-    public function storeFormWithQuestions(Request $request, FormService $formService)
-    {
-        $validatedData = $request->validate([
-            'title' => 'required|string|unique:forms,title',
-            'description' => 'nullable|string',
-            'questions' => 'required|array',
-            'questions.*.title' => 'required|string',
-            'questions.*.type' => 'required|string|in:text,number,multiple,checkbox',
-            'questions.*.placeholder' => 'nullable|string',
-            'questions.*.context' => 'nullable|string',
-            'questions.*.options' => 'nullable|array',
-            'questions.*.options.*.text' => 'required_with:questions.*.options|string',
-            'questions.*.options.*.value' => 'nullable|integer',
-        ]);
-
-        $form = $this->formService->createForm($validatedData);
-
-        return response()->json(['form' => $form], 201);
-    }
-
-
-
     /**
      * @OA\Get(
      *     path="/api/forms/{formId}/questions-and-answers",
@@ -69,22 +39,17 @@ class FormController extends Controller
      *     )
      * )
      */
-    public function getQuestionsAndAnswers($formId, Request $request)
+    public function getQuestionsAndAnswers($formId)
     {
         $form = Form::with(['questions.answers'])->find($formId);
 
+
         if (!$form) {
-            if ($request->is('api/*')) {
-                return response()->json(['message' => 'Formulario no encontrado'], 404);
-            }
-            return redirect()->route('forms.index')->with('error', 'Formulario no encontrado');
+            return response()->json(['message' => 'Formulari no trobat'], 404);
         }
 
-        if ($request->is('api/*')) {
-            return response()->json($form, 200);
-        }
 
-        return view('forms.show', compact('form'));
+        return response()->json($form, 200);
     }
 
 
@@ -99,16 +64,18 @@ class FormController extends Controller
      *     )
      * )
      */
-    public function index(Request $request)
-    {
-        $forms = $this->formService->getAllForms();
-
-        if ($request->is('api/*')) {
-            return response()->json($forms, 200);
-        }
-
-        return view('forms', compact('forms'));
-    }
+   
+     public function index(Request $request)
+     {
+         $forms = Form::all();
+ 
+         if ($request->expectsJson()) {
+             return response()->json($forms, 200);
+         }
+ 
+         return view('forms', compact('forms'));
+     }
+   
 
 
     /**
@@ -135,26 +102,26 @@ class FormController extends Controller
      */
     public function show(Request $request, $id)
     {
-        // Cargar el formulario con preguntas, respuestas y opciones
-        $form = Form::with(['questions.answers', 'questions.options'])->find($id);
+        $form = Form::find($id);
 
-        if (!$form) {
-            // Si el formulario no se encuentra, devolvemos un mensaje de error
-            if ($request->is('api/*')) {
+
+        if (is_null($form)) {
+            if ($request->expectsJson()) {
                 return response()->json(['message' => 'Formulario no encontrado'], 404);
             }
+
+
             return redirect()->route('forms.index')->with('error', 'Formulario no encontrado');
         }
 
-        // Si la solicitud es para la API, devolvemos el formulario con las preguntas y respuestas en formato JSON
-        if ($request->is('api/*')) {
+
+        if ($request->expectsJson()) {
             return response()->json($form, 200);
         }
 
-        // Si la solicitud es para una vista, renderizamos la vista 'detailsForm' con los datos del formulario
-        return view('questions', compact('form'));
-    }
 
+        return view('forms.show', compact('form'));
+    }
 
 
     /**
@@ -179,17 +146,23 @@ class FormController extends Controller
      *     )
      * )
      */
+     /**
+     * Guardar un nuevo formulario
+     */
     public function store(Request $request)
     {
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
         ]);
 
-        $form = $this->formService->createForm($validatedData);
 
-        if ($request->is('api/*')) {
+        $form = Form::create($validatedData);
+
+
+        if ($request->expectsJson()) {
             return response()->json($form, 201);
         }
+
 
         return redirect()->route('forms.index')->with('success', 'Formulario creado correctamente');
     }
@@ -224,16 +197,41 @@ class FormController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validatedData = $request->validate([
-            'title' => 'sometimes|required|string|max:255',
+        $form = Form::find($id);
+
+
+        if (is_null($form)) {
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Formulario no encontrado'], 404);
+            }
+
+
+            return redirect()->route('forms.index')->with('error', 'Formulario no encontrado');
+        }
+
+
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|string|max:255',
         ]);
 
-        $form = Form::findOrFail($id);
-        $form = $this->formService->updateForm($form, $validatedData);
 
-        if ($request->is('api/*')) {
+        if ($validator->fails()) {
+            if ($request->expectsJson()) {
+                return response()->json($validator->errors(), 400);
+            }
+
+
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+
+        $form->update($validator->validated());
+
+
+        if ($request->expectsJson()) {
             return response()->json($form, 200);
         }
+
 
         return redirect()->route('forms.index')->with('success', 'Formulario actualizado correctamente');
     }
@@ -263,14 +261,30 @@ class FormController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        $form = Form::findOrFail($id);
-        $this->formService->deleteForm($form);
+        $form = Form::find($id);
 
-        if ($request->is('api/*')) {
+
+        if (is_null($form)) {
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Formulario no encontrado'], 404);
+            }
+
+
+            return redirect()->route('forms.index')->with('error', 'Formulario no encontrado');
+        }
+
+
+        $form->delete();
+
+
+        if ($request->expectsJson()) {
             return response()->json(null, 204);
         }
 
+
         return redirect()->route('forms.index')->with('success', 'Formulario eliminado correctamente');
     }
-
 }
+
+
+
