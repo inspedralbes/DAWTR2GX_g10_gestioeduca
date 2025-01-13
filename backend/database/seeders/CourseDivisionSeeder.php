@@ -7,39 +7,57 @@ use Illuminate\Support\Facades\DB;
 
 class CourseDivisionSeeder extends Seeder
 {
-    /**
-     * Ejecuta el seeder.
-     */
-    public function run(): void
+    public function run()
     {
-        // Deshabilitar las restricciones de clave foránea
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        // Eliminar todos los registros de la tabla 'course_division'
+        // Paso 1: Limpiar la tabla completamente
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;'); // Desactiva las claves foráneas
         DB::table('course_division')->truncate();
-        // Habilitar las restricciones de clave foránea
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
-        // Datos de ejemplo para course_division
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;'); // Reactiva las claves foráneas
+
+        // Paso 2: Definir exactamente 24 combinaciones únicas para insertar
         $courseDivisions = [
             ['course_id' => 1, 'division_id' => 3],
             ['course_id' => 1, 'division_id' => 4],
+            ['course_id' => 1, 'division_id' => 5],
+            ['course_id' => 1, 'division_id' => 6],
+            ['course_id' => 1, 'division_id' => 7],
             ['course_id' => 2, 'division_id' => 3],
             ['course_id' => 2, 'division_id' => 4],
+            ['course_id' => 2, 'division_id' => 5],
+            ['course_id' => 2, 'division_id' => 6],
+            ['course_id' => 2, 'division_id' => 7],
+            ['course_id' => 3, 'division_id' => 3],
+            ['course_id' => 3, 'division_id' => 4],
             ['course_id' => 3, 'division_id' => 5],
             ['course_id' => 3, 'division_id' => 6],
+            ['course_id' => 3, 'division_id' => 7],
             ['course_id' => 4, 'division_id' => 3],
             ['course_id' => 4, 'division_id' => 4],
-            ['course_id' => 5, 'division_id' => 3],
-            ['course_id' => 5, 'division_id' => 4],
+            ['course_id' => 4, 'division_id' => 5],
+            ['course_id' => 4, 'division_id' => 6],
+            ['course_id' => 4, 'division_id' => 7],
+            ['course_id' => 5, 'division_id' => 1],
+            ['course_id' => 5, 'division_id' => 2],
+            ['course_id' => 6, 'division_id' => 1],
+            ['course_id' => 6, 'division_id' => 2],
         ];
 
-        // Insertar los nuevos registros
-        foreach ($courseDivisions as $data) {
-            DB::table('course_division')->insert([
-                'course_id' => $data['course_id'],
-                'division_id' => $data['division_id'],
+        // Paso 3: Inserta los registros sin duplicados y con timestamps
+        $dataToInsert = array_map(function ($entry) {
+            return array_merge($entry, [
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
-        }
+        }, $courseDivisions);
+
+        DB::table('course_division')->insert($dataToInsert);
+
+        // Paso 4: Verificación de los datos
+        $insertedCount = DB::table('course_division')->count();
+
+        // Opcional: Puedes consultar los registros y verificarlos
+        $insertedRecords = DB::table('course_division')->get();
+       exit(); // Detiene el proceso y muestra los registros en la consola o navegador
     }
 }
+
