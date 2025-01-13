@@ -12,6 +12,8 @@ use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\AuthenticatedSessionController;
 use App\Http\Controllers\RegisteredUserController;
+use App\Http\Controllers\GroupController;
+
 use Illuminate\Auth\Events\Authenticated;
 
 Route::get('/', function () {
@@ -32,5 +34,6 @@ Route::resource('divisions', DivisionController::class);
 Route::resource('forms', FormController::class);
 Route::resource('questions', QuestionController::class);
 Route::resource('answers', AnswerController::class);
+Route::resource('groups', GroupController::class);
 
 
