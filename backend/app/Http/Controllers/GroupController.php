@@ -24,9 +24,17 @@ class GroupController extends Controller
      *     )
      * )
      */
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(Group::all());
+        $groups = Group::all();
+
+        // Verificar si la solicitud es API
+        if ($request->expectsJson()) {
+            return response()->json($groups, 200);
+        }
+
+        // Para la vista
+        return view('groups', compact('groups'));
     }
 
     /**
@@ -63,7 +71,11 @@ class GroupController extends Controller
 
         $group = Group::create($validated);
 
-        return response()->json($group, 201);
+        if ($request->expectsJson()) {
+            return response()->json($group, 201);
+        }
+
+        return redirect()->route('groups.index')->with('success', 'Grupo creado correctamente');
     }
 
     /**
@@ -88,12 +100,13 @@ class GroupController extends Controller
      *     )
      * )
      */
-    public function show(string $id)
+    public function show($id)
     {
         $group = Group::find($id);
         if (!$group) {
-            return response()->json(['message' => 'Grup no trobat'], 404);
+            return response()->json(['message' => 'Grupo no encontrado'], 404);
         }
+
         return response()->json($group);
     }
 
@@ -128,11 +141,14 @@ class GroupController extends Controller
      *     )
      * )
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
         $group = Group::find($id);
         if (!$group) {
-            return response()->json(['message' => 'Grup no trobat'], 404);
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Grupo no encontrado'], 404);
+            }
+            return redirect()->route('groups.index')->with('error', 'Grupo no encontrado');
         }
 
         $validated = $request->validate([
@@ -143,7 +159,11 @@ class GroupController extends Controller
 
         $group->update($validated);
 
-        return response()->json($group);
+        if ($request->expectsJson()) {
+            return response()->json($group);
+        }
+
+        return redirect()->route('groups.index')->with('success', 'Grupo actualizado correctamente');
     }
 
     /**
@@ -168,14 +188,23 @@ class GroupController extends Controller
      *     )
      * )
      */
-    public function destroy(string $id)
+    public function destroy(Request $request, $id)
     {
         $group = Group::find($id);
         if (!$group) {
-            return response()->json(['message' => 'Grup no trobat'], 404);
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Grupo no encontrado'], 404);
+            }
+            return redirect()->route('groups.index')->with('error', 'Grupo no encontrado');
         }
+
         $group->delete();
-        return response()->json(['message' => 'Grup eliminat']);
+
+        if ($request->expectsJson()) {
+            return response()->json(['message' => 'Grupo eliminado']);
+        }
+
+        return redirect()->route('groups.index')->with('success', 'Grupo eliminado correctamente');
     }
 
     public function getMembers($id)
