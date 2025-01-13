@@ -38,9 +38,10 @@ class DatabaseSeeder extends Seeder
             QuestionSeeder::class, // Crear preguntas después
             OptionSeeder::class,   // Opciones relacionadas a preguntas
             AnswerSeeder::class,
-            
             CourseUserSeeder::class,
+            SociogramRelationshipSeeder::class,
             CourseDivisionSeeder::class,
+            
         ]);
     }
 }

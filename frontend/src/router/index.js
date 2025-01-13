@@ -156,6 +156,11 @@ const router = createRouter({
       component: () => import('../components/Sociogram/SociogramTest.vue'),
     },
     {
+      path: '/sociogramResult',
+      name: 'sociogramResult',
+      component: () => import('../components/Sociogram/SociogramResults.vue'),
+    },
+    {
       path: '/tancar-sessio',
       name: 'tancarSessio',
       component: () => import('../components/pages/TancarSessioComponent.vue'),

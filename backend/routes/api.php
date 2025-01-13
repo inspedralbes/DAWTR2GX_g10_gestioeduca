@@ -98,6 +98,7 @@ Route::resource('groups', GroupController::class);
 
 // Rutas para relaciones sociométricas
 Route::prefix('sociogram-relationships')->group(function () {
+    Route::get('/sociogram-relationships', [SociogramRelationshipController::class, 'getRelationships']);
     Route::get('/', [SociogramRelationshipController::class, 'index']); // Listar todas las relaciones
     Route::get('/user/{id}', [SociogramRelationshipController::class, 'byUser']); // Filtrar por usuario
     Route::post('/', [SociogramRelationshipController::class, 'store']); // Guardar relaciones

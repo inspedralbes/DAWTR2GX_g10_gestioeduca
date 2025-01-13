@@ -2,28 +2,29 @@
 import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useStudentsStore } from "@/stores/studentsStore";
-import {
-  UserGroupIcon,
-  UserIcon,
-  StarIcon,
-  HeartIcon,
-  LightBulbIcon,
-  CheckCircleIcon,
-} from "@heroicons/vue/24/outline";
+import { UserGroupIcon, UserIcon, StarIcon, HeartIcon, LightBulbIcon, CheckCircleIcon } from "@heroicons/vue/24/outline";
 
-// Inicializamos el enrutador y el store
 const router = useRouter();
 const studentsStore = useStudentsStore();
-
-// Obtener estudiantes desde el store al montar el componente
 const students = ref([]);
+const errorMessage = ref(""); // Estado para el mensaje de error
+const successMessage = ref(""); // Estado para el mensaje de éxito
+const loggedStudentId = ref(null);
 
 onMounted(async () => {
+  // Obtén el ID del estudiante logueado
+  loggedStudentId.value = getLoggedStudentId();
+  console.log("ID del estudiante logueado:", loggedStudentId.value);
+  if (!loggedStudentId.value) {
+    // Si no hay usuario logueado, mostrar error y redirigir o detener ejecución
+    errorMessage.value = "Por favor, inicie sesión antes de completar el cuestionario.";
+    return;
+  }
   if (studentsStore.studentCount === 0) {
-    // Si no se han cargado los estudiantes, realizamos el fetch
     await studentsStore.fetchStudents();
   }
-  students.value = studentsStore.students;
+  // Excluir al estudiante logueado de la lista
+  students.value = studentsStore.students.filter(student => student.id !== loggedStudentId.value);
 });
 
 // Definimos las secciones del cuestionario
@@ -139,16 +140,13 @@ const prevSection = () => {
   }
 };
 
-// Obtener el ID del estudiante logueado desde localStorage
 const getLoggedStudentId = () => {
   const loggedUser = JSON.parse(localStorage.getItem("user")); // Obtener los datos completos del usuario
   return loggedUser ? loggedUser.id : null; // Retornar el ID del usuario logueado
 };
 
 const handleFinish = async () => {
- 
   try {
-    console.log("handleFinish ha sido llamado");
     const studentId = getLoggedStudentId();
     
     if (!studentId) {
@@ -191,23 +189,25 @@ const handleFinish = async () => {
         relationships: answers, // Relaciones enviadas
       }),
     });
-    console.log("Datos enviados al backend:", JSON.stringify({
-    user_id: studentId,
-    relationships: answers,
-    }, null, 2));
-    console.log("Respuesta del backend:", response);
 
     if (!response.ok) {
       throw new Error("Error al enviar las respuestas.");
     }
 
+    // Mostrar mensaje de éxito y redirigir
+    successMessage.value = "Respuestas enviadas correctamente.";
+    setTimeout(() => {
+      successMessage.value = ""; // Desaparecer el mensaje después de 3 segundos
+      router.push("/student/forms");
+    }, 3000); 
+
     const completedForms = JSON.parse(localStorage.getItem("completedForms") || "[]");
     completedForms.push("sociogram");
     localStorage.setItem("completedForms", JSON.stringify(completedForms));
-   
-    router.push("/student/forms");
+
   } catch (error) {
     console.error("Error al enviar las respuestas:", error);
+    errorMessage.value = "Hubo un error al enviar las respuestas.";
   }
 };
 
@@ -215,6 +215,16 @@ const handleFinish = async () => {
 
 <template>
   <div class="max-w-4xl mx-auto">
+    <!-- Mensaje de Error -->
+    <div v-if="errorMessage" class="bg-red-100 text-red-700 border-l-4 border-red-500 p-4 rounded-lg">
+      <p class="font-semibold">{{ errorMessage }}</p>
+    </div>
+
+    <!-- Mensaje de éxito después de enviar -->
+    <div v-if="successMessage" class="bg-green-100 text-green-700 border-l-4 border-green-500 p-4 rounded-lg mb-4">
+      <p class="font-semibold">{{ successMessage }}</p>
+    </div>
+
     <div v-if="!showResults" class="bg-white rounded-lg shadow-lg p-6">
       <h1 class="text-2xl font-bold mb-4 text-center">Cuestionario Sociométrico</h1>
 
@@ -260,10 +270,6 @@ const handleFinish = async () => {
         >
           {{ currentSection === sections.length - 1 ? "Ver Resultados" : "Siguiente" }}
         </button>
-      </div>
-
-      <div class="mt-4 text-center">
-        <p class="text-gray-600">Sección {{ currentSection + 1 }} de {{ sections.length }}</p>
       </div>
     </div>
 

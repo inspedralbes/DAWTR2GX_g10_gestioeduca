@@ -63,4 +63,13 @@ class SociogramRelationshipController extends Controller
 
         return response()->json(['message' => 'Relación eliminada correctamente.'], 200);
     }
+    //ver relaciones para hacer el sociograma
+    public function getRelationships()
+    {
+        $relationships = SociogramRelationship::with(['user', 'peer']) // Relacionar 'user' y 'peer' con el modelo de Sociogram
+            ->get()
+            ->groupBy('relationship_type'); // Agrupar relaciones por tipo
+
+        return response()->json($relationships);
+    }
 }
