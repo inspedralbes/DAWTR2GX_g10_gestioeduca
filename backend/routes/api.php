@@ -16,6 +16,7 @@ use Illuminate\Auth\Events\Authenticated;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\DashboardController;
 
+
 Route::middleware(['auth:sanctum', 'role:admin'])->get('/admin-dashboard', [DashboardController::class, 'adminDashboard']);
 Route::middleware(['auth:sanctum', 'role:teacher'])->get('/teacher-dashboard', [DashboardController::class, 'teacherDashboard']);
 Route::middleware(['auth:sanctum', 'role:student'])->get('/student-dashboard', [DashboardController::class, 'studentDashboard']);
