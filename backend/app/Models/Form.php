@@ -6,9 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Form extends Model
 {
+
     protected $fillable = [
         'title',
         'description',
+        'status',
         'division'
     ];
 
@@ -24,6 +26,12 @@ class Form extends Model
     {
         return $this->hasMany(Question::class);
     }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'form_user', 'form_id', 'user_id');
+    }
+
 
     public function answers()
     {

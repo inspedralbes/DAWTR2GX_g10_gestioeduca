@@ -36,25 +36,7 @@ onMounted(async () => {
   } catch (error) {
     console.error('Error:', error);
   }
-})
-
-const students = ref([
-  {
-    id: 1,
-    name: 'Ana García',
-    course: '1º ESO'
-  },
-  {
-    id: 2,
-    name: 'Carlos Rodríguez',
-    course: '2º ESO'
-  },
-  {
-    id: 3,
-    name: 'Laura Martínez',
-    course: '1º ESO'
-  }
-])
+});
 
 const navigateToCreate = () => {
   router.push({ name: 'CreateForm' })
@@ -225,7 +207,6 @@ const handleFormAssigned = (assignments) => {
     <AssignFormModal
       v-model="showAssignModal"
       :form="selectedForm || {}"
-      :students="students"
       @assigned="handleFormAssigned"
     />
   </div>
