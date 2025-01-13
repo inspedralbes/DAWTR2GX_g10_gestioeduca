@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->integer('status')->default(1);
             $table->boolean('division')->default(true);
+            $table->date('date_limit')->nullable();
             $table->timestamps();
         });
     }
