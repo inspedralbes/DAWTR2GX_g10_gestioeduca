@@ -33,6 +33,6 @@ class CourseSeeder extends Seeder
 
         Course::create([
             'name' => '2 BACHILLERATO'
-                ]);
+        ]);
     }
 }
