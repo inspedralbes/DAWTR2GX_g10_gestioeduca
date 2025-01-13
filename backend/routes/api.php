@@ -94,3 +94,5 @@ Route::resource('groups', GroupController::class);
 
 // Rutas para grupos
 Route::resource('groups', GroupController::class);
+
+Route::post('/api/users/{userId}/assign-course-division', [UserController::class, 'assignCourseAndDivision']);

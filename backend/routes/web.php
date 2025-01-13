@@ -25,6 +25,7 @@ Route::get('/', function () {
 
 Route::get('/forms/{id}', [FormController::class, 'show'])->name('forms.show');
 
+Route::post('/users/{userId}/assign-course-division', [UserController::class, 'assignCourseAndDivision'])->name('users.assignCourseDivision');
 
 Route::resource('roles', RoleController::class);
 Route::resource('courses', CourseController::class);

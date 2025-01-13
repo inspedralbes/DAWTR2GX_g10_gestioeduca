@@ -22,6 +22,34 @@ class UserController extends Controller
      *     )
      * )
      */
+
+     //Este método se encargará de asociar el usuario con el curso y la división
+    public function assignCourseAndDivision(Request $request, $userId)
+    {
+        $validator = Validator::make($request->all(), [
+            'course_id' => 'required|exists:courses,id',
+            'division_id' => 'required|exists:divisions,id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
+        }
+
+        $user = User::find($userId);
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        // Asociar el curso y la división con el usuario
+        $user->courses()->syncWithoutDetaching([$request->course_id]);
+        $user->divisions()->syncWithoutDetaching([$request->division_id]);
+
+        return response()->json([
+            'message' => 'Course and division assigned successfully',
+            'user' => $user->load(['courses', 'divisions']),
+        ], 200);
+    }
+
     public function index()
     {
         $users = User::all();
