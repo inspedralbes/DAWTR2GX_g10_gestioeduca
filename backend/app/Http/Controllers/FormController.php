@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Services\FormService;
 use Illuminate\Support\Facades\Log;
+use App\Models\User;
 
 
 /**
@@ -17,6 +18,23 @@ use Illuminate\Support\Facades\Log;
  */
 class FormController extends Controller
 {
+
+    public function assignFormToUser(Request $request)
+    {
+        $validatedData = $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'form_id' => 'required|exists:forms,id',
+        ]);
+
+        $user = User::find($validatedData['user_id']);
+        $form = Form::find($validatedData['form_id']);
+
+        // Asocia el formulario al usuario en la tabla intermedia
+        $user->forms()->attach($form->id);
+
+        return response()->json(['message' => 'Formulario asignado correctamente al usuario.'], 200);
+    }
+
 
     protected $formService;
 

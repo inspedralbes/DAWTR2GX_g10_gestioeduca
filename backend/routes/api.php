@@ -47,6 +47,10 @@ Route::get('/users/{id}/courses', [UserController::class, 'getUserCourses']);
 //RUTA PARA GUARDAR FORUMALIO EN BBDD
 Route::post('forms-save', [FormController::class, 'storeFormWithQuestions']);
 
+//RUTA PARA ASIGNAR FORMULARIO A USUARIO
+Route::post('/assign-form-to-user', [FormController::class, 'assignFormToUser']);
+
+
 Route::get('/roles', [RoleController::class, 'index']);
 
 
