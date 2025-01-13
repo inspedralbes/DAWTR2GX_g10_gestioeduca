@@ -116,15 +116,18 @@ class FormController extends Controller
      */
    
      public function index(Request $request)
-     {
-         $forms = Form::all();
- 
-         if ($request->expectsJson()) {
-             return response()->json($forms, 200);
-         }
- 
-         return view('forms', compact('forms'));
-     }
+    {
+        // Obtener los formularios con preguntas y respuestas
+        $forms = Form::with('questions.answers')->get();
+
+        if ($request->expectsJson()) {
+            return response()->json($forms, 200);
+        }
+
+        // Pasar los formularios a la vista
+        return view('forms', compact('forms'));
+    }
+
    
 
 
@@ -163,14 +166,21 @@ class FormController extends Controller
         return redirect()->route('forms.index')->with('error', 'Formulario no encontrado');
     }
 
-    // Si es una solicitud JSON, devolver el formulario en formato JSON
-    if ($request->expectsJson()) {
-        return response()->json($form, 200);
-    }
+    // Preparar las preguntas con sus respuestas
+    $questions = $form->questions->map(function ($question) {
+        return [
+            'question' => $question->title,
+            'answers' => $question->answers->pluck('content')->toArray(), // Obtenemos las respuestas como array
+        ];
+    });
 
-    // Pasar el formulario con las preguntas y respuestas a la vista
-    return view('questions', compact('form'));
+    // Verifica que tienes datos en $questions (opcional para depuración)
+    // dd($questions);
+
+    // Pasar el formulario y las preguntas a la vista
+    return view('questions', compact('questions', 'form'));
 }
+
 
 
 
