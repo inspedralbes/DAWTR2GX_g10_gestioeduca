@@ -288,6 +288,7 @@ class UserController extends Controller
             return [
                 'id' => $student->id,
                 'name' => $student->name,
+                'last_name' => $student->last_name,
                 'email' => $student->email,
                 'course' => $firstCourse?->name ?? 'Sin Curso', // Usamos "?" para manejar nulos
                 'division' => $firstCourse?->divisions->first()?->division ?? 'Sin División',
@@ -307,12 +308,12 @@ class UserController extends Controller
             return [
                 'id' => $teacher->id,
                 'name' => $teacher->name,
+                'last_name' => $teacher->last_name,
                 'email' => $teacher->email,
                 'course' => $firstCourse?->name ?? 'Sin Curso', // Usamos "?" para manejar nulos
                 'division' => $firstCourse?->divisions->first()?->division ?? 'Sin División',
             ];
         });
-
         return response()->json($formatted);
     }
 }

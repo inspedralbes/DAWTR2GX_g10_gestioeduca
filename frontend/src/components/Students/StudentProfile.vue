@@ -57,7 +57,7 @@ onMounted(async () => {
         <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-primary font-bold text-2xl">
           {{ student.name.split(' ').map(n => n[0]).join('').toUpperCase() }}
         </div>
-        <h1 class="text-3xl font-bold">{{ student.name }}</h1>
+        <h1 class="text-3xl font-bold">{{ student.name }} {{ student.last_name }}</h1>
       </div>
       <p class="text-lg"><strong>Curso:</strong> {{ student.course }}</p>
       <p class="text-lg"><strong>División:</strong> {{ student.division }}</p>

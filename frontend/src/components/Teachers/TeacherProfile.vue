@@ -56,6 +56,7 @@ onMounted(async () => {
           {{ teacher.name.split(' ').map(n => n[0]).join('').toUpperCase() }}
         </div>
         <h1 class="text-3xl font-bold">{{ teacher.name }}</h1>
+        <h1 class="text-3xl font-bold">{{ teacher.last_name }}</h1>
       </div>
       <p class="text-lg"><strong>Curso:</strong> {{ teacher.course }}</p>
       <p class="text-lg"><strong>División:</strong> {{ teacher.division }}</p>
