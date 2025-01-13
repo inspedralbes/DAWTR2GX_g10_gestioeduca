@@ -11,15 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('forms', function (Blueprint $table) {
+        Schema::create('form_user', function (Blueprint $table) {
             $table->id();
-            $table->string('title')->unique();
-            $table->string('description')->nullable();
-            $table->integer('status')->default(1);
-            $table->boolean('division')->default(true);
-            $table->date('date_limit')->nullable();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('form_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
+
     }
 
     /**
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('forms');
+        Schema::dropIfExists('form_user');
     }
 };

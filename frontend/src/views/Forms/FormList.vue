@@ -1,13 +1,11 @@
 <script setup>
-import { ref,onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { 
   PlusIcon, 
-  FunnelIcon,
   DocumentDuplicateIcon,
   PencilIcon,
   TrashIcon,
-  EyeIcon,
   UserGroupIcon,
   ChartBarIcon
 } from '@heroicons/vue/24/outline'
@@ -20,7 +18,6 @@ const selectedDate = ref('all')
 const showAssignModal = ref(false)
 const selectedForm = ref(null)
 const forms = ref([])
-
 
 onMounted(async () => {
   try {
@@ -41,26 +38,12 @@ onMounted(async () => {
   }
 });
 
-const students = ref([
-  {
-    id: 1,
-    name: 'Ana García',
-    course: '1º ESO'
-  },
-  {
-    id: 2,
-    name: 'Carlos Rodríguez',
-    course: '2º ESO'
-  },
-  {
-    id: 3,
-    name: 'Laura Martínez',
-    course: '1º ESO'
-  }
-])
-
 const navigateToCreate = () => {
   router.push({ name: 'CreateForm' })
+}
+
+const goToDashboard = () => {
+  router.push('/dashboard')
 }
 
 const viewResponses = (formId) => {
@@ -68,31 +51,45 @@ const viewResponses = (formId) => {
 }
 
 const openAssignModal = (form) => {
-  selectedForm.value = form  // Asigna el formulario específico
+  selectedForm.value = form
   showAssignModal.value = true
 }
 
 const handleFormAssigned = (assignments) => {
   console.log('Form assigned to students:', assignments)
-  // Show success message
   alert('Formulario asignado correctamente a los estudiantes seleccionados')
 }
 </script>
 
 <template>
   <div class="p-6">
-    <div class="flex justify-between items-center mb-6">
-      <h1 class="text-2xl font-bold">Formularios</h1>
+    <!-- Contenedor del título y botón de volver -->
+    <div class="relative flex items-center mb-6">
+      <!-- Botón de volver -->
+      <button 
+        @click="goToDashboard" 
+        class="absolute left-0 flex items-center space-x-1 text-gray-700 hover:text-gray-900"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+        </svg>
+        <span>Volver</span>
+      </button>
+
+      <!-- Título centrado -->
+      <h1 class="flex-grow text-center text-2xl font-bold">Formularios</h1>
+
+      <!-- Botón de nuevo formulario -->
       <button 
         @click="navigateToCreate"
-        class="btn btn-primary flex items-center space-x-2"
+        class="absolute right-0 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 flex items-center space-x-2"
       >
         <PlusIcon class="w-5 h-5" />
         <span>Nuevo Formulario</span>
       </button>
     </div>
 
-    <!-- Filters -->
+    <!-- Filtros -->
     <div class="bg-white rounded-lg shadow p-4 mb-6">
       <div class="flex flex-wrap gap-4">
         <div class="flex-1 min-w-[200px]">
@@ -126,7 +123,7 @@ const handleFormAssigned = (assignments) => {
       </div>
     </div>
 
-    <!-- Forms List -->
+    <!-- Lista de formularios -->
     <div class="bg-white rounded-lg shadow overflow-hidden">
       <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200">
@@ -155,7 +152,7 @@ const handleFormAssigned = (assignments) => {
                 <div class="text-sm font-medium text-gray-900">{{ form.title }}</div>
                 <div class="text-sm text-gray-500">{{ form.description }}</div>
               </td>
-                <td class="px-6 py-4">
+              <td class="px-6 py-4">
                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
                   :class="{
                   'bg-green-100 text-green-800': form.status === 1,
@@ -163,7 +160,7 @@ const handleFormAssigned = (assignments) => {
                   }">
                   {{ form.status === 1 ? 'activo' : 'inactivo' }}
                 </span>
-                </td>
+              </td>
               <td class="px-6 py-4 text-sm text-gray-500">
                 {{ form.responses }}
               </td>
@@ -206,11 +203,10 @@ const handleFormAssigned = (assignments) => {
       </div>
     </div>
 
-    <!-- Assignment Modal -->
+    <!-- Modal de asignación -->
     <AssignFormModal
       v-model="showAssignModal"
       :form="selectedForm || {}"
-      :students="students"
       @assigned="handleFormAssigned"
     />
   </div>

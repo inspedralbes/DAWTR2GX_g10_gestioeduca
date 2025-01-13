@@ -32,6 +32,7 @@ defineProps({
           {{ student.name.split(' ').map(n => n[0]).join('').toUpperCase() }}
         </div>
         <span>{{ student.name }}</span>
+        <span>{{ student.last_name }}</span>
       </div>
     </td>
     <td>{{ student.course }}</td>

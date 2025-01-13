@@ -39,6 +39,7 @@ const viewProfile = (teacherId) => {
           {{ teacher.name?.split(' ').map(n => n[0] || '').join('').toUpperCase() || 'N/A' }}
         </div>
         <span>{{ teacher.name }}</span>
+        <span>{{ teacher.last_name }}</span>
       </div>
     </td>
     <!-- Información del profesor -->

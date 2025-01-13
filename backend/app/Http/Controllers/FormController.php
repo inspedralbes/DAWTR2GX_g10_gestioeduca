@@ -7,6 +7,9 @@ namespace App\Http\Controllers;
 use App\Models\Form;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Services\FormService;
+use Illuminate\Support\Facades\Log;
+use App\Models\User;
 
 
 /**
@@ -17,6 +20,53 @@ use Illuminate\Support\Facades\Validator;
  */
 class FormController extends Controller
 {
+
+    public function assignFormToUser(Request $request)
+    {
+        $validatedData = $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'form_id' => 'required|exists:forms,id',
+        ]);
+
+        $user = User::find($validatedData['user_id']);
+        $form = Form::find($validatedData['form_id']);
+
+        // Asocia el formulario al usuario en la tabla intermedia
+        $user->forms()->attach($form->id);
+
+        return response()->json(['message' => 'Formulario asignado correctamente al usuario.'], 200);
+    }
+
+
+    protected $formService;
+
+    public function __construct(FormService $formService)
+    {
+        $this->formService = $formService;
+    }
+
+    public function storeFormWithQuestions(Request $request, FormService $formService)
+    {
+        $validatedData = $request->validate([
+            'title' => 'required|string|unique:forms,title',
+            'description' => 'nullable|string',
+            'questions' => 'required|array',
+            'questions.*.title' => 'required|string',
+            'questions.*.type' => 'required|string|in:text,number,multiple,checkbox',
+            'questions.*.placeholder' => 'nullable|string',
+            'questions.*.context' => 'nullable|string',
+            'questions.*.options' => 'nullable|array',
+            'questions.*.options.*.text' => 'required_with:questions.*.options|string',
+            'questions.*.options.*.value' => 'nullable|integer',
+        ]);
+
+        $form = $this->formService->createForm($validatedData);
+
+        return response()->json(['form' => $form], 201);
+    }
+
+
+
     /**
      * @OA\Get(
      *     path="/api/forms/{formId}/questions-and-answers",
@@ -41,16 +91,16 @@ class FormController extends Controller
      */
     public function getQuestionsAndAnswers($formId)
     {
-        $form = Form::with(['questions.answers'])->find($formId);
-
+        $form = Form::with('questions.answers')->find($formId);
 
         if (!$form) {
-            return response()->json(['message' => 'Formulari no trobat'], 404);
+            return response()->json(['message' => 'Formulario no encontrado'], 404);
         }
 
 
         return response()->json($form, 200);
     }
+
 
 
     /**

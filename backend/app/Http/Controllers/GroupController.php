@@ -206,4 +206,18 @@ class GroupController extends Controller
 
         return redirect()->route('groups.index')->with('success', 'Grupo eliminado correctamente');
     }
+
+    public function getMembers($id)
+    {
+        $group = Group::find($id);
+    
+        if (!$group) {
+        return response()->json(['message' => 'Grupo no encontrado'], 404);
+        }
+
+        $members = $group->users; 
+
+        return response()->json($members);
+    }
+
 }

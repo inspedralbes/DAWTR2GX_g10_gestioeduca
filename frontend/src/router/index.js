@@ -9,6 +9,8 @@ import FormResponses from '@/views/Forms/FormResponses.vue';
 import StudentList from '../views/Students/StudentList.vue';
 import StudentProfile from '../views/Students/StudentProfile.vue';
 import CreateForm from '@/views/CreateForm.vue';
+import StudentForms from '@/components/student/StudentForms.vue';
+import FormQuestions from '@/components/student/FormQuestions.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -66,7 +68,7 @@ const router = createRouter({
     {
       path: '/student',
       component: StudentDashboard,
-      meta: { requiresAuth: true, role: 'alumno' }, // Solo para alumnos
+      meta: { requiresAuth: true, role: 'alumno' },
       children: [
         {
           path: '',
@@ -85,8 +87,14 @@ const router = createRouter({
         {
           path: 'forms',
           name: 'studentForms',
-          component: () => import('@/components/student/StudentForms.vue'),
+          component: StudentForms,
         },
+        {
+          path: 'forms/:id',  // Aquí se corrige la ruta para las preguntas del formulario
+          name: 'formQuestions',
+          component: FormQuestions,
+          meta: { requiresAuth: true, role: 'alumno' },
+        },        
       ],
     },
     {
@@ -153,7 +161,6 @@ const router = createRouter({
       component: () => import('../components/pages/TancarSessioComponent.vue'),
       meta: { requiresAuth: true },
     },
-    //per verificar component createGroup
     {
       path: '/createGroup',
       name: 'createGroup',
@@ -180,6 +187,5 @@ router.beforeEach((to, from, next) => {
     next();
   }
 });
-
 
 export default router;
