@@ -4,16 +4,17 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class CourseDivisionSeeder extends Seeder
 {
     public function run()
     {
-        // Truncar la tabla antes de la ejecución para asegurarse que no haya datos previos
+        // Paso 1: Limpiar la tabla completamente
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;'); // Desactiva las claves foráneas
         DB::table('course_division')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;'); // Reactiva las claves foráneas
 
-        // Definir combinaciones únicas esperadas
+        // Paso 2: Definir exactamente 24 combinaciones únicas para insertar
         $courseDivisions = [
             ['course_id' => 1, 'division_id' => 3],
             ['course_id' => 1, 'division_id' => 4],
@@ -41,30 +42,22 @@ class CourseDivisionSeeder extends Seeder
             ['course_id' => 6, 'division_id' => 2],
         ];
 
-        // Contador para los registros insertados
-        $insertedCount = 0;
-
-        // Loop para insertar hasta 24 registros
-        foreach ($courseDivisions as $entry) {
-            // Verificar si ya se insertaron 24 registros
-            if ($insertedCount >= 24) {
-                break; // Detener la inserción si ya se han insertado 24 registros
-            }
-
-            // Realizar la inserción
-            DB::table('course_division')->insert([
-                'course_id' => $entry['course_id'],
-                'division_id' => $entry['division_id'],
+        // Paso 3: Inserta los registros sin duplicados y con timestamps
+        $dataToInsert = array_map(function ($entry) {
+            return array_merge($entry, [
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
+        }, $courseDivisions);
 
-            // Aumentar el contador
-            $insertedCount++;
-        }
+        DB::table('course_division')->insert($dataToInsert);
 
-        // Log para depuración
-        //Log::info('Número de registros insertados: ' . $insertedCount);
+        // Paso 4: Verificación de los datos
+        $insertedCount = DB::table('course_division')->count();
+
+        // Opcional: Puedes consultar los registros y verificarlos
+        $insertedRecords = DB::table('course_division')->get();
+       exit(); // Detiene el proceso y muestra los registros en la consola o navegador
     }
 }
 
