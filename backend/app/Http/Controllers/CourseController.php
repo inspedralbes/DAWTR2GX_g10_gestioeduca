@@ -51,21 +51,16 @@ class CourseController extends Controller
      */
     public function store(Request $request)
 {
-    // Verifica si es una solicitud API
     if ($request->is('api/*')) {
-        // Valida la entrada
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
         ]);
 
-        // Crea el curso
         $course = Course::create($validatedData);
 
-        // Responde con JSON
         return response()->json($course, 201);
     }
 
-    // Si no es API, maneja como una solicitud web
     $validatedData = $request->validate([
         'name' => 'required|string|max:255',
     ]);
