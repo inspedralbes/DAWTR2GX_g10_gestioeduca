@@ -99,6 +99,7 @@ Route::get('forms/{formId}/questions', [FormController::class, 'getQuestionsAndA
 Route::post('forms/{formId}/submit-answers', [AnswerController::class, 'storeMultipleAnswers']);
 Route::get('forms/{id}', [FormController::class, 'show']);
 Route::get('groups/{id}/members', [GroupController::class, 'getMembers']);
+Route::post('groups/{id}/addStudentsToGroup', [GroupController::class, 'addStudentsToGroup']);
 
 // CRUD para preguntas y respuestas
 Route::resource('questions', QuestionController::class);
