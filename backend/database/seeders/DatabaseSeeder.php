@@ -36,12 +36,11 @@ class DatabaseSeeder extends Seeder
             GroupCourseSeeder::class,
             FormSeeder::class,   // Crear formularios primero
             QuestionSeeder::class, // Crear preguntas después
-            OptionSeeder::class,   // Opciones relacionadas a preguntas
-            AnswerSeeder::class,
+            OptionSeeder::class,
             CourseUserSeeder::class,
             SociogramRelationshipSeeder::class,
             CourseDivisionSeeder::class,
-            
+
         ]);
     }
 }

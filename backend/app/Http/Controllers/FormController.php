@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 
 use App\Models\Form;
+use App\Models\Answer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Services\FormService;
@@ -20,6 +21,45 @@ use App\Models\User;
  */
 class FormController extends Controller
 {
+
+
+
+    public function getQuestions($formId)
+    {
+        // Cargar el formulario con las preguntas y las opciones de cada pregunta
+        $form = Form::with('questions.options')->find($formId);
+
+        // Verificar si el formulario existe
+        if (!$form) {
+            return response()->json(['message' => 'Formulario no encontrado'], 404);
+        }
+
+        // Extraer solo las preguntas con sus opciones
+        $questions = $form->questions;
+
+        // Devolver las preguntas y opciones
+        return response()->json($questions, 200);
+    }
+
+
+    public function getFormsByUserId($userId)
+    {
+
+        $user = User::with('forms')->find($userId);
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        $forms = $user->forms;
+
+
+        if (request()->wantsJson()) {
+            return response()->json($forms);
+        }
+
+        return view('forms.index', compact('forms'));
+    }
 
     public function assignFormToUser(Request $request)
     {
@@ -114,7 +154,7 @@ class FormController extends Controller
      *     )
      * )
      */
-   
+
      public function index(Request $request)
     {
         // Obtener los formularios con preguntas y respuestas
@@ -128,7 +168,7 @@ class FormController extends Controller
         return view('forms', compact('forms'));
     }
 
-   
+
 
 
     /**
@@ -153,6 +193,8 @@ class FormController extends Controller
      *     )
      * )
      */
+
+
     public function show(Request $request, $id)
 {
     // Obtener el formulario con sus preguntas y respuestas
@@ -161,7 +203,7 @@ class FormController extends Controller
     if (is_null($form)) {
         if ($request->expectsJson()) {
             return response()->json(['message' => 'Formulario no encontrado'], 404);
-        }
+        };
 
         return redirect()->route('forms.index')->with('error', 'Formulario no encontrado');
     }
