@@ -25,7 +25,7 @@ export default {
     async handleLogout() {
       try {
         // Send logout request to API
-        const response = await fetch('http://localhost:8000/api/logout', {
+        const response = await fetch('http://pruebag10.daw.inspedralbes.cat/backend/public/api/logout', {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,

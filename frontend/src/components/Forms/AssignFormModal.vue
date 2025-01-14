@@ -22,7 +22,7 @@ const selectedStudents = ref([])
 
 onMounted(async () => {
   try {
-    const response = await fetch('http://localhost:8000/api/users', {
+    const response = await fetch('http://pruebag10.daw.inspedralbes.cat/backend/public/api/users', {
       method: 'GET',
       headers: {
         'Accept': 'application/json',

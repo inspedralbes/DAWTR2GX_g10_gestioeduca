@@ -17,7 +17,7 @@ export const useFormAssignmentsStore = defineStore('formAssignments', () => {
     // Realizar la solicitud POST para cada asignación
     for (const assignment of newAssignments) {
       try {
-        const response = await fetch('http://localhost:8000/api/assign-form-to-user', {
+        const response = await fetch('http://pruebag10.daw.inspedralbes.cat/backend/public/api/assign-form-to-user', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

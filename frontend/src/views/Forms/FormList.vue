@@ -21,7 +21,7 @@ const forms = ref([])
 
 onMounted(async () => {
   try {
-    const response = await fetch('http://localhost:8000/api/forms', {
+    const response = await fetch('http://pruebag10.daw.inspedralbes.cat/backend/public/api/forms', {
       method: 'GET',
       headers: {
         'Accept': 'application/json',

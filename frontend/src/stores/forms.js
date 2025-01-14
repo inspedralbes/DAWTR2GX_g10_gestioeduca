@@ -12,7 +12,7 @@ export const useFormsStore = defineStore('forms', {
   actions: {
     async loadForms() {
       try {
-        const response = await fetch('http://localhost:8000/api/forms', {
+        const response = await fetch('http://pruebag10.daw.inspedralbes.cat/backend/public/api/forms', {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
             'Accept': 'application/json',
@@ -31,7 +31,7 @@ export const useFormsStore = defineStore('forms', {
       if (!formId) throw new Error('ID del formulario no proporcionado');
 
       try {
-        const response = await fetch(`http://localhost:8000/api/forms/${formId}`, {
+        const response = await fetch(`http://pruebag10.daw.inspedralbes.cat/backend/public/api/forms/${formId}`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
             'Accept': 'application/json',
@@ -52,7 +52,7 @@ export const useFormsStore = defineStore('forms', {
       if (!formId) throw new Error('ID del formulario no proporcionado');
 
       try {
-        const response = await fetch(`http://localhost:8000/api/forms/${formId}/questions`, {
+        const response = await fetch(`http://pruebag10.daw.inspedralbes.cat/backend/public/api/forms/${formId}/questions`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
             'Accept': 'application/json',

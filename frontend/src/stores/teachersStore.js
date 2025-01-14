@@ -10,7 +10,7 @@ export const useTeachersStore = defineStore('teachers', {
         async fetchTeachers() {
             this.loading = true; // Comienza la carga
             try {
-                const response = await fetch('http://localhost:8000/api/get-teachers');
+                const response = await fetch('http://pruebag10.daw.inspedralbes.cat/backend/public/api/get-teachers');
 
                 if (!response.ok) {
                     throw new Error(`Error: ${response.divisionText}`);

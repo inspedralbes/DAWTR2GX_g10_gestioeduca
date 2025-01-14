@@ -45,7 +45,7 @@ const gestioSubmit = async (e) => {
     isLoading.value = true;
 
     try {
-        const response = await fetch('http://localhost:8000/api/login', {
+        const response = await fetch('http://pruebag10.daw.inspedralbes.cat/backend/public/api/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

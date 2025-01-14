@@ -93,7 +93,7 @@ const handleSave = async () => {
   console.log('Datos que se enviarán:', JSON.stringify(formData, null, 2)); // Verifica la estructura del objeto
 
   try {
-    const response = await fetch('http://localhost:8000/api/forms-save', {
+    const response = await fetch('http://pruebag10.daw.inspedralbes.cat/backend/public/api/forms-save', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

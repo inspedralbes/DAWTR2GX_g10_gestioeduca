@@ -11,7 +11,7 @@ export const useStudentsStore = defineStore('students', {
         async fetchStudents() {
             this.loading = true; // Comienza la carga
             try {
-                const response = await fetch('http://localhost:8000/api/get-students');
+                const response = await fetch('http://pruebag10.daw.inspedralbes.cat/backend/public/api/get-students');
 
                 if (!response.ok) {
                     throw new Error(`Error: ${response.divisionText}`);
