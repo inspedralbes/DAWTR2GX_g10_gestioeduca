@@ -1,8 +1,8 @@
 <template>
   <div class="space-y-6">
-    <h2 class="text-2xl font-bold">Mis Formularios</h2>
+    <h2 class="text-2xl font-bold">Els meus Formularis</h2>
     <div v-if="forms.length === 0" class="text-gray-500">
-      No tienes formularios asignados.
+      No tens formularis assignats.
     </div>
     <div v-else>
       <div v-for="form in forms" :key="form.id" class="bg-white rounded-lg shadow p-4 mb-4">

@@ -28,7 +28,7 @@ const getGroupStats = (students) => {
       <div class="flex justify-between items-start mb-4">
         <h3 class="text-lg font-semibold">{{ group.name }}</h3>
         <div class="text-sm text-gray-500">
-          {{ group.students.length }} estudiantes
+          {{ group.students.length }} estudiants
         </div>
       </div>
 
@@ -48,13 +48,13 @@ const getGroupStats = (students) => {
 
       <div class="mt-4 pt-4 border-t grid grid-cols-2 gap-4 text-sm">
         <div>
-          <span class="text-gray-500">Rendimiento promedio:</span>
+          <span class="text-gray-500">Rendimient promedi:</span>
           <span class="ml-2 font-medium">
             {{ getGroupStats(group.students).performance.toFixed(1) }}%
           </span>
         </div>
         <div>
-          <span class="text-gray-500">Asistencia promedio:</span>
+          <span class="text-gray-500">Assistència promedi:</span>
           <span class="ml-2 font-medium">
             {{ getGroupStats(group.students).attendance.toFixed(1) }}%
           </span>

@@ -222,6 +222,8 @@ class GroupController extends Controller
 
         return response()->json($members);
     }
+
+    // Añadir estudiantes a un grupo desde vista profesor 
     public function addStudentsToGroup(Request $request, $groupId)
     {
         // Validar los IDs de los estudiantes
@@ -232,10 +234,15 @@ class GroupController extends Controller
 
         $group = Group::findOrFail($groupId);
 
-        // Asociar los estudiantes seleccionados al grupo
+        $currentTimestamp = now(); // Obtener el timestamp actual
+
+        // Asociar los estudiantes seleccionados al grupo con los timestamps
         foreach ($request->student_ids as $studentId) {
             // Insertar cada relación entre el grupo y los estudiantes
-            $group->users()->attach($studentId);
+            $group->users()->attach($studentId, [
+                'created_at' => $currentTimestamp,
+                'updated_at' => $currentTimestamp
+            ]);
         }
 
         return response()->json(['message' => 'Estudiantes asignados correctamente al grupo.'], 200);
