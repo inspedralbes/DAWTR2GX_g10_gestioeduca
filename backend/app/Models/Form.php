@@ -39,4 +39,9 @@ class Form extends Model
     {
         return $this->hasMany(Answer::class, Question::class);
     }
+
+    public static function activeForms()
+    {
+        return self::where('status', 1)->get(); // Devuelve solo los formularios activos
+    }
 }

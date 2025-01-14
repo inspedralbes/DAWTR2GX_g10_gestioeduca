@@ -55,6 +55,10 @@ Route::get('/forms/user/{userId}', [FormController::class, 'getFormsByUserId']);
 //RUTA PARA OBTENER PREGUNTAS con DE UN FORMULARIO
 Route::get('/forms/{formId}/questions-and-answers', [FormController::class, 'getQuestions']);
 
+//RUTA PARA ACTUALIZAR ESTADO DE FORMULARIO
+Route::patch('/forms/{formId}/status', [FormController::class, 'updateFormStatus']);
+
+
 
 Route::post('/forms/{formId}/submit-responses', [AnswerController::class, 'submitResponses']);
 
