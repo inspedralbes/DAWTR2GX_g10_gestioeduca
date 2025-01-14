@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SociogramRelationship;
+use App\Models\Form;
 use Illuminate\Http\Request;
 
 class SociogramRelationshipController extends Controller
@@ -41,6 +42,7 @@ class SociogramRelationshipController extends Controller
             'relationships.*.relationship_type' => 'required|in:positive,negative',
         ]);
 
+        // Guardar las relaciones en la tabla sociogram_relationships
         foreach ($data['relationships'] as $relationship) {
             SociogramRelationship::create([
                 'user_id' => $data['user_id'],
@@ -50,7 +52,17 @@ class SociogramRelationshipController extends Controller
             ]);
         }
 
-        return response()->json(['message' => 'Relaciones guardadas correctamente.'], 201);
+        // Incrementar el contador de respuestas en la tabla 'forms'
+        // Puedes usar un formulario específico de sociograma si es necesario o simplemente incrementar el contador de respuestas
+        $form = Form::find(3);  // Aquí estamos buscando el formulario sociograma con ID 3
+        if ($form) {
+            $form->increment('responses_count'); // Incrementa el contador de respuestas del formulario
+        } else {
+            return response()->json(['error' => 'Formulario sociograma no encontrado.'], 404);
+        }
+
+        // Devolver una respuesta exitosa
+        return response()->json(['message' => 'Relaciones guardadas y contador de respuestas actualizado.'], 201);
     }
 
     /**
