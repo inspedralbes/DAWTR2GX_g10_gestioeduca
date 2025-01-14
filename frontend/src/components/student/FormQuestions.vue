@@ -1,155 +1,176 @@
-<template>
-  <div class="space-y-6 p-6">
-    <h2 class="text-2xl font-bold">Formulario: {{ formId }}</h2>
-
-    <!-- Mostrar las preguntas del formulario -->
-    <div v-for="(question, index) in questions" :key="question.id" class="space-y-4">
-      <div class="bg-white rounded-lg shadow p-4">
-        <h3 class="text-lg font-semibold">{{ question.title }}</h3>
-        <p class="text-sm text-gray-500">{{ question.placeholder }}</p>
-
-        <!-- Manejo de diferentes tipos de preguntas -->
-        <div v-if="question.type === 'text'">
-          <input type="text" class="mt-2 p-2 border rounded w-full" :placeholder="question.placeholder"
-            v-model="responses[question.id].value" />
-        </div>
-
-        <div v-if="question.type === 'multiple'">
-          <div v-for="option in question.options" :key="option.id" class="mt-2">
-            <label class="flex items-center">
-              <input type="radio" :name="'question-' + question.id" :value="option.id"
-                class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500"
-                v-model="responses[question.id].value" />
-              <span class="ml-2 text-gray-700">{{ option.text }}</span>
-            </label>
-          </div>
-        </div>
-
-        <div v-if="question.type === 'checkbox'">
-          <div v-for="option in question.options" :key="option.id" class="mt-2">
-            <label class="flex items-center">
-              <input type="checkbox" :name="'question-' + question.id" :value="option.id"
-                class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500"
-                v-model="responses[question.id].value" />
-              <span class="ml-2 text-gray-700">{{ option.text }}</span>
-            </label>
-          </div>
-        </div>
-
-        <div v-if="question.type === 'number'">
-          <input type="number" class="mt-2 p-2 border rounded w-full" :placeholder="question.placeholder"
-            v-model="responses[question.id].value" />
-        </div>
-      </div>
-    </div>
-
-    <div>
-      <button class="mt-4 bg-primary text-white px-4 py-2 rounded" @click="submitResponses">Enviar respuestas</button>
-    </div>
-  </div>
-</template>
-
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import { useAuthStore } from '@/stores/auth';  
+import { useAuthStore } from '@/stores/auth';
 
 const route = useRoute();
-const formId = route.params.id; // Obtenemos el ID del formulario desde la ruta
+const formId = route.params.id;
 const questions = ref([]);
-const responses = ref({}); // Objeto para almacenar las respuestas del usuario
+const userNames = ref([]);
+const responses = ref({});
+const currentQuestionIndex = ref(0);
 const authStore = useAuthStore();
-const user = authStore.user;  // Asegúrate de que el user_id esté almacenado en localStorage o donde sea pertinente.
-const userId = user.id;  // Asegúrate de tener el userId disponible, si lo tienes, o manejar el caso donde no haya un usuario
+const userId = authStore.user.id;
+const showConfirmation = ref(false); // Variable para controlar la confirmación
 
-// Cargar preguntas del formulario cuando el componente se monte
-onMounted(() => {
-  fetchFormWithQuestions();
-});
+// Pregunta actual
+const currentQuestion = computed(() => questions.value[currentQuestionIndex.value]);
 
-// Función para hacer la solicitud Fetch al backend
-async function fetchFormWithQuestions() {
+// Función para cargar preguntas
+async function fetchQuestions() {
   try {
     const response = await fetch(`http://localhost:8000/api/forms/${formId}/questions-and-answers`);
-
-    if (!response.ok) {
-      throw new Error('Formulario no encontrado');
-    }
-
-    const formData = await response.json();
-    questions.value = formData;
-    
-    // Inicializar las respuestas para cada pregunta con un objeto que contenga "value" y "type"
-    questions.value.forEach((question) => {
-      responses.value[question.id] = {
-        value: Array.isArray(question.options) ? [] : '', // Para 'checkbox' y 'multiple', lo inicializamos como array vacío
-        type: question.type,
-      };
-    });
+    if (!response.ok) throw new Error('Error al cargar las preguntas');
+    questions.value = await response.json();
   } catch (error) {
     console.error('Error al cargar las preguntas:', error);
   }
 }
 
-// Función para manejar el envío de respuestas
-async function submitResponses() {
-  const formattedResponses = Object.keys(responses.value).map((questionId) => {
-    const response = responses.value[questionId];
-
-    // Convertir questionId a número si es una cadena
-    const questionIdAsNumber = parseInt(questionId, 10);
-
-    // Verificar que el valor de la respuesta no esté vacío para campos requeridos
-    if (response.value === undefined || response.value === null || (Array.isArray(response.value) && response.value.length === 0)) {
-      return null;  // Devolver null para esta respuesta si no se completó
-    }
-
-    // Verificar que el tipo de respuesta sea correcto
-    let answer_type = response.type;
-    if (answer_type === 'text') {
-      answer_type = 'string'; 
-    }
-
-    return {
-      question_id: questionIdAsNumber,  // Asegúrate de enviar un número
-      answer: response.value,
-      answer_type: answer_type,
-    };
-  }).filter(response => response !== null);  // Filtrar las respuestas vacías
-
-  // Verifica la estructura antes de enviar
-  console.log('Respuestas a enviar:', formattedResponses);
-
+// Función para cargar usuarios
+async function fetchUsers() {
   try {
+    const response = await fetch('http://localhost:8000/api/get-students', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+      },
+    });
+
+    if (!response.ok) throw new Error('Error al cargar los usuarios');
+    userNames.value = await response.json();
+  } catch (error) {
+    console.error('Error al cargar los usuarios:', error);
+  }
+}
+
+// Función para manejar la selección de usuarios
+function toggleSelection(userId) {
+  if (!currentQuestion.value) return;
+
+  const questionId = currentQuestion.value.id;
+  if (!responses.value[questionId]) {
+    responses.value[questionId] = [];
+  }
+
+  const currentSelections = responses.value[questionId];
+  const userIndex = currentSelections.indexOf(userId);
+
+  if (userIndex > -1) {
+    currentSelections.splice(userIndex, 1);
+  } else if (currentSelections.length < 3) {
+    currentSelections.push(userId);
+  }
+}
+
+// Función para ir a la siguiente pregunta
+function goToNextQuestion() {
+  if (currentQuestionIndex.value < questions.value.length - 1) {
+    currentQuestionIndex.value++;
+  }
+}
+
+// Función para enviar respuestas
+async function submitResponses() {
+  try {
+    // Formatear las respuestas, añadiendo un tipo de respuesta
+    const formattedResponses = Object.keys(responses.value).map(questionId => {
+      const answer = responses.value[questionId];
+      return {
+        question_id: parseInt(questionId),
+        answer: answer,
+        answer_type: determineAnswerType(answer), // Llamamos a una función para determinar el tipo de respuesta
+      };
+    });
+
     const response = await fetch(`http://localhost:8000/api/forms/${formId}/submit-responses`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'accept': 'application/json',
       },
       body: JSON.stringify({
-        user_id: userId,  // Enviar el ID del usuario si está disponible
+        user_id: userId,
         responses: formattedResponses,
       }),
     });
 
-    if (!response.ok) {
-      throw new Error('Error al enviar las respuestas');
-    }
+    if (!response.ok) throw new Error('Error al enviar respuestas');
 
-    // Redirigir al dashboard de estudiante después de un envío exitoso
     alert('Respuestas enviadas correctamente');
-    // Usar $router.push para redirigir a la página del dashboard
-    window.location.href = '/student/dashboard';  // Redirección directa
+    window.location.href = '/student/dashboard';
   } catch (error) {
     console.error('Error al enviar las respuestas:', error);
-    alert('Hubo un problema al enviar las respuestas. Por favor, intente de nuevo.');
+    alert('Error al enviar las respuestas');
   }
 }
 
+// Función para determinar el tipo de respuesta (por ejemplo, string, number, multiple)
+function determineAnswerType(answer) {
+  if (Array.isArray(answer)) {
+    return 'multiple'; // Suponemos que si es un array, es una respuesta múltiple
+  } else if (typeof answer === 'boolean') {
+    return 'boolean';
+  } else if (typeof answer === 'number') {
+    return 'number';
+  } else if (typeof answer === 'string') {
+    return 'string';
+  } else {
+    return 'string'; // Default a string si no se puede determinar otro tipo
+  }
+}
 
+// Cargar datos al montar el componente
+onMounted(async () => {
+  await Promise.all([fetchQuestions(), fetchUsers()]);
+});
 </script>
 
+<template>
+  <div class="p-6 space-y-6 max-w-2xl mx-auto">
+    <div v-if="currentQuestionIndex < questions.length" class="bg-white rounded-lg shadow-lg p-6">
+      <h2 class="text-2xl font-bold mb-4">{{ currentQuestion?.title }}</h2>
+      <p class="text-gray-600 mb-4">{{ currentQuestion?.placeholder || 'Selecciona 3 personas' }}</p>
+
+      <div class="grid grid-cols-3 gap-4">
+        <button v-for="user in userNames" :key="user.id" @click="toggleSelection(user.id)" :disabled="(responses[currentQuestion?.id]?.length >= 3) &&
+          !responses[currentQuestion?.id]?.includes(user.id)"
+          class="p-3 rounded-lg transition-all duration-200" :class="{
+            'bg-blue-500 text-white hover:bg-blue-600': responses[currentQuestion?.id]?.includes(user.id),
+            'bg-gray-100 hover:bg-gray-200': !responses[currentQuestion?.id]?.includes(user.id),
+            'opacity-50 cursor-not-allowed': (responses[currentQuestion?.id]?.length >= 3) &&
+              !responses[currentQuestion?.id]?.includes(user.id),
+            'cursor-pointer': (responses[currentQuestion?.id]?.length < 3) ||
+              responses[currentQuestion?.id]?.includes(user.id)
+          }">
+          {{ user.name }}
+        </button>
+      </div>
+
+      <div class="mt-4 text-sm text-gray-600">
+        Seleccionados: {{ responses[currentQuestion?.id]?.length || 0 }}/3
+      </div>
+
+      <!-- Modificación aquí: Mostrar botón de "Finalizar" en la última pregunta -->
+      <button v-if="currentQuestionIndex < questions.length - 1 && responses[currentQuestion?.id]?.length === 3"
+        @click="goToNextQuestion"
+        class="mt-6 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors">
+        Siguiente pregunta
+      </button>
+
+      <button v-else-if="responses[currentQuestion?.id]?.length === 3" @click="submitResponses"
+        class="mt-6 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+        Finalizar
+      </button>
+    </div>
+
+    <div v-else class="text-center">
+      <h3 class="text-xl font-bold mb-4">¡Quiz completado!</h3>
+    </div>
+  </div>
+</template>
+
 <style scoped>
-/* Estilos adicionales si es necesario */
+.transition-all {
+  transition: all 0.2s ease-in-out;
+}
 </style>
