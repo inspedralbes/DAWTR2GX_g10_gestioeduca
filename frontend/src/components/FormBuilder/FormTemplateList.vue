@@ -8,7 +8,7 @@ const formTemplatesStore = useFormTemplatesStore()
 const selectedCategory = ref('all')
 
 const categories = {
-  all: 'Todas las plantillas',
+  all: 'Totes les plantilles',
   ...formTemplatesStore.categories
 }
 
@@ -23,7 +23,7 @@ const filteredTemplates = computed(() => {
 <template>
   <div class="bg-white rounded-lg shadow-md p-6">
     <div class="flex justify-between items-center mb-6">
-      <h3 class="text-lg font-semibold text-gray-800">Plantillas de Formularios</h3>
+      <h3 class="text-lg font-semibold text-gray-800">Plantilles de Formularis</h3>
       <select
         v-model="selectedCategory"
         class="px-3 py-1.5 text-sm border rounded-lg text-gray-600"
@@ -65,7 +65,7 @@ const filteredTemplates = computed(() => {
         </div>
         <p class="text-sm text-gray-500 mb-2">{{ template.description }}</p>
         <div class="text-xs text-gray-400">
-          {{ template.questions.length }} preguntas
+          {{ template.questions.length }} preguntes
         </div>
       </div>
     </div>

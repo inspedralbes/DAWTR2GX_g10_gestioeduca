@@ -28,18 +28,18 @@ const generateAIResponse = async (message) => {
     chatHistory.value.push({
       role: 'assistant',
       content:
-        'He generado un formulario basado en tus necesidades. ¿Te gustaría ajustar alguna pregunta?',
+        'He generat un formulari basat en les vostres necessitats. Vols ajustar alguna pregunta?',
       success: true,
     });
 
     emit('generate-questions', response);
   } catch (error) {
-    console.error('Error en la generación:', error);
+    console.error('Error en la generació:', error);
     chatHistory.value.push({
       role: 'assistant',
       content:
         error.message ||
-        'Ha ocurrido un error inesperado. Por favor, intenta de nuevo.',
+        'Hi ha hagut un error inesperat. Si us plau, intenta de nou.',
       error: true,
     });
   } finally {
@@ -72,7 +72,7 @@ onMounted(() => {
   chatHistory.value.push({
     role: 'assistant',
     content:
-      '¡Hola! Soy tu asistente para crear formularios. Describe el tipo de formulario que necesitas y te ayudaré a generarlo.',
+      "Hola! Sóc el teu assistent per crear formularis. Descriu el tipus de formulari que necessites i t'ajudaré a generar-ho.",
   });
 
   // Rotate suggestions every 20 seconds
@@ -94,10 +94,10 @@ onUnmounted(() => {
     <!-- Header -->
     <div class="p-4 border-b">
       <h3 class="text-lg font-semibold text-gray-800">
-        Asistente IA para Formularios
+        Assistent IA per a Formularis
       </h3>
       <p class="text-sm text-gray-500">
-        Describe el tipo de formulario que necesitas
+        Descriu el tipus de formulari que necessites
       </p>
     </div>
 
@@ -128,7 +128,7 @@ onUnmounted(() => {
             style="animation-delay: 0.4s"
           ></div>
         </div>
-        <span class="text-sm">Generando formulario...</span>
+        <span class="text-sm">Generant formulari...</span>
       </div>
     </div>
 
@@ -141,7 +141,7 @@ onUnmounted(() => {
 
       <ChatInput
         :disabled="isGenerating"
-        placeholder="Describe el formulario que necesitas..."
+        placeholder="Descriu el formulari que necessites..."
         @send="sendMessage"
       />
     </div>
