@@ -10,7 +10,7 @@ export const useChatStore = defineStore('chat', {
     createNewChat() {
       const newChat = {
         id: Date.now(),
-        name: 'New Chat',
+        name: 'Nou Chat',
         messages: [],
         documents: [],
         createdAt: new Date().toISOString(),
@@ -71,7 +71,7 @@ export const useChatStore = defineStore('chat', {
         const data = JSON.parse(saved);
         this.chats = data.chats.map(chat => ({
           ...chat,
-          name: chat.name || 'New Chat',
+          name: chat.name || 'Nou Chat',
           documents: chat.documents || [],
         }));
         this.currentChatId = data.currentChatId;

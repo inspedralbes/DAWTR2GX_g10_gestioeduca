@@ -43,14 +43,14 @@ const goToDashboard = () => {
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
         </svg>
-        <span>Volver</span>
+        <span>Tornar</span>
       </button>
 
       <!-- Título centrado -->
       <h1 class="flex-grow text-center text-2xl font-bold">Gestión de Alumnos</h1>
     </div>
     <div v-if="isLoading" class="text-center p-8">
-      Cargando estudiantes...
+      Carregant estudiants...
     </div>
     <div v-else>
       <StudentFilters 

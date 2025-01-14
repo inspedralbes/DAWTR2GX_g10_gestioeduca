@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title')->unique();
             $table->string('description')->nullable();
+            $table->integer('responses_count')->default(0);
             $table->integer('status')->default(1);
             $table->boolean('division')->default(true);
             $table->date('date_limit')->nullable();
@@ -27,6 +28,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('forms');
+        Schema::table('forms', function (Blueprint $table) {
+            $table->dropColumn('responses_count');
+        });
     }
 };

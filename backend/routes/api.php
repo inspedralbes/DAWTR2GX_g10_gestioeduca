@@ -49,6 +49,20 @@ Route::post('forms-save', [FormController::class, 'storeFormWithQuestions']);
 //RUTA PARA ASIGNAR FORMULARIO A USUARIO
 Route::post('/assign-form-to-user', [FormController::class, 'assignFormToUser']);
 
+//RUTA PARA OBTENER FORMULARIOS DE USUARIO
+Route::get('/forms/user/{userId}', [FormController::class, 'getFormsByUserId']);
+
+//RUTA PARA OBTENER PREGUNTAS con DE UN FORMULARIO
+Route::get('/forms/{formId}/questions-and-answers', [FormController::class, 'getQuestions']);
+
+//RUTA PARA ACTUALIZAR ESTADO DE FORMULARIO
+Route::patch('/forms/{formId}/status', [FormController::class, 'updateFormStatus']);
+
+
+
+Route::post('/forms/{formId}/submit-responses', [AnswerController::class, 'submitResponses']);
+
+
 
 Route::get('/roles', [RoleController::class, 'index']);
 
@@ -58,6 +72,7 @@ Route::resource('forms', FormController::class);
 Route::resource('questions', QuestionController::class);
 Route::resource('answers', AnswerController::class);
 Route::resource('groups', GroupController::class);
+
 // ruta para pedir todas las preguntas y respuestas de un formulario
 Route::get('forms/{formId}/questions', [FormController::class, 'getQuestionsAndAnswers']);
 //ruta para obtener los datos de un estudiante (curso, division)
@@ -72,7 +87,7 @@ Route::post('/register', [RegisteredUserController::class, 'store']);
 Route::middleware('auth:sanctum')->post('/logout', [AuthenticatedSessionController::class, 'logout']);
 
 
-//AÑADIDO RECIEN 
+//AÑADIDO RECIEN
 
 // Ruta para obtener el usuario autenticado
 Route::middleware('auth:sanctum')->get('/user', [UserController::class, 'getAuthenticatedUser']);
@@ -88,6 +103,7 @@ Route::get('forms/{formId}/questions', [FormController::class, 'getQuestionsAndA
 Route::post('forms/{formId}/submit-answers', [AnswerController::class, 'storeMultipleAnswers']);
 Route::get('forms/{id}', [FormController::class, 'show']);
 Route::get('groups/{id}/members', [GroupController::class, 'getMembers']);
+Route::post('groups/{id}/addStudentsToGroup', [GroupController::class, 'addStudentsToGroup']);
 
 // CRUD para preguntas y respuestas
 Route::resource('questions', QuestionController::class);

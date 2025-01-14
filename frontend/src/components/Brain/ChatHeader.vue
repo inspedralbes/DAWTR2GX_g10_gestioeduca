@@ -28,7 +28,7 @@ const toggleDocuments = () => {
           <span class="text-white text-xl">AI</span>
         </div>
         <div>
-          <h2 class="font-semibold text-gray-800">Teaching Assistant</h2>
+          <h2 class="font-semibold text-gray-800">Auxiliar docent</h2>
           <div class="flex items-center">
             <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
             <span class="text-sm text-gray-500">Online</span>

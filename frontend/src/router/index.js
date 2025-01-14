@@ -11,6 +11,7 @@ import StudentProfile from '../views/Students/StudentProfile.vue';
 import CreateForm from '@/views/CreateForm.vue';
 import StudentForms from '@/components/student/StudentForms.vue';
 import FormQuestions from '@/components/student/FormQuestions.vue';
+import ManualCreateGroup from '@/views/Groups/ManualCreateGroup.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -137,6 +138,12 @@ const router = createRouter({
       path: '/grupos',
       name: 'GroupList',
       component: GroupList,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/manualCreateGroup',
+      name: 'manualCreateGroup',
+      component: ManualCreateGroup,
       meta: { requiresAuth: true },
     },
     {

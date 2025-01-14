@@ -26,7 +26,7 @@ defineProps({
       <span :class="trend > 0 ? 'text-success' : 'text-danger'">
         {{ trend > 0 ? '+' : '' }}{{ trend }}%
       </span>
-      <span class="text-gray-500 ml-2">vs last month</span>
+      <span class="text-gray-500 ml-2">vs mes anterior</span>
     </div>
   </div>
 </template>

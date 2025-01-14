@@ -2,10 +2,10 @@
 import { ref } from 'vue';
 
 const suggestions = [
-  "¿Cómo puedo identificar situaciones de bullying en mi clase?",
-  "¿Qué estrategias hay para mejorar la integración del grupo?",
-  "¿Cómo puedo ayudar a un alumno que está aislado?",
-  "Necesito ideas para actividades de trabajo en equipo",
+  "Com puc identificar situacions de bullying a la meva classe?",
+  "Quines estratègies hi ha per millorar la integració del grup?",
+  "Com puc ajudar un alumne que està aïllat?",
+  "Necessito idees per a activitats de treball en equip",
 ];
 
 const emit = defineEmits(['select']);

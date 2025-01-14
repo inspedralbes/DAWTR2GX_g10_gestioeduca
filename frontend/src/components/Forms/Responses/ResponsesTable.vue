@@ -56,19 +56,19 @@ const isSelected = (responseId) => props.selected.includes(responseId)
               />
             </th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-              Estudiante
+              Estudiant
             </th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-              Curso
+              Curs
             </th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-              Fecha
+              Data
             </th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-              Estado
+              Estat
             </th>
             <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
-              Acciones
+              Accions
             </th>
           </tr>
         </thead>

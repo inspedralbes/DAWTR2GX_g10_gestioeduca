@@ -3,7 +3,7 @@
     <nav class="flex items-center justify-between px-6 py-4 lg:px-8 lg:py-6" aria-label="Global">
       <!-- Logo -->
       <router-link to="/" class="-m-1.5 p-1.5">
-          <span class="sr-only">Your Company</span>
+          <span class="sr-only">Grupify</span>
           <img class="h-8 w-auto" src="../../../public/img/icono.png" alt="Logo">
         </router-link>
 
@@ -23,7 +23,7 @@
       <!-- Navegación de escritorio -->
       <div class="hidden lg:flex lg:flex-1 lg:justify-end space-x-8">
         <button @click="$emit('show-asignatures')" class="text-sm font-semibold text-gray-900 hover:text-indigo-600">
-          Asignatures
+          Assignatures
         </button>
         <button @click="$emit('show-enquestes')" class="text-sm font-semibold text-gray-900 hover:text-indigo-600">
           Enquestes
@@ -39,7 +39,7 @@
       <div class="px-2 pt-2 pb-3 space-y-1">
         <button @click="$emit('show-asignatures')"
           class="block w-full text-left px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-100 hover:text-indigo-600">
-          Asignatures
+          Assignatures
         </button>
         <button @click="$emit('show-enquestes')"
           class="block w-full text-left px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-100 hover:text-indigo-600">

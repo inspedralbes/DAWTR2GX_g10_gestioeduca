@@ -30,15 +30,15 @@ onMounted(async () => {
 // Definimos las secciones del cuestionario
 const sections = [
   {
-    title: "¿Con quién prefieres trabajar?",
-    description: "Selecciona 3 compañeros/as con los que prefieres trabajar en clase",
+    title: "Amb qui prefereixes treballar?",
+    description: "Selecciona 3 companys/es amb qui prefereixes treballar a classe",
     id: 15,
     icon: UserGroupIcon,
     selectionKey: "preferredWorkPartners",
     maxSelections: 3,
   },
   {
-    title: "¿Con quién prefieres no trabajar?",
+    title: "Amb qui prefereixes no treballar?",
     description: "Selecciona 3 compañeros/as con los que prefieres evitar trabajar",
     id: 16,
     icon: UserIcon,
@@ -46,7 +46,7 @@ const sections = [
     maxSelections: 3,
   },
   {
-    title: "¿Con quién has trabajado anteriormente?",
+    title: "Amb qui has treballat anteriorment?",
     description: "Selecciona 3 compañeros/as con los que hayas trabajado anteriormente",
     id: 17,
     icon: UserIcon,
@@ -55,7 +55,7 @@ const sections = [
   },
 
   {
-    title: "Quién tiene habilidades de liderazgo",
+    title: "Qui té habilitats de lideratge",
     description: "Selecciona 2 compañeros/as que consideras buenos líderes",
     id: 18,
     icon: StarIcon,
@@ -63,23 +63,23 @@ const sections = [
     maxSelections: 2,
   },
   {
-    title: "Quién tiene habilidades de creatividad",
-    description: "Selecciona 2 compañeros/as que consideras más creativos",
+    title: "Qui té habilitats de creativitat",
+    description: "Selecciona 2 companys/es que consideres més creatius",
     id: 19,
     icon: LightBulbIcon,
     selectionKey: "creativePeople",
     maxSelections: 2,
   },
   {
-    title: "Quién tiene habilidades de organización",
-    description: "Selecciona 2 compañeros/as que son más organizados",
+    title: "Qui té habilitats d'organització",
+    description: "Selecciona 2 companys/es que són més organitzats",
     id: 20,
     icon: HeartIcon,
     selectionKey: "organizedPeople",
     maxSelections: 2,
   },
   {
-    title: "¿Con quién no has trabajado anteriormente?",
+    title: "Amb qui no has treballat anteriorment?",
     description: "Selecciona 2 compañeros/as con los que no hayas trabajado anteriormente",
     id: 21,
     icon: UserIcon,
@@ -195,7 +195,7 @@ const handleFinish = async () => {
     }
 
     // Mostrar mensaje de éxito y redirigir
-    successMessage.value = "Respuestas enviadas correctamente.";
+    successMessage.value = "Respostes enviades correctament.";
     setTimeout(() => {
       successMessage.value = ""; // Desaparecer el mensaje después de 3 segundos
       router.push("/student/forms");
@@ -206,15 +206,15 @@ const handleFinish = async () => {
     localStorage.setItem("completedForms", JSON.stringify(completedForms));
 
   } catch (error) {
-    console.error("Error al enviar las respuestas:", error);
-    errorMessage.value = "Hubo un error al enviar las respuestas.";
+    console.error("Error en enviar les respostes:", error);
+    errorMessage.value = "Hi va haver un error en enviar les respostes.";
   }
 };
 
 </script>
 
 <template>
-  <div class="max-w-4xl mx-auto">
+  <div class="max-w-4xl mx-auto mt-12 mb-12">
     <!-- Mensaje de Error -->
     <div v-if="errorMessage" class="bg-red-100 text-red-700 border-l-4 border-red-500 p-4 rounded-lg">
       <p class="font-semibold">{{ errorMessage }}</p>
@@ -226,7 +226,7 @@ const handleFinish = async () => {
     </div>
 
     <div v-if="!showResults" class="bg-white rounded-lg shadow-lg p-6">
-      <h1 class="text-2xl font-bold mb-4 text-center">Cuestionario Sociométrico</h1>
+      <h1 class="text-2xl font-bold mb-4 text-center">Qüestionari Sociomètric</h1>
 
       <div class="mb-6">
         <h2 class="text-xl font-semibold flex items-center gap-3">
@@ -268,14 +268,14 @@ const handleFinish = async () => {
           class="bg-primary text-white px-4 py-2 rounded-lg ml-auto hover:bg-primary/90"
           :disabled="selections[currentSectionData.selectionKey].length !== currentSectionData.maxSelections"
         >
-          {{ currentSection === sections.length - 1 ? "Ver Resultados" : "Siguiente" }}
+          {{ currentSection === sections.length - 1 ? "Veure resultats" : "Següent" }}
         </button>
       </div>
     </div>
 
     <div v-else class="space-y-6">
       <div class="bg-white rounded-lg shadow-lg p-6">
-        <h2 class="text-2xl font-bold mb-6 text-center">Resumen de tus respuestas</h2>
+        <h2 class="text-2xl font-bold mb-6 text-center">Resum de les respostes</h2>
         <div class="space-y-6">
           <div v-for="section in sections" :key="section.title" class="border-b pb-4">
             <div class="flex items-center gap-2 mb-2">
@@ -300,7 +300,7 @@ const handleFinish = async () => {
           @click="handleFinish"
           class="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90 font-semibold"
         >
-          Finalizar
+          Finalitzar
         </button>
       </div>
     </div>

@@ -23,7 +23,7 @@ onMounted(() => {
 
 <template>
   <div class="space-y-6">
-    <h2 class="text-2xl font-bold">Mis Grupos</h2>
+    <h2 class="text-2xl font-bold">Grups</h2>
 
     <div v-for="group in groupStore.groups" :key="group.id" class="bg-white rounded-lg shadow p-6">
       <!-- Encabezado del grupo -->
@@ -33,14 +33,14 @@ onMounted(() => {
           <p class="text-gray-600">{{ group.description }}</p>
         </div>
         <span class="px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
-          {{ group.status || 'Activo' }}
+          {{ group.status || 'Actiu' }}
         </span>
       </div>
 
       <!-- Botón para expandir/ocultar miembros -->
       <div class="mb-4">
         <button @click="toggleMembers(group.id)" class="flex items-center text-primary hover:text-primary/80">
-          <span>{{ expandedGroups.includes(group.id) ? 'Ocultar' : 'Ver' }} integrantes</span>
+          <span>{{ expandedGroups.includes(group.id) ? 'Ocultar' : 'Veure' }} integrants</span>
         </button>
       </div>
 

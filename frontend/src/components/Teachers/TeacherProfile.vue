@@ -41,7 +41,7 @@ onMounted(async () => {
     <!-- Loading Spinner -->
     <div v-if="isLoading" class="text-center py-8">
       <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-      <p class="mt-4 text-gray-500">Cargando perfil del Profesor...</p>
+      <p class="mt-4 text-gray-500">Cargant perfil del Professor...</p>
     </div>
 
     <!-- Mostrar error -->
@@ -58,8 +58,8 @@ onMounted(async () => {
         <h1 class="text-3xl font-bold">{{ teacher.name }}</h1>
         <h1 class="text-3xl font-bold">{{ teacher.last_name }}</h1>
       </div>
-      <p class="text-lg"><strong>Curso:</strong> {{ teacher.course }}</p>
-      <p class="text-lg"><strong>División:</strong> {{ teacher.division }}</p>
+      <p class="text-lg"><strong>Curs:</strong> {{ teacher.course }}</p>
+      <p class="text-lg"><strong>Divisió:</strong> {{ teacher.division }}</p>
       <p class="text-lg"><strong>Email:</strong> {{ teacher.email }}</p>
     </div>
   </div>

@@ -49,7 +49,6 @@ class User extends Authenticatable
     {
         return $this->hasMany(Answer::class);
     }
-
     public function divisions()
     {
         return $this->belongsToMany(Division::class); 
@@ -61,6 +60,8 @@ class User extends Authenticatable
     }
     public function forms()
     {
-        return $this->belongsToMany(Form::class, 'form_user', 'user_id', 'form_id');
+        return $this->belongsToMany(Form::class, 'form_user', 'user_id', 'form_id')
+                    ->withPivot('answered')  // Incluimos el campo 'answered' de la tabla intermedia
+                    ->withTimestamps();
     }
 }

@@ -4,19 +4,19 @@
         <h2 class="text-2xl font-bold text-blue-700 mb-4">Confirmación de Envío</h2>
         
         <div class="mb-4">
-          <p class="text-gray-700">Has completado todas las preguntas del cuestionario.</p>
+          <p class="text-gray-700">Heu completat totes les preguntes del qüestionari.</p>
           <div class="mt-4 bg-blue-50 p-4 rounded-lg">
             <h3 class="font-semibold text-blue-800 mb-2">Resumen</h3>
             <ul class="list-disc list-inside text-sm">
-              <li>Nombre: {{ studentInfo.name }}</li>
-              <li>Curso: {{ studentInfo.course }}</li>
-              <li>Centro: {{ studentInfo.school }}</li>
-              <li>Preguntas respondidas: {{ totalQuestions }}/{{ totalQuestions }}</li>
+              <li>Nom: {{ studentInfo.name }}</li>
+              <li>Curs: {{ studentInfo.course }}</li>
+              <li>Centre: {{ studentInfo.school }}</li>
+              <li>Preguntes respostes: {{ totalQuestions }}/{{ totalQuestions }}</li>
             </ul>
           </div>
         </div>
         
-        <p class="text-gray-600 mb-4">¿Estás seguro de que quieres enviar el formulario?</p>
+        <p class="text-gray-600 mb-4">Estàs segur que vols enviar el formulari?</p>
         
         <div class="flex justify-between">
           <button 

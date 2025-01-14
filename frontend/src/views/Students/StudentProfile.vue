@@ -51,12 +51,12 @@ onMounted(async () => {
 <template>
   <div class="p-6">
     <div class="mb-6">
-      <h1 class="text-2xl font-bold">Perfil del Estudiante</h1>
+      <h1 class="text-2xl font-bold">Perfil d'Estudiant</h1>
     </div>
 
     <!-- Mostrar cargando si la información está siendo obtenida -->
     <div v-if="isLoading" class="text-center py-8 text-gray-500">
-      Cargando perfil...
+      Carregant perfil...
     </div>
 
     <!-- Mostrar error si hay algún problema al encontrar el estudiante -->

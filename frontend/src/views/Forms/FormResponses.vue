@@ -29,34 +29,34 @@ const showDownloadMenu = ref(false);
 // Mock data
 const form = ref({
   id: route.params.id,
-  title: 'Evaluación Trimestral',
-  description: 'Evaluación del primer trimestre',
+  title: 'Avaluació Trimestral',
+  description: 'Avaluació del primer trimestre',
   questions: [
     {
       id: 1,
-      title: '¿Cómo valorarías tu comprensión de la materia?',
+      title: 'Com valoraries la teva comprensió de la matèria?',
       type: 'multiple',
       options: [
-        { text: 'Excelente', value: 4 },
-        { text: 'Buena', value: 3 },
+        { text: 'Excel·lent', value: 4 },
+        { text: 'Bona', value: 3 },
         { text: 'Regular', value: 2 },
-        { text: 'Necesito ayuda', value: 1 }
+        { text: 'Necessito ajuda', value: 1 }
       ]
     },
     {
       id: 2,
-      title: '¿Qué temas necesitas reforzar?',
+      title: 'Quins temes necessites reforçar?',
       type: 'text'
     },
     {
       id: 3,
-      title: '¿Qué aspectos de la clase te resultan más útiles?',
+      title: 'Quins aspectes de la classe et són més útils?',
       type: 'checkbox',
       options: [
-        { text: 'Explicaciones teóricas', value: 0 },
-        { text: 'Ejercicios prácticos', value: 1 },
-        { text: 'Trabajo en grupo', value: 2 },
-        { text: 'Material complementario', value: 3 }
+        { text: 'Explicacions teòriques', value: 0 },
+        { text: 'Exercicis pràctics', value: 1 },
+        { text: 'Treball en grup', value: 2 },
+        { text: 'Material complementari', value: 3 }
       ]
     }
   ]
@@ -71,9 +71,9 @@ const responses = ref([
     submittedAt: '2024-03-10T10:30:00',
     division: 'completed',
     answers: [
-      { questionId: 1, value: 'Buena' },
-      { questionId: 2, value: 'Necesito reforzar álgebra y ecuaciones' },
-      { questionId: 3, value: ['Ejercicios prácticos', 'Trabajo en grupo'] }
+      { questionId: 1, value: 'Bona' },
+      { questionId: 2, value: 'Necessito reforçar àlgebra i equacions' },
+      { questionId: 3, value: ['Exercicis pràctics', 'Treball en grup'] }
     ]
   },
   {
@@ -85,8 +85,8 @@ const responses = ref([
     division: 'completed',
     answers: [
       { questionId: 1, value: 'Regular' },
-      { questionId: 2, value: 'Geometría y trigonometría' },
-      { questionId: 3, value: ['Explicaciones teóricas', 'Material complementario'] }
+      { questionId: 2, value: 'Geometria i trigonometria' },
+      { questionId: 3, value: ['Explicacions teòriques', 'Material complementari'] }
     ]
   },
   {
@@ -97,8 +97,8 @@ const responses = ref([
     submittedAt: '2024-03-11T11:45:00',
     division: 'partial',
     answers: [
-      { questionId: 1, value: 'Excelente' },
-      { questionId: 2, value: 'Ninguno en particular' }
+      { questionId: 1, value: 'Excel·lent' },
+      { questionId: 2, value: 'Cap en particular' }
     ]
   }
 ]);
@@ -158,10 +158,10 @@ const generatePDF = (responses) => {
   });
 
   const headers = [
-    'Estudiante', 
-    'Curso', 
-    'Fecha', 
-    'Estado', 
+    'Estudiant', 
+    'Curs', 
+    'Data', 
+    'Estat', 
     ...form.value.questions.map(q => q.title)
   ];
 
@@ -176,7 +176,7 @@ const generatePDF = (responses) => {
 };
 
 const generateCSV = (responses) => {
-  const headers = ['Estudiante', 'Curso', 'Fecha', 'Estado'];
+  const headers = ['Estudiant', 'Curs', 'Data', 'Estat'];
   form.value.questions.forEach(q => headers.push(q.title));
   
   const rows = responses.map(response => {

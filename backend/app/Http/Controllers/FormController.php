@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 
 use App\Models\Form;
+use App\Models\Answer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Services\FormService;
@@ -20,7 +21,71 @@ use App\Models\User;
  */
 class FormController extends Controller
 {
+    public function updateFormStatus(Request $request, $formId)
+{
+    $form = Form::find($formId);
 
+    if (is_null($form)) {
+        return response()->json(['message' => 'Formulario no encontrado'], 404);
+    }
+
+    $validated = $request->validate([
+        'status' => 'required|in:0,1',  // 0 = desactivado, 1 = activo
+    ]);
+
+    // Actualizar el estado del formulario
+    $form->status = $validated['status'];
+    $form->save();
+
+    return response()->json(['message' => 'Estado del formulario actualizado correctamente']);
+}
+
+
+
+
+    public function getQuestions($formId)
+    {
+        // Cargar el formulario con las preguntas y las opciones de cada pregunta
+        $form = Form::with('questions.options')->find($formId);
+
+        // Verificar si el formulario existe
+        if (!$form) {
+            return response()->json(['message' => 'Formulario no encontrado'], 404);
+        }
+
+        // Extraer solo las preguntas con sus opciones
+        $questions = $form->questions;
+
+        // Devolver las preguntas y opciones
+        return response()->json($questions, 200);
+    }
+
+
+    public function getFormsByUserId($userId)
+    {
+        // Buscar al usuario junto con sus formularios y el campo 'answered' de la tabla pivot
+        $user = User::with(['forms' => function ($query) {
+            $query->where('status', 1) // Filtrar solo formularios activos
+                ->withPivot('answered'); // Incluir el campo 'answered' de la tabla pivot
+        }])->find($userId);
+
+        // Verificar si el usuario existe
+        if (!$user) {
+            return response()->json(['message' => 'Usuario no encontrado'], 404);
+        }
+
+        // Obtener los formularios del usuario con la columna 'answered' de la tabla pivot
+        $forms = $user->forms->map(function ($form) {
+            return [
+                'id' => $form->id,
+                'title' => $form->title,
+                'answered' => $form->pivot->answered, // Acceder al valor de 'answered' en la tabla pivot
+            ];
+        });
+
+        // Devolver los formularios y su estado 'answered'
+        return response()->json($forms);
+    }
     public function assignFormToUser(Request $request)
     {
         $validatedData = $request->validate([
@@ -114,10 +179,10 @@ class FormController extends Controller
      *     )
      * )
      */
-   
-     public function index(Request $request)
+
+    public function index(Request $request)
     {
-        // Obtener los formularios con preguntas y respuestas
+        // Obtener los formularios activos con preguntas y respuestas
         $forms = Form::with('questions.answers')->get();
 
         if ($request->expectsJson()) {
@@ -128,7 +193,8 @@ class FormController extends Controller
         return view('forms', compact('forms'));
     }
 
-   
+
+
 
 
     /**
@@ -153,33 +219,34 @@ class FormController extends Controller
      *     )
      * )
      */
-    public function show(Request $request, $id)
-{
-    // Obtener el formulario con sus preguntas y respuestas
-    $form = Form::with(['questions.answers'])->find($id);
 
-    if (is_null($form)) {
-        if ($request->expectsJson()) {
-            return response()->json(['message' => 'Formulario no encontrado'], 404);
+
+    public function show(Request $request, $id)
+    {
+        // Obtener el formulario con sus preguntas y respuestas, solo si el formulario está activo
+        $form = Form::with(['questions.answers'])->where('id', $id)->where('status', 1)->first();
+
+        if (is_null($form)) {
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Formulario no encontrado o desactivado'], 404);
+            }
+
+            return redirect()->route('forms.index')->with('error', 'Formulario no encontrado o desactivado');
         }
 
-        return redirect()->route('forms.index')->with('error', 'Formulario no encontrado');
+        // Preparar las preguntas con sus respuestas
+        $questions = $form->questions->map(function ($question) {
+            return [
+                'question' => $question->title,
+                'answers' => $question->answers->pluck('content')->toArray(), // Obtenemos las respuestas como array
+            ];
+        });
+
+        // Pasar el formulario y las preguntas a la vista
+        return view('questions', compact('questions', 'form'));
     }
 
-    // Preparar las preguntas con sus respuestas
-    $questions = $form->questions->map(function ($question) {
-        return [
-            'question' => $question->title,
-            'answers' => $question->answers->pluck('content')->toArray(), // Obtenemos las respuestas como array
-        ];
-    });
 
-    // Verifica que tienes datos en $questions (opcional para depuración)
-    // dd($questions);
-
-    // Pasar el formulario y las preguntas a la vista
-    return view('questions', compact('questions', 'form'));
-}
 
 
 
@@ -206,7 +273,7 @@ class FormController extends Controller
      *     )
      * )
      */
-     /**
+    /**
      * Guardar un nuevo formulario
      */
     public function store(Request $request)
@@ -345,6 +412,3 @@ class FormController extends Controller
         return redirect()->route('forms.index')->with('success', 'Formulario eliminado correctamente');
     }
 }
-
-
-

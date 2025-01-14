@@ -7,17 +7,17 @@
             <span class="text-primary">GRUP</span><span class="text-gray-900"></span>IFY<br/>
           </h1>
           <h2 class="text-3xl font-bold tracking-tight">
-            <span class="text-primary">Auto</span><span class="text-gray-900">matiza</span> tu colegio,<br/>
-            <span class="text-primary">Insp</span><span class="text-gray-900">ira</span> el aprendizaje.
+            <span class="text-primary">Auto</span><span class="text-gray-900">matitza</span> l'institut,<br/>
+            <span class="text-primary">Insp</span><span class="text-gray-900">ira</span> l'aprenentatge.
           </h2>
           <p class="text-xl text-gray-600 mt-6">
-            Facilita la formación de grupos de trabajo en clases, 
-            asegurando la inclusión, equilibrio y transparencia en la asignación, para analizar y mejorar el proceso.
+            Facilita la formació de grups de treball a classes i creació + gestió de formularis per a professors, 
+            assegurant la inclusió, l'equilibri i la transparència en l'assignació, per analitzar i millorar el procés.
           </p>
           
           <div class="flex gap-4 mt-8">
             <router-link to="/login" class="px-6 py-3 bg-primary text-white rounded hover:bg-primary/90 transition-colors">
-              Empieza ahora 
+              Comença ara 
             </router-link>
           </div>
         </div>
