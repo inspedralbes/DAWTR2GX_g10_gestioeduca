@@ -8,8 +8,15 @@
       <div v-for="form in forms" :key="form.id" class="bg-white rounded-lg shadow p-4 mb-4">
         <h3 class="text-lg font-semibold">{{ form.title }}</h3>
         <p class="text-sm text-gray-500">{{ form.description }}</p>
-        <button @click="handleFormClick(form.id)" class="mt-4 bg-primary text-white px-4 py-2 rounded">
-          Completar
+        
+        <!-- Condicional para cambiar texto, color y deshabilitar el botón -->
+        <button 
+          @click="handleFormClick(form.id)" 
+          :disabled="form.answered === 1" 
+          :class="form.answered === 1 ? 'bg-green-300' : 'bg-primary text-white'" 
+          class="mt-4 px-4 py-2 rounded"
+        >
+          {{ form.answered === 1 ? 'Completado' : 'Completar' }}
         </button>
       </div>
     </div>
@@ -42,7 +49,7 @@ const loadFormsByUserId = async (userId) => {
 
     forms.value = await response.json();
   } catch (error) {
-    console.error("Error al cargar formularis", error);
+    console.error("Error al cargar formularios", error);
   }
 };
 
@@ -50,6 +57,7 @@ const loadFormsByUserId = async (userId) => {
 onMounted(() => {
   loadFormsByUserId(userId);
 });
+
 // Manejador del clic en el formulario
 const handleFormClick = (formId) => {
   if (formId === 3) {
