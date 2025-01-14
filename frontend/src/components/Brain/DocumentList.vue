@@ -44,7 +44,7 @@ const formatDate = (timestamp) => {
 <template>
   <div class="space-y-2">
     <div v-if="chatDocuments.length === 0" class="text-center text-gray-500 text-sm py-2">
-      No documents uploaded yet
+      Encara no s'ha penjat cap document
     </div>
     
     <div v-else v-for="doc in chatDocuments" :key="doc.id" 

@@ -25,7 +25,7 @@ const saveEditedName = (chatId) => {
 };
 
 const handleDeleteChat = (chatId) => {
-  if (confirm('Are you sure you want to delete this chat?')) {
+  if (confirm('Confirmes que vols suprimir aquest xat?')) {
     chatStore.deleteChat(chatId);
   }
 };

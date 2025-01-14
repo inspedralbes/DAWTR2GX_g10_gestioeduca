@@ -34,7 +34,7 @@
             v-if="currentStep > -1"
             class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-full"
           >
-            Atrás
+            Enrere
           </button>
           
           <button 
@@ -122,7 +122,7 @@ if (currentStep.value >= 0 && responses.value[currentStep.value].length !== 3) {
   // Mostrar pantalla de error o mensaje en lugar de alerta
   validationScreen.value = {
     type: 'error',
-    message: 'Por favor, selecciona 3 estudiantes',
+    message: 'Si us plau, seleccioneu 3 estudiants',
   }
   return
 }
@@ -133,7 +133,7 @@ if (currentStep.value === questions.value.length - 1) {
     // Mostrar pantalla de error o mensaje en lugar de alerta
     validationScreen.value = {
       type: 'error',
-      message: 'Por favor, completa toda la información personal',
+      message: 'Si us plau, completa tota la informació personal',
     }
     return
   }
@@ -153,7 +153,7 @@ const submitForm = () => {
     responses: responses.value
   }
 
-  console.log('Formulario completo:', formData)
+  console.log('Formulari complet:', formData)
   
   // Aquí tenemos que enviar los datos al backend
   formState.value = 'thankyou'

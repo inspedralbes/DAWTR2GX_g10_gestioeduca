@@ -103,18 +103,18 @@ const handleSave = async () => {
 
     if (!response.ok) {
       const errorData = await response.json();
-      console.error('Errores de validación:', errorData);
-      alert('Errores en los datos enviados: ' + JSON.stringify(errorData.errors, null, 2));
+      console.error('Errors de validació:', errorData);
+      alert('Errors en les dades enviades: ' + JSON.stringify(errorData.errors, null, 2));
       return;
     }
 
     const result = await response.json();
-    console.log('Respuesta del servidor:', result);
-    alert('Formulario guardado con éxito.');
+    console.log('Resposta del servidor:', result);
+    alert('Formulari desat amb éxit.');
 
   } catch (error) {
-    console.error('Error al guardar el formulario:', error);
-    alert('Hubo un error al guardar el formulario. Por favor, inténtalo de nuevo.');
+    console.error('Error en desar el formulari:', error);
+    alert('Hi va haver un error en desar el formulari. Si us plau, torna-ho a intentar.');
   }
 };
 

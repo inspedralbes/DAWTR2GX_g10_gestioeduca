@@ -26,7 +26,7 @@ const handleDrop = async (e) => {
 
   const file = files[0];
   if (!supportedTypes.includes(file.type)) {
-    alert('Please upload a supported file type (txt, json, md)');
+    alert('Pengeu un tipus de fitxer compatible (txt, json, md)');
     return;
   }
 
@@ -43,8 +43,8 @@ const processFile = async (file) => {
     };
     reader.readAsText(file);
   } catch (error) {
-    console.error('Error processing file:', error);
-    alert('Error processing file. Please try again.');
+    console.error('Error amb el fitxer:', error);
+    alert('Error en processar el fitxer. Si us plau, torna-ho a provar.');
   } finally {
     isProcessing.value = false;
   }
@@ -98,9 +98,9 @@ const handleDragLeave = () => {
         </svg>
         <div class="text-sm">
           <span class="font-medium text-primary">
-            {{ dragActive ? 'Drop your file here' : 'Click to upload' }}
+            {{ dragActive ? 'Deixeu anar el vostre fitxer aquí' : 'Feu clic per carregar' }}
           </span>
-          <span class="text-gray-500"> or drag and drop</span>
+          <span class="text-gray-500"> o arrossegar i deixar anar</span>
         </div>
         <p class="text-xs text-gray-500">
           Fitxers acceptats: TXT, JSON, MD.

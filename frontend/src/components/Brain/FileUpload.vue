@@ -15,18 +15,18 @@ const handleFileUpload = async (event) => {
   const file = event.target.files[0];
   
   if (!file) {
-    alert('Please select a file');
+    alert('Seleccioneu un fitxer');
     return;
   }
 
   // For doc/docx files, we'll need to handle them as binary
   if (file.type.includes('word')) {
-    alert('Word documents are not supported yet. Please use txt, json, or csv files.');
+    alert('Els documents de Word encara no són compatibles. Feu servir fitxers txt, json o csv.');
     return;
   }
 
   if (!supportedTypes.includes(file.type)) {
-    alert('Please upload a supported file type (txt, json, csv)');
+    alert('Pengeu un tipus de fitxer compatible (txt, json, csv)');
     return;
   }
 
@@ -37,13 +37,13 @@ const handleFileUpload = async (event) => {
       const content = e.target.result;
       emit('file-content', content);
     } catch (error) {
-      console.error('Error reading file:', error);
-      alert('Error reading file. Please try again.');
+      console.error('Error llegint el fitxer:', error);
+      alert('Error al llegir el fitxer. Si us plau, torna-ho a provar.');
     }
   };
 
   reader.onerror = () => {
-    alert('Error reading file. Please try again.');
+    alert('Error al llegir el fitxer. Si us plau, torna-ho a provar.');
   };
 
   reader.readAsText(file);
@@ -53,7 +53,7 @@ const handleFileUpload = async (event) => {
 <template>
   <div class="w-full">
     <label class="block mb-2 text-sm font-medium text-gray-900">
-      Upload Document
+      Carrega el document
     </label>
     <input
       type="file"
@@ -62,7 +62,7 @@ const handleFileUpload = async (event) => {
       class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none p-2"
     />
     <p class="mt-1 text-sm text-gray-500">
-      Supported files: TXT, JSON, CSV
+      Fitxers compatibles: TXT, JSON, CSV
     </p>
   </div>
 </template>

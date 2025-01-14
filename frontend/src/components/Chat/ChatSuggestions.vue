@@ -15,7 +15,7 @@ defineEmits(['select'])
   <div class="space-y-2">
     <p class="text-xs text-gray-500 flex items-center gap-1.5">
       <SparklesIcon class="w-3.5 h-3.5" />
-      Sugerencias
+      Suggeriments
     </p>
     <div class="flex flex-wrap gap-1.5">
       <button
