@@ -2,12 +2,13 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Database\Seeder; // Importar Seeder
 use App\Models\Answer;
 use App\Models\Course;
 use App\Models\Division;
 use App\Models\Group;
 use App\Models\Question;
-use Illuminate\Database\Seeder;
+
 use Laravel\Prompts\FormStep;
 
 use function Laravel\Prompts\form;
@@ -38,7 +39,9 @@ class DatabaseSeeder extends Seeder
             QuestionSeeder::class, // Crear preguntas después
             OptionSeeder::class,   // Opciones relacionadas a preguntas
             AnswerSeeder::class,
-            
+            RespostesSeeder::class,
+            ResultatsSeeder::class;
+
             CourseUserSeeder::class,
             CourseDivisionSeeder::class,
         ]);

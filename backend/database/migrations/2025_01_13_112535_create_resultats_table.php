@@ -12,8 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('resultats', function (Blueprint $table) {
-            $table->integer('id_enquesta');
-            $table->integer('id_alumne');
+            $table->integer('form_id');
+            $table->integer('user_id');
+
             $table->integer('totalAgressivitat')->nullable();
             $table->integer('agressivitatFisica')->nullable();
             $table->integer('agressivitatVerbal')->nullable();
@@ -40,7 +41,7 @@ return new class extends Migration
             $table->string('triesPositives_SN', 1)->nullable();
             $table->string('triesNegatives_SN', 1)->nullable();
 
-            $table->primary(['id_enquesta', 'id_alumne']);
+            $table->primary(['form_id', 'user_id']);
         });
     }
 

@@ -54,7 +54,7 @@
             />
           </div>
   
-          <!-- Mostrar respuestas de la pregunta -->
+          <!-- Mostrar respuestas de la pregunta 
           <div v-if="question.answers && question.answers.length > 0" class="mt-4">
             <h4 class="text-lg font-semibold text-gray-800">Respuestas:</h4>
             <div class="space-y-2 mt-2">
@@ -68,11 +68,14 @@
               </div>
             </div>
           </div>
+          -->
   
-          <!-- Si no hay respuestas -->
+          <!-- Si no hay respuestas 
           <div v-else class="mt-2 text-sm text-gray-500">
             No hay respuestas disponibles para esta pregunta.
           </div>
+          -->
+          
         </div>
       </div>
     </div>
