@@ -4,7 +4,10 @@ import { ref } from 'vue'
 import GroupGenerator from '../../components/Groups/GroupGenerator.vue'
 import GroupPreview from '../../components/Groups/GroupPreview.vue'
 import { useRouter } from 'vue-router';
-
+// Método para navegar al dashboard
+const goToDashboard = () => {
+  router.push('/dashboard')
+}
 const router = useRouter();
 const students = ref([
   {
@@ -58,6 +61,15 @@ const handleGenerateGroups = (newGroups) => {
 
 <template>
   <div class="p-4 sm:p-6">
+    <button 
+        @click="goToDashboard" 
+        class="flex items-center space-x-1 text-gray-700 hover:text-gray-900"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+        </svg>
+        <span>Tornar</span>
+      </button>
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
       <h1 class="text-xl sm:text-2xl font-bold">Grups de Classe</h1>
       <button class="w-full sm:w-auto btn btn-primary flex items-center justify-center space-x-2 " @click="goManualCreateGroup">
