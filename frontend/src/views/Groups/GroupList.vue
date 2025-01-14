@@ -59,10 +59,10 @@ const handleGenerateGroups = (newGroups) => {
 <template>
   <div class="p-4 sm:p-6">
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-      <h1 class="text-xl sm:text-2xl font-bold">Grupos de Clase</h1>
+      <h1 class="text-xl sm:text-2xl font-bold">Grups de Classe</h1>
       <button class="w-full sm:w-auto btn btn-primary flex items-center justify-center space-x-2 " @click="goManualCreateGroup">
         <PlusIcon class="w-5 h-5" />
-        <span>Nuevo Grupo Manual</span>
+        <span>Nou Grup Manual</span>
       </button>
     </div>
 
@@ -84,7 +84,7 @@ const handleGenerateGroups = (newGroups) => {
           v-else
           class="card text-center text-gray-500"
         >
-          Configura y genera grupos para ver la vista previa
+          Configura i genera grups per ver la vista prèvia
         </div>
       </div>
     </div>
@@ -104,7 +104,7 @@ const handleGenerateGroups = (newGroups) => {
         v-else
         class="bg-white rounded-lg shadow-md p-4 text-center text-gray-500"
       >
-        Configura y genera grupos para ver la vista previa
+        Configura i genera grups per ver la vista prèvia
       </div>
     </div>
   </div>

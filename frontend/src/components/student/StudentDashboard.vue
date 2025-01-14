@@ -8,7 +8,7 @@
     ]">
       <!-- Encabezado del menú -->
       <div class="flex items-center justify-between p-4 border-b border-white/20">
-        <h1 v-if="isMenuOpen" class="text-xl font-bold">Panel Estudiante</h1>
+        <h1 v-if="isMenuOpen" class="text-xl font-bold">Panell Estudiant</h1>
         <!-- Botón de menú móvil (solo visible en pantallas pequeñas) -->
         <button @click="toggleMenu"
           class="lg:hidden text-white p-2 rounded-md hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
