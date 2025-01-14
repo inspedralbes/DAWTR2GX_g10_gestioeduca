@@ -52,7 +52,7 @@ class User extends Authenticatable
 
     public function divisions()
     {
-        return $this->belongsToMany(Division::class);
+        return $this->belongsToMany(Division::class); 
     }
 
     public function groups()
@@ -63,6 +63,4 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Form::class, 'form_user', 'user_id', 'form_id');
     }
-
-
 }
