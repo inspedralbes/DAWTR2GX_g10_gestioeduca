@@ -9,12 +9,12 @@
       Formularios Pendientes
     </h3>
     <div class="space-y-4">
-      <div v-if="forms.length === 0" class="text-center text-gray-500">
-        No tienes formularios asignados.
+      <div v-if="filteredForms.length === 0" class="text-center text-gray-500">
+        No tienes formularios pendientes.
       </div>
       <div v-else>
-        <div v-for="form in forms" :key="form.id"
-          class="p-4 bg-gray-50 rounded-lg hover:bg-primary/5 transition-all cursor-pointer">
+        <div v-for="form in filteredForms" :key="form.id"
+          class="p-4 bg-gray-50 rounded-lg hover:bg-primary/5 transition-all cursor-pointer mb-4">
           <div class="flex items-center justify-between">
             <div>
               <h4 class="font-semibold text-gray-900">{{ form.title }}</h4>
@@ -25,8 +25,13 @@
             </span>
           </div>
           <div class="mt-3 flex justify-between items-center">
-            <button @click="handleFormClick(form.id)" class="mt-4 bg-primary text-white px-4 py-2 rounded">
-              Completar
+            <button 
+              @click="handleFormClick(form.id)" 
+              :class="form.answered === 1 ? 'bg-green-300' : 'bg-primary text-white'" 
+              :disabled="form.answered === 1"
+              class="mt-4 px-4 py-2 rounded"
+            >
+              {{ form.answered === 1 ? 'Completado' : 'Completar' }}
             </button>
           </div>
         </div>
@@ -36,7 +41,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted,computed } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 
 const authStore = useAuthStore();
@@ -66,6 +71,11 @@ const loadFormsByUserId = async (userId) => {
 
 onMounted(() => {
   loadFormsByUserId(userId);
+});
+
+// Filtrar solo los formularios con answered === 0
+const filteredForms = computed(() => {
+  return forms.value.filter(form => form.answered === 0);
 });
 
 const handleFormClick = (formId) => {

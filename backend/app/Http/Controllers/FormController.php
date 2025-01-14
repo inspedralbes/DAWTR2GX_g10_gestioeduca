@@ -44,21 +44,27 @@ class FormController extends Controller
 
     public function getFormsByUserId($userId)
     {
+        // Buscar al usuario junto con sus formularios y el campo 'answered' de la tabla pivot
+        $user = User::with(['forms' => function($query) {
+            $query->withPivot('answered'); // Incluir el campo 'answered' de la tabla pivot
+        }])->find($userId);
 
-        $user = User::with('forms')->find($userId);
-
+        // Verificar si el usuario existe
         if (!$user) {
-            return response()->json(['message' => 'User not found'], 404);
+            return response()->json(['message' => 'Usuario no encontrado'], 404);
         }
 
-        $forms = $user->forms;
+        // Obtener los formularios del usuario con la columna 'answered' de la tabla pivot
+        $forms = $user->forms->map(function ($form) {
+            return [
+                'id' => $form->id,
+                'title' => $form->title,
+                'answered' => $form->pivot->answered, // Acceder al valor de 'answered' en la tabla pivot
+            ];
+        });
 
-
-        if (request()->wantsJson()) {
-            return response()->json($forms);
-        }
-
-        return view('forms.index', compact('forms'));
+        // Devolver los formularios y su estado 'answered'
+        return response()->json($forms);
     }
 
     public function assignFormToUser(Request $request)

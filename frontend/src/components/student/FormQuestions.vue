@@ -137,12 +137,16 @@ async function submitResponses() {
       throw new Error('Error al enviar las respuestas');
     }
 
+    // Redirigir al dashboard de estudiante después de un envío exitoso
     alert('Respuestas enviadas correctamente');
+    // Usar $router.push para redirigir a la página del dashboard
+    window.location.href = '/student/dashboard';  // Redirección directa
   } catch (error) {
     console.error('Error al enviar las respuestas:', error);
     alert('Hubo un problema al enviar las respuestas. Por favor, intente de nuevo.');
   }
 }
+
 
 </script>
 

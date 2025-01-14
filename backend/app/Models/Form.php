@@ -28,9 +28,11 @@ class Form extends Model
     }
 
     public function users()
-    {
-        return $this->belongsToMany(User::class, 'form_user', 'form_id', 'user_id');
-    }
+{
+    return $this->belongsToMany(User::class, 'form_user', 'form_id', 'user_id')
+                ->withPivot('answered') // Incluir el campo 'answered' de la tabla intermedia
+                ->withTimestamps();
+}
 
 
     public function answers()
