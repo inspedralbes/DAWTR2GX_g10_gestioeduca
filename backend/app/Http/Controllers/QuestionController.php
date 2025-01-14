@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Question;
 use Illuminate\Support\Facades\Validator;
+use App\Services\QuestionService;
+
 
 /**
  * @OA\Tag(
@@ -13,7 +15,16 @@ use Illuminate\Support\Facades\Validator;
  * )
  */
 class QuestionController extends Controller
+
 {
+
+    protected $questionService;
+
+    public function __construct(QuestionService $questionService)
+    {
+        $this->questionService = $questionService;
+    }
+
     /**
      * @OA\Get(
      *     path="/api/questions",
@@ -25,10 +36,18 @@ class QuestionController extends Controller
      *     )
      * )
      */
-    public function index()
+    public function index(Request $request)
     {
-        $questions = Question::all();
-        return response()->json($questions);
+        // Obtener todas las preguntas
+        $questions = $this->questionService->getAllQuestions();
+
+        // Si la solicitud es una API, devolver las preguntas como JSON
+        if ($request->is('api/*')) {
+            return response()->json($questions);
+        }
+
+        // Si la solicitud es web, mostrar las preguntas en la vista 'questions.blade.php'
+        return view('questions', compact('questions'));
     }
 
     /**
@@ -53,13 +72,23 @@ class QuestionController extends Controller
      *     )
      * )
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
-        $question = Question::find($id);
+        // Obtener la pregunta por ID
+        $question = $this->questionService->getQuestionById($id);
+
+        // Si la pregunta no existe, retornar error
         if (is_null($question)) {
-            return response()->json(['message' => 'Pregunta no trobada'], 404);
+            return response()->json(['message' => 'Pregunta no encontrada'], 404);
         }
-        return response()->json($question);
+
+        // Si la solicitud es una API, devolver la pregunta como JSON
+        if ($request->is('api/*')) {
+            return response()->json($question);
+        }
+
+        // Si la solicitud es web, mostrar la pregunta en la vista 'question.show.blade.php'
+        return view('question.show', compact('question'));
     }
 
     /**
@@ -86,13 +115,22 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
+        // Validación de los datos recibidos
         $validatedData = $request->validate([
-            'question' => 'required|string|max:255'
+            'question' => 'required|string|max:255',
+            //'form_id' => 'required|integer|exists:forms,id',  // Relación con el formulario
         ]);
 
-        $question = Question::create($validatedData);
+        // Llamar al servicio para crear la nueva pregunta
+        $question = $this->questionService->createQuestion($validatedData);
 
-        return response()->json($question, 201);
+        // Retornar respuesta en función de la solicitud
+        if ($request->is('api/*')) {
+            return response()->json($question, 201);
+        }
+
+        // Redirigir a la lista de preguntas con un mensaje de éxito
+        return redirect()->route('questions.index')->with('success', 'Pregunta creada correctamente');
     }
 
     /**
@@ -130,23 +168,21 @@ class QuestionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $question = Question::find($id);
-        if (is_null($question)) {
-            return response()->json(['message' => 'Pregunta no trobada'], 404);
-        }
-
-        $validator = Validator::make($request->all(), [
+        // Validación de los datos recibidos
+        $validatedData = $request->validate([
             'question' => 'sometimes|required|string|max:255',
-            'form_id' => 'sometimes|required|integer',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
+        // Actualizar la pregunta utilizando el servicio
+        $question = $this->questionService->updateQuestion($id, $validatedData);
+
+        // Si la solicitud es una API, devolver la respuesta en formato JSON
+        if ($request->is('api/*')) {
+            return response()->json($question, 200);
         }
 
-        $question->update($validator->validated());
-
-        return response()->json($question, 200);
+        // Redirigir a la lista de preguntas con un mensaje de éxito
+        return redirect()->route('questions.index')->with('success', 'Pregunta actualizada correctamente');
     }
 
     /**
@@ -171,13 +207,17 @@ class QuestionController extends Controller
      *     )
      * )
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
-        $question = Question::find($id);
-        if (is_null($question)) {
-            return response()->json(['message' => 'Pregunta no trobada'], 404);
+        // Llamar al servicio para eliminar la pregunta
+        $this->questionService->deleteQuestion($id);
+
+        // Si la solicitud es una API, devolver respuesta vacía con código 204
+        if ($request->is('api/*')) {
+            return response()->json(null, 204);
         }
-        $question->delete();
-        return response()->json(null, 204);
+
+        // Redirigir a la lista de preguntas con un mensaje de éxito
+        return redirect()->route('questions.index')->with('success', 'Pregunta eliminada correctamente');
     }
 }

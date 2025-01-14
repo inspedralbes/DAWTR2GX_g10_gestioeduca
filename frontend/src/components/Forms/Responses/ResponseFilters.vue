@@ -1,11 +1,11 @@
 <script setup>
 defineProps({
   searchQuery: String,
-  selectedGrade: String,
-  selectedStatus: String
+  selectedCourse: String,
+  selectedDivision: String
 })
 
-defineEmits(['update:searchQuery', 'update:selectedGrade', 'update:selectedStatus'])
+defineEmits(['update:searchQuery', 'update:selectedCourse', 'update:selectedDivision'])
 </script>
 
 <template>
@@ -19,11 +19,11 @@ defineEmits(['update:searchQuery', 'update:selectedGrade', 'update:selectedStatu
     />
     
     <select
-      :value="selectedGrade"
-      @change="$emit('update:selectedGrade', $event.target.value)"
+      :value="selectedCourse"
+      @change="$emit('update:selectedCourse', $event.target.value)"
       class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
     >
-      <option value="all">Todos los cursos</option>
+      <option value="all">Tots els cursos</option>
       <option value="1º ESO">1º ESO</option>
       <option value="2º ESO">2º ESO</option>
       <option value="3º ESO">3º ESO</option>
@@ -31,13 +31,13 @@ defineEmits(['update:searchQuery', 'update:selectedGrade', 'update:selectedStatu
     </select>
 
     <select
-      :value="selectedStatus"
-      @change="$emit('update:selectedStatus', $event.target.value)"
+      :value="selectedDivision"
+      @change="$emit('update:selectedDivision', $event.target.value)"
       class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
     >
-      <option value="all">Todos los estados</option>
-      <option value="completed">Completados</option>
-      <option value="partial">Parciales</option>
+      <option value="all">Tots els estats</option>
+      <option value="completed">Completats</option>
+      <option value="partial">Parcials</option>
     </select>
   </div>
 </template>

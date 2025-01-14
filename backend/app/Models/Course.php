@@ -22,7 +22,7 @@ class Course extends Model
 
     public function divisions()
     {
-        return $this->belongsToMany(Division::class);
+        return $this->belongsToMany(Division::class,'course_division','course_id', 'division_id');
     }
 
     public function forms()

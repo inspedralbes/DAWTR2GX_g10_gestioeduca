@@ -47,9 +47,10 @@ const getAvatar = (id) => `https://api.dicebear.com/5.x/shapes/svg?seed=Group-${
               <img :src="getAvatar(group.group_id)" alt="Avatar del grupo" class="avatar rounded-full" />
               <div class="text-center">
                 <h3 class="text-base font-semibold text-gray-900">{{ group.description }}</h3>
-                <p class="text-sm text-gray-600">{{ group.course}}</p>
-                <button @click="viewGroupsDetails(group.group_id)" class="mt-4 bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
-                    Fitxa grup
+                <p class="text-sm text-gray-600">{{ group.course }}</p>
+                <button @click="viewGroupsDetails(group.group_id)"
+                  class="mt-4 bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                  Fitxa grup
                 </button>
               </div>
             </div>
@@ -58,34 +59,35 @@ const getAvatar = (id) => `https://api.dicebear.com/5.x/shapes/svg?seed=Group-${
       </div>
     </div>
 
-    <Footer /> 
+    <Footer />
   </div>
 </template>
 
 <style scoped>
 .card-container {
-    border: 2px solid #ccc;
-    border-radius: 8px;
-    width: 200px;
-    height: 200px;
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  width: 200px;
+  height: 200px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
 }
+
 .card-container:hover {
-    transform: scale(1.05);
+  transform: scale(1.05);
 }
 
 .group-list-wrapper {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; 
+  justify-content: flex-start;
   align-items: center;
-  min-height: calc(100vh - 150px); 
+  min-height: calc(100vh - 150px);
 }
 
 .avatar {

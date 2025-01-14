@@ -47,7 +47,7 @@ const updateQuestion = () => {
         <input
           v-model="question.title"
           class="w-full text-lg font-medium mb-2 px-2 py-1 border-b border-transparent focus:border-primary outline-none"
-          placeholder="Escribe tu pregunta aquí"
+          placeholder="Escriu la teva pregunta aquí"
           @input="updateQuestion"
         />
         <p class="text-sm text-gray-500">{{ questionType?.label }}</p>
@@ -93,7 +93,7 @@ const updateQuestion = () => {
           @click="addOption"
           class="text-primary hover:text-primary/80 text-sm font-medium"
         >
-          + Agregar opción
+          + Afegir opció
         </button>
       </template>
 
@@ -101,10 +101,10 @@ const updateQuestion = () => {
       <template v-else>
         <div class="text-sm text-gray-500">
           <template v-if="question.type === 'text'">
-            Campo de texto libre
+            Camp de text lliure
           </template>
           <template v-else-if="question.type === 'number'">
-            Campo numérico
+            Camp numèric
           </template>
         </div>
       </template>

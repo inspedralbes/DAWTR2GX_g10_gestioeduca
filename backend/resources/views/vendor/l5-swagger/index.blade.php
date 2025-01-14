@@ -71,7 +71,7 @@
             #dark-mode .opblock-description-wrapper p,
             #dark-mode .opblock-external-docs-wrapper p,
             #dark-mode .opblock-title_normal p,
-            #dark-mode .response-col_status,
+            #dark-mode .response-col_division,
             #dark-mode table thead tr td,
             #dark-mode table thead tr th,
             #dark-mode .response-col_links,

@@ -1,71 +1,61 @@
 <template>
   <div class="space-y-6">
-    <h2 class="text-2xl font-bold">Formularios</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div v-for="form in forms" :key="form.id" 
-        class="bg-white rounded-lg shadow p-6">
-        <h3 class="text-lg font-semibold mb-2">{{ form.title }}</h3>
-        <p class="text-gray-600 mb-4">{{ form.description }}</p>
-        <div class="flex justify-between items-center">
-          <span class="text-sm text-gray-500">Fecha límite: {{ form.dueDate }}</span>
-          <button 
-            class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90"
-            @click="handleFormClick(form.id)">
-            Completar
-          </button>
-        </div>
+    <h2 class="text-2xl font-bold">Mis Formularios</h2>
+    <div v-if="forms.length === 0" class="text-gray-500">
+      No tienes formularios asignados.
+    </div>
+    <div v-else>
+      <div v-for="form in forms" :key="form.id" class="bg-white rounded-lg shadow p-4 mb-4">
+        <h3 class="text-lg font-semibold">{{ form.title }}</h3>
+        <p class="text-sm text-gray-500">{{ form.description }}</p>
+        <button @click="handleFormClick(form.id)" class="mt-4 bg-primary text-white px-4 py-2 rounded">
+          Completar
+        </button>
       </div>
     </div>
   </div>
 </template>
-  
+
 <script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router' 
+import { ref, onMounted } from 'vue';
+import { useAuthStore } from '@/stores/auth';  
 
-const router = useRouter() 
+const authStore = useAuthStore();
+const forms = ref([]);
+const user = authStore.user;  // Asegúrate de que el user_id esté almacenado en localStorage o donde sea pertinente.
+const userId = user.id;
 
-const forms = ref([
-  {
-    id: 1,
-    title: 'Evaluación del Curso',
-    description: 'Formulario para evaluar el contenido y metodología del curso',
-    dueDate: '20 Mayo'
-  },
-  {
-    id: 2,
-    title: 'Encuesta de Satisfacción',
-    description: 'Comparte tu opinión sobre las instalaciones y servicios',
-    dueDate: '25 Mayo'
-  },
-  {
-    id: 3,
-    title: 'Autoevaluación',
-    description: 'Reflexiona sobre tu desempeño en el curso',
-    dueDate: '30 Mayo'
-  },
-  {
-    id: 4,
-    title: 'CESC- Conducta y Experiencias Sociales en Clase',
-    description: 'Formulario para la detección e intervención en casos de acoso escolar',
-    dueDate: '20 Mayo'
-  },
-  {
-    id: 5,
-    title: 'Evaluación de Sociagrama',
-    description: 'Formulario para evaluar la estructura de las relaciones grupales',
+// Cargar formularios del usuario al montar el componente
+const loadFormsByUserId = async (userId) => {
+  try {
+    const response = await fetch(`http://localhost:8000/api/forms/user/${userId}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+        'Accept': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Error obteniendo los formularios del usuario.');
+    }
+
+    forms.value = await response.json();
+  } catch (error) {
+    console.error("Error al cargar formularis", error);
   }
-])
+};
 
+// Cargar los formularios cuando el componente se monta
+onMounted(() => {
+  loadFormsByUserId(userId);
+});
+// Manejador del clic en el formulario
 const handleFormClick = (formId) => {
-  if (formId === 4) {
-    // Redirigir al formulario CESC
-    router.push({ name: 'formCecs' })
-  } else if (formId === 5) {
-    // Redirigir al formulario Sociograma
-    router.push({ name: 'sociogramTest' })
+  if (formId === 3) {
+    window.location.href = '/sociogram';
   } else {
-    console.log(`Formulario con ID ${formId} no tiene una ruta específica.`)
+    window.location.href = `/student/forms/${formId}`;
   }
-}
+};
 </script>

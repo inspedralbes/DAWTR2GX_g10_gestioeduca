@@ -9,16 +9,29 @@ const isLoading = ref(true);
 const router = useRouter();
 
 const viewStudentDetails = (id) => {
-  router.push({ name: 'StudentProfileComponent', params: { id } });
+  // console.log('Navigating to student with ID:', id); 
+  router.push({ name: 'StudentProfile', params: { id } });
 };
 
 onMounted(async () => {
   try {
-    const response = await fetch('http://localhost:8000/api/users');
-    if (!response.ok) throw new Error('Error dades.');
+    // Realizar la solicitud fetch a la API
+    const response = await fetch('http://localhost:8000/api/users', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+      },
+    });
+
+
+    if (!response.ok) {
+      throw new Error('Error obteniendo los datos.');
+    }
+
     students.value = await response.json();
+    console.log(students.value)
   } catch (error) {
-    console.error(error);
+    console.error('Error:', error);
   } finally {
     isLoading.value = false;
   }
@@ -40,7 +53,7 @@ const getAvatar = (id) => `https://api.dicebear.com/5.x/adventurer/svg?seed=${id
     <!-- Lista de estudiantes -->
     <div class="student-list-wrapper bg-white py-12 sm:py-16 w-full flex flex-col min-h-[calc(100vh-150px)]">
       <div class="mx-auto grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-12 px-6 lg:px-8">
-        <div v-for="student in students.filter(f => f.role_id === 2)" :key="student.id_student" class="bg-gray-100 p-4 rounded-lg shadow-md">
+        <div v-for="student in students.filter(f => f.role_id === 2)" :key="student.id" class="bg-gray-100 p-4 rounded-lg shadow-md">
           <!-- Tarjeta del estudiante -->
           <div class="flex flex-col items-center">
             <div class="card-container">
@@ -48,7 +61,7 @@ const getAvatar = (id) => `https://api.dicebear.com/5.x/adventurer/svg?seed=${id
               <div class="text-center">
                 <h3 class="text-base font-semibold text-gray-900">{{ student.name }} {{ student.surname }}</h3>
                 <p class="text-sm text-gray-600">{{ student.curs }}</p>
-                <button @click="viewStudentDetails(student.id_student)"
+                <button @click="viewStudentDetails(student.id)"
                         class="mt-4 bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 focus:outline-none
                         focus:ring-2 focus:ring-blue-400">
                   Fitxa alumne

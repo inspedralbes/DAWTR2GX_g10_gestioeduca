@@ -25,12 +25,14 @@ class DivisionController extends Controller
      *     )
      * )
      */
-    public function index()
+    public function index(Request $request)
     {
         $divisions = Division::all();
-        return response()->json($divisions);
+        if ($request->expectsJson()) {
+            return  response()->json($subjects, 200);
+        }
+        return view('divisions', compact('divisions'));
     }
-
     /**
      * @OA\Get(
      *     path="/api/divisions/{id}",
@@ -53,13 +55,22 @@ class DivisionController extends Controller
      *     )
      * )
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
         $division = Division::find($id);
+
         if (is_null($division)) {
-            return response()->json(['message' => 'Divisió no trobada'], 404);
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Divisió no trobada'], 404);
+            }
+            return redirect()->route('divisions.index')->with('error', 'Divisió no trobada');
         }
-        return response()->json($division);
+
+        if ($request->expectsJson()) {
+            return response()->json($division, 200);
+        }
+
+        return view('divisions.show', compact('division'));
     }
 
     /**
@@ -92,7 +103,11 @@ class DivisionController extends Controller
 
         $division = Division::create($validatedData);
 
-        return response()->json($division, 201);
+        if ($request->expectsJson()) {
+            return response()->json($division, 201);
+        }
+
+        return redirect()->route('divisions.index')->with('success', 'Divisió creada correctament');
     }
 
     /**
@@ -124,18 +139,33 @@ class DivisionController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $division = Division::find($id);
+
+        if (is_null($division)) {
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Divisió no trobada'], 404);
+            }
+            return redirect()->route('divisions.index')->with('error', 'Divisió no trobada');
+        }
+
         $validator = Validator::make($request->all(), [
-            'division' => 'sometimes|required|string|max:255'
+            'division' => 'required|string|max:255'
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
+            if ($request->expectsJson()) {
+                return response()->json($validator->errors(), 400);
+            }
+            return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $division = Division::findOrFail($id);
         $division->update($validator->validated());
 
-        return response()->json($division, 200);
+        if ($request->expectsJson()) {
+            return response()->json($division, 200);
+        }
+
+        return redirect()->route('divisions.index')->with('success', 'División actualizada correctamente');
     }
 
     /**
@@ -160,13 +190,23 @@ class DivisionController extends Controller
      *     )
      * )
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $division = Division::find($id);
+
         if (is_null($division)) {
-            return response()->json(['message' => 'Divisió no trobada'], 404);
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Divisió no trobada'], 404);
+            }
+            return redirect()->route('divisions.index')->with('error', 'Divisió no trobada');
         }
+
         $division->delete();
-        return response()->json(null, 204);
+
+        if ($request->expectsJson()) {
+            return response()->json(null, 204);
+        }
+
+        return redirect()->route('divisions.index')->with('success', 'Divisió eliminada correctament');
     }
 }

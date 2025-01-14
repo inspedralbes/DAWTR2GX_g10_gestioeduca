@@ -6,9 +6,11 @@ import FormList from '../views/Forms/FormList.vue';
 import StudentDashboard from '@/components/student/StudentDashboard.vue';
 import Register from '@/components/Login/Register.vue';
 import FormResponses from '@/views/Forms/FormResponses.vue';
-import StudentList from '../views/Students/StudentList.vue'
-import StudentProfile from '../views/Students/StudentProfile.vue'
+import StudentList from '../views/Students/StudentList.vue';
+import StudentProfile from '../views/Students/StudentProfile.vue';
 import CreateForm from '@/views/CreateForm.vue';
+import StudentForms from '@/components/student/StudentForms.vue';
+import FormQuestions from '@/components/student/FormQuestions.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -39,6 +41,16 @@ const router = createRouter({
       component: StudentProfile
     },
     {
+      path: '/profesores',
+      name: 'TeacherViewList',
+      component: () =>import ('@/views/TeachersView/TeacherViewList.vue'),
+    },
+    {
+      path: '/profesores/:id',
+      name: 'TeacherViewProfile',
+      component: () =>import ('@/views/TeachersView/TeacherViewProfile.vue'),
+    },
+    {
       path: '/crear-formulario',
       name: 'CreateForm',
       component: CreateForm,
@@ -56,34 +68,34 @@ const router = createRouter({
     {
       path: '/student',
       component: StudentDashboard,
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, role: 'alumno' },
       children: [
         {
           path: '',
-          redirect: '/student/dashboard'
+          redirect: '/student/dashboard',
         },
         {
           path: 'dashboard',
           name: 'studentHome',
-          component: () => import('@/components/student/StudentHome.vue')
+          component: () => import('@/components/student/StudentHome.vue'),
         },
         {
           path: 'group',
           name: 'studentGroup',
-          component: () => import('@/components/student/StudentGroup.vue')
+          component: () => import('@/components/student/StudentGroup.vue'),
         },
         {
           path: 'forms',
           name: 'studentForms',
-          component: () => import('@/components/student/StudentForms.vue')
-        }
-      ]
-    },
-    {
-      path: '/studentProfile/:id',
-      name: 'studentProfile',
-      component: () => import('../components/StudentProfile/StudentProfileComponent.vue'),
-      meta: { requiresAuth: true },
+          component: StudentForms,
+        },
+        {
+          path: 'forms/:id',  // Aquí se corrige la ruta para las preguntas del formulario
+          name: 'formQuestions',
+          component: FormQuestions,
+          meta: { requiresAuth: true, role: 'alumno' },
+        },        
+      ],
     },
     {
       path: '/formularios',
@@ -144,12 +156,16 @@ const router = createRouter({
       component: () => import('../components/Sociogram/SociogramTest.vue'),
     },
     {
+      path: '/sociogramResult',
+      name: 'sociogramResult',
+      component: () => import('../components/Sociogram/SociogramResults.vue'),
+    },
+    {
       path: '/tancar-sessio',
       name: 'tancarSessio',
       component: () => import('../components/pages/TancarSessioComponent.vue'),
       meta: { requiresAuth: true },
     },
-    //per verificar component createGroup
     {
       path: '/createGroup',
       name: 'createGroup',
@@ -160,11 +176,20 @@ const router = createRouter({
 
 // Global navigation guard
 router.beforeEach((to, from, next) => {
-  const isAuthenticated = !!localStorage.getItem('user'); // Verifica si hay datos del usuario
+  console.log(`Navegando de ${from.fullPath} a ${to.fullPath}`);
+  
+  const isAuthenticated = !!localStorage.getItem('auth_token');
+  const role = localStorage.getItem('role');
+
   if (to.meta.requiresAuth && !isAuthenticated) {
-    next('/login'); // Redirige al login si no está autenticado
+    console.log('Usuario no autenticado, redirigiendo al login.');
+    next('/login');
+  } else if (to.meta.requiresAuth && to.meta.role && to.meta.role !== role) {
+    console.log(`Rol no autorizado. Requiere ${to.meta.role}, pero el usuario tiene ${role}.`);
+    next('/unauthorized');
   } else {
-    next(); // Permite el acceso
+    console.log('Autorizado, permitiendo el acceso.');
+    next();
   }
 });
 

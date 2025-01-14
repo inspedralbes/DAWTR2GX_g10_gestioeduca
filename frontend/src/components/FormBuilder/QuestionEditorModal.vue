@@ -40,6 +40,7 @@ const removeOption = (index) => {
 }
 
 const handleSave = () => {
+  
   emit('save', localQuestion.value)
   emit('update:modelValue', false)
 }
@@ -87,7 +88,7 @@ const close = () => {
             <!-- Options (for multiple/checkbox) -->
             <div v-if="['multiple', 'checkbox'].includes(localQuestion?.type)">
               <label class="block text-sm font-medium text-gray-700 mb-2">
-                Opciones
+                Opcions
               </label>
               <div class="space-y-2">
                 <div
@@ -112,7 +113,7 @@ const close = () => {
                   @click="addOption"
                   class="text-primary hover:text-primary/80 text-sm font-medium"
                 >
-                  + Agregar opción
+                  + Afegir opcions
                 </button>
               </div>
             </div>
@@ -131,7 +132,7 @@ const close = () => {
             @click="handleSave"
             class="px-4 py-2 text-sm font-medium text-white bg-primary rounded-md hover:bg-primary/90"
           >
-            Guardar cambios
+            Desar canvis
           </button>
         </div>
       </div>

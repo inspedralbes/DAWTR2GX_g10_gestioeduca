@@ -22,41 +22,41 @@ const showResponseDetails = ref(false);
 const selectedResponse = ref(null);
 const selectedResponses = ref([]);
 const searchQuery = ref('');
-const selectedGrade = ref('all');
-const selectedStatus = ref('all');
+const selectedCourse = ref('all');
+const selectedDivision = ref('all');
 const showDownloadMenu = ref(false);
 
 // Mock data
 const form = ref({
   id: route.params.id,
-  title: 'Evaluación Trimestral',
-  description: 'Evaluación del primer trimestre',
+  title: 'Avaluació Trimestral',
+  description: 'Avaluació del primer trimestre',
   questions: [
     {
       id: 1,
-      title: '¿Cómo valorarías tu comprensión de la materia?',
+      title: 'Com valoraries la teva comprensió de la matèria?',
       type: 'multiple',
       options: [
-        { text: 'Excelente', value: 4 },
-        { text: 'Buena', value: 3 },
+        { text: 'Excel·lent', value: 4 },
+        { text: 'Bona', value: 3 },
         { text: 'Regular', value: 2 },
-        { text: 'Necesito ayuda', value: 1 }
+        { text: 'Necessito ajuda', value: 1 }
       ]
     },
     {
       id: 2,
-      title: '¿Qué temas necesitas reforzar?',
+      title: 'Quins temes necessites reforçar?',
       type: 'text'
     },
     {
       id: 3,
-      title: '¿Qué aspectos de la clase te resultan más útiles?',
+      title: 'Quins aspectes de la classe et són més útils?',
       type: 'checkbox',
       options: [
-        { text: 'Explicaciones teóricas', value: 0 },
-        { text: 'Ejercicios prácticos', value: 1 },
-        { text: 'Trabajo en grupo', value: 2 },
-        { text: 'Material complementario', value: 3 }
+        { text: 'Explicacions teòriques', value: 0 },
+        { text: 'Exercicis pràctics', value: 1 },
+        { text: 'Treball en grup', value: 2 },
+        { text: 'Material complementari', value: 3 }
       ]
     }
   ]
@@ -67,38 +67,38 @@ const responses = ref([
     id: 1,
     studentId: 1,
     studentName: 'Ana García',
-    grade: '1º ESO',
+    course: '1º ESO',
     submittedAt: '2024-03-10T10:30:00',
-    status: 'completed',
+    division: 'completed',
     answers: [
-      { questionId: 1, value: 'Buena' },
-      { questionId: 2, value: 'Necesito reforzar álgebra y ecuaciones' },
-      { questionId: 3, value: ['Ejercicios prácticos', 'Trabajo en grupo'] }
+      { questionId: 1, value: 'Bona' },
+      { questionId: 2, value: 'Necessito reforçar àlgebra i equacions' },
+      { questionId: 3, value: ['Exercicis pràctics', 'Treball en grup'] }
     ]
   },
   {
     id: 2,
     studentId: 2,
     studentName: 'Carlos Rodríguez',
-    grade: '2º ESO',
+    course: '2º ESO',
     submittedAt: '2024-03-11T09:15:00',
-    status: 'completed',
+    division: 'completed',
     answers: [
       { questionId: 1, value: 'Regular' },
-      { questionId: 2, value: 'Geometría y trigonometría' },
-      { questionId: 3, value: ['Explicaciones teóricas', 'Material complementario'] }
+      { questionId: 2, value: 'Geometria i trigonometria' },
+      { questionId: 3, value: ['Explicacions teòriques', 'Material complementari'] }
     ]
   },
   {
     id: 3,
     studentId: 3,
     studentName: 'Laura Martínez',
-    grade: '1º ESO',
+    course: '1º ESO',
     submittedAt: '2024-03-11T11:45:00',
-    status: 'partial',
+    division: 'partial',
     answers: [
-      { questionId: 1, value: 'Excelente' },
-      { questionId: 2, value: 'Ninguno en particular' }
+      { questionId: 1, value: 'Excel·lent' },
+      { questionId: 2, value: 'Cap en particular' }
     ]
   }
 ]);
@@ -106,9 +106,9 @@ const responses = ref([
 const filteredResponses = computed(() => {
   return responses.value.filter(response => {
     const matchesSearch = response.studentName.toLowerCase().includes(searchQuery.value.toLowerCase());
-    const matchesGrade = selectedGrade.value === 'all' || response.grade === selectedGrade.value;
-    const matchesStatus = selectedStatus.value === 'all' || response.status === selectedStatus.value;
-    return matchesSearch && matchesGrade && matchesStatus;
+    const matchesCourse = selectedCourse.value === 'all' || response.course === selectedCourse.value;
+    const matchesDivision = selectedDivision.value === 'all' || response.division === selectedDivision.value;
+    return matchesSearch && matchesCourse && matchesDivision;
   });
 });
 
@@ -144,9 +144,9 @@ const generatePDF = (responses) => {
   const tableData = responses.map(response => {
     const row = [
       response.studentName,
-      response.grade,
+      response.course,
       new Date(response.submittedAt).toLocaleString(),
-      response.status
+      response.division
     ];
 
     form.value.questions.forEach(question => {
@@ -158,10 +158,10 @@ const generatePDF = (responses) => {
   });
 
   const headers = [
-    'Estudiante', 
-    'Curso', 
-    'Fecha', 
-    'Estado', 
+    'Estudiant', 
+    'Curs', 
+    'Data', 
+    'Estat', 
     ...form.value.questions.map(q => q.title)
   ];
 
@@ -176,15 +176,15 @@ const generatePDF = (responses) => {
 };
 
 const generateCSV = (responses) => {
-  const headers = ['Estudiante', 'Curso', 'Fecha', 'Estado'];
+  const headers = ['Estudiant', 'Curs', 'Data', 'Estat'];
   form.value.questions.forEach(q => headers.push(q.title));
   
   const rows = responses.map(response => {
     const row = [
       response.studentName,
-      response.grade,
+      response.course,
       new Date(response.submittedAt).toLocaleString(),
-      response.status
+      response.division
     ];
     
     form.value.questions.forEach(question => {
@@ -265,8 +265,8 @@ const downloadFile = (content, filename, type) => {
     <div class="flex justify-between items-center mb-6">
       <ResponseFilters
         v-model:searchQuery="searchQuery"
-        v-model:selectedGrade="selectedGrade"
-        v-model:selectedStatus="selectedStatus"
+        v-model:selectedCourse="selectedCourse"
+        v-model:selectedDivision="selectedDivision"
       />
       
       <BulkActionsMenu

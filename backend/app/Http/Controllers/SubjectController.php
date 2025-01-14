@@ -19,12 +19,14 @@ class SubjectController extends Controller
      *     )
      * )
      */
-    public function index()
+    public function index(Request $request)
     {
         $subjects = Subject::all();
+        if ($request->expectsJson()) {
         return response()->json($subjects, 200);
+        }
+        return view('subjects', compact('subjects'));
     }
-
     /**
      * @OA\Post(
      *     path="/api/subjects",
@@ -47,17 +49,15 @@ class SubjectController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
         ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
+        $subject = Subject::create($validatedData);
+        if ($request->expectsJson()) {
+            return response()->json($subject, 201);
         }
-
-        $subject = Subject::create($request->all());
-        return response()->json($subject, 201);
+        return redirect()->route('subjects.index')->with('success', 'Asignatura creada correctamente');
     }
 
     /**
@@ -82,16 +82,24 @@ class SubjectController extends Controller
      *     )
      * )
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
         $subject = Subject::find($id);
 
         if (is_null($subject)) {
-            return response()->json(['message' => 'Subject not found'], 404);
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Asignatura no encontrada'], 404);
+            }
+            return redirect()->route('subjects.index')->with('error', 'Asignatura no encontrada');
         }
 
-        return response()->json($subject, 200);
+        if ($request->expectsJson()) {
+            return response()->json($subject, 200);
+        }
+
+        return view('subjects.show', compact('subject'));
     }
+
 
     /**
      * @OA\Put(
@@ -125,25 +133,37 @@ class SubjectController extends Controller
      * )
      */
     public function update(Request $request, $id)
-    {
-        $subject = Subject::find($id);
+{
+    $subject = Subject::find($id);
 
-        if (is_null($subject)) {
-            return response()->json(['message' => 'Subject not found'], 404);
+    if (is_null($subject)) {
+        if ($request->expectsJson()) {
+            return response()->json(['message' => 'Asignatura no encontrada'], 404);
         }
+        return redirect()->route('subjects.index')->with('error', 'Asignatura no encontrada');
+    }
 
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-        ]);
+    $validator = Validator::make($request->all(), [
+        'name' => 'required|string|max:255',
+        'description' => 'nullable|string',
+    ]);
 
-        if ($validator->fails()) {
+    if ($validator->fails()) {
+        if ($request->expectsJson()) {
             return response()->json($validator->errors(), 400);
         }
+        return redirect()->back()->withErrors($validator)->withInput();
+    }
 
-        $subject->update($request->all());
+    $subject->update($validator->validated());
+
+    if ($request->expectsJson()) {
         return response()->json($subject, 200);
     }
+
+    return redirect()->route('subjects.index')->with('success', 'Asignatura actualizada exitosamente');
+}
+
 
     /**
      * @OA\Delete(
@@ -167,15 +187,24 @@ class SubjectController extends Controller
      *     )
      * )
      */
-    public function destroy($id)
-    {
-        $subject = Subject::find($id);
+    public function destroy(Request $request, $id)
+{
+    $subject = Subject::find($id);
 
-        if (is_null($subject)) {
-            return response()->json(['message' => 'Subject not found'], 404);
+    if (is_null($subject)) {
+        if ($request->expectsJson()) {
+            return response()->json(['message' => 'Asignatura no encontrada'], 404);
         }
+        return redirect()->route('subjects.index')->with('error', 'Asignatura no encontrada');
+    }
 
-        $subject->delete();
+    $subject->delete();
+
+    if ($request->expectsJson()) {
         return response()->json(null, 204);
     }
+
+    return redirect()->route('subjects.index')->with('success', 'Asignatura eliminada correctamente');
+}
+
 }

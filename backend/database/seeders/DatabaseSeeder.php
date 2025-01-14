@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Answer;
+use App\Models\Course;
 use App\Models\Division;
 use App\Models\Group;
 use App\Models\Question;
@@ -28,14 +29,18 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             UserSeeder::class,
             DivisionSeeder::class,
-            FormSeeder::class,
-            QuestionSeeder::class,
-            AnswerSeeder::class,
             GroupSeeder::class,
             GroupDivisionSeeder::class,
             GroupUserSeeder::class,
             GroupSubjectSeeder::class,
             GroupCourseSeeder::class,
+            FormSeeder::class,   // Crear formularios primero
+            QuestionSeeder::class, // Crear preguntas después
+            OptionSeeder::class,
+            CourseUserSeeder::class,
+            SociogramRelationshipSeeder::class,
+            CourseDivisionSeeder::class,
+
         ]);
     }
 }

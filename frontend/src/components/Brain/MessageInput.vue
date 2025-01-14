@@ -54,7 +54,7 @@ const handleSuggestionSelect = (suggestion) => {
       <input
         v-model="input"
         type="text"
-        placeholder="Type your message..."
+        placeholder="Escriu el teu missatge..."
         class="flex-1 p-4 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
         @keyup.enter="handleSubmit"
       />

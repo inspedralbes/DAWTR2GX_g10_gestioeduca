@@ -19,9 +19,14 @@ class RoleController extends Controller
      *     )
      * )
      */
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(Role::all(), 200);
+        $roles = Role::all();
+        if ($request->is('api/*')) {
+            return response()->json($roles, 200);
+        }
+
+        return view('roles', compact('roles'));
     }
 
     /**
@@ -46,13 +51,21 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
+        if ($request->is('api/*')) {
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string|max:255',
+            ]);
+            if ($validator->fails()) {
+                return response()->json($validator->errors(), 400);
+            }
+            $role = Role::create($validator->validated());
+            return response()->json($role, 201);
+        }
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255'
+            'name' => 'required|string|max:255',
         ]);
-
-        $role = Role::create($validatedData);
-
-        return response()->json($role, 201);
+        Role::create($validatedData);
+        return redirect()->route('roles.index')->with('success', 'Rol creado exitosamente');
     }
 
     /**
@@ -77,9 +90,12 @@ class RoleController extends Controller
      *     )
      * )
      */
-    public function show(Role $role)
+    public function show(Request $request, Role $role)
     {
-        return response()->json($role, 200);
+        if ($request->is('api/*')) {
+            return response()->json($role, 200);
+        }
+        return view('roles.show', compact('role'));
     }
 
     /**
@@ -115,19 +131,22 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'sometimes|required|string|max:255'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
+        if ($request->is('api/*')) {
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string|max:255',
+            ]);
+            if ($validator->fails()) {
+                return response()->json($validator->errors(), 400);
+            }
+            $role->update($validator->validated());
+            return response()->json($role, 200);
         }
-
-        $role->update($validator->validated());
-
-        return response()->json($role, 200);
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+        $role->update($validatedData);
+        return redirect()->route('roles.index')->with('success', 'Rol actualizado exitosamente');
     }
-
     /**
      * @OA\Delete(
      *     path="/api/roles/{id}",
@@ -150,9 +169,12 @@ class RoleController extends Controller
      *     )
      * )
      */
-    public function destroy(Role $role)
+    public function destroy(Request $request, Role $role)
     {
         $role->delete();
-        return response()->json(null, 204);
+        if ($request->is('api/*')) {
+            return response()->json(null, 204);
+        }
+        return redirect()->route('roles.index')->with('success', 'Rol eliminado exitosamente');
     }
 }

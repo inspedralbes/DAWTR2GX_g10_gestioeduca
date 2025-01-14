@@ -1,28 +1,46 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 import { useFormAssignmentsStore } from '../../stores/formAssignments'
+import { useRouter } from 'vue-router'
 
 const props = defineProps({
   modelValue: Boolean,
   form: {
     type: Object,
     required: true
-  },
-  students: {
-    type: Array,
-    required: true
   }
 })
 
 const emit = defineEmits(['update:modelValue', 'assigned'])
 const formAssignmentsStore = useFormAssignmentsStore()
+const router = useRouter()
 
 const dueDate = ref(null)
-const selectedStudents = ref(props.students.map(s => s.id))
+const students = ref([])
+const selectedStudents = ref([])
+
+onMounted(async () => {
+  try {
+    const response = await fetch('http://localhost:8000/api/users', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Error obteniendo los datos.');
+    }
+
+    students.value = await response.json();
+  } catch (error) {
+    console.error('Error:', error);
+  }
+});
 
 const assignForm = () => {
-  const studentsToAssign = props.students.filter(s => selectedStudents.value.includes(s.id))
+  const studentsToAssign = students.value.filter(s => selectedStudents.value.includes(s.id))
   const assignments = formAssignmentsStore.assignFormToStudents(
     props.form,
     studentsToAssign,
@@ -39,7 +57,7 @@ const close = () => {
 </script>
 
 <template>
-  <div v-if="modelValue" class="fixed inset-0 z-50 overflow-y-auto">
+  <div v-if="props.modelValue" class="fixed inset-0 z-50 overflow-y-auto">
     <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity"></div>
 
     <div class="flex min-h-full items-end justify-center p-4 sm:items-center sm:p-0">
@@ -53,13 +71,13 @@ const close = () => {
 
         <div class="mt-3 sm:mt-5">
           <h3 class="text-lg font-medium leading-6 text-gray-900 mb-4">
-            Asignar Formulario
+            Assignar Formulari
           </h3>
 
           <div class="space-y-4">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">
-                Fecha límite (opcional)
+                Data límit (opcional)
               </label>
               <input
                 v-model="dueDate"
@@ -70,12 +88,11 @@ const close = () => {
 
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">
-                Estudiantes ({{ selectedStudents.length }} seleccionados)
+                Estudiants ({{ selectedStudents.length }} seleccionats)
               </label>
               <div class="max-h-60 overflow-y-auto border rounded-md p-2">
                 <div
-                  v-for="student in students"
-                  :key="student.id"
+                  v-for="student in students.filter(f => f.role_id === 2)" :key="student.id_student"
                   class="flex items-center space-x-2 p-2 hover:bg-gray-50"
                 >
                   <input
@@ -103,7 +120,7 @@ const close = () => {
             @click="assignForm"
             class="px-4 py-2 text-sm font-medium text-white bg-primary rounded-md hover:bg-primary/90"
           >
-            Asignar Formulario
+            Assignar Formulari
           </button>
         </div>
       </div>

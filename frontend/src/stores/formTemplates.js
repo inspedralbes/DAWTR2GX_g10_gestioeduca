@@ -5,13 +5,13 @@ export const useFormTemplatesStore = defineStore('formTemplates', () => {
   const templates = ref([
     {
       id: 'math-evaluation',
-      title: 'Evaluación de Matemáticas 1º ESO',
-      description: 'Evaluación completa de conocimientos matemáticos básicos',
+      title: 'Avaluació de Matemàtiques 1r ESO',
+      description: 'Avaluació completa de coneixements matemàtics bàsics',
       category: 'evaluacion',
       questions: [
         {
           type: 'multiple',
-          title: '¿Cuál es el resultado de 3x + 5 = 14?',
+          title: 'Quin és el resultat de 3x + 5 = 14?',
           options: [
             { text: 'x = 3', value: 1 },
             { text: 'x = 4', value: 0 },
@@ -20,7 +20,7 @@ export const useFormTemplatesStore = defineStore('formTemplates', () => {
         },
         {
           type: 'multiple',
-          title: '¿Qué fracción representa la mitad?',
+          title: 'Quina fracció representa la meitat?',
           options: [
             { text: '1/2', value: 1 },
             { text: '2/4', value: 1 },
@@ -31,58 +31,58 @@ export const useFormTemplatesStore = defineStore('formTemplates', () => {
     },
     {
       id: 'study-habits',
-      title: 'Cuestionario de Hábitos de Estudio',
-      description: 'Evaluación de hábitos y técnicas de estudio del alumno',
+      title: "Qüestionari d'Hàbits d'Estudi",
+      description: "Avaluació d'hàbits i tècniques destudi de lalumne",
       category: 'tutoria',
       questions: [
         {
           type: 'multiple',
-          title: '¿Cuántas horas dedicas al estudio diariamente?',
+          title: "Quantes hores dediques a l'estudi diàriament?",
           options: [
-            { text: 'Menos de 1 hora', value: 0 },
-            { text: 'Entre 1 y 2 horas', value: 1 },
-            { text: 'Más de 2 horas', value: 2 }
+            { text: "Menys d'1 hora", value: 0 },
+            { text: 'Entre 1 y 2 hores', value: 1 },
+            { text: 'Més de 2 hores', value: 2 }
           ]
         },
         {
           type: 'checkbox',
-          title: '¿Qué técnicas de estudio utilizas?',
+          title: 'Quines tècniques destudi utilitzes?',
           options: [
-            { text: 'Resúmenes', value: 0 },
-            { text: 'Mapas conceptuales', value: 1 },
-            { text: 'Subrayado', value: 2 }
+            { text: 'Resums', value: 0 },
+            { text: 'Mapes conceptuals', value: 1 },
+            { text: 'Subratllat', value: 2 }
           ]
         }
       ]
     },
     {
       id: 'course-satisfaction',
-      title: 'Encuesta de Satisfacción del Curso',
-      description: 'Evaluación de la satisfacción general con el curso',
+      title: 'Enquesta de Satisfacció del Curs',
+      description: 'Avaluació de la satisfacció general amb el curs',
       category: 'feedback',
       questions: [
         {
           type: 'multiple',
-          title: '¿Cómo valorarías la calidad de las clases?',
+          title: 'Com valoraries la qualitat de les classes?',
           options: [
-            { text: 'Excelente', value: 4 },
-            { text: 'Buena', value: 3 },
+            { text: 'Excel·lent', value: 4 },
+            { text: 'Bona', value: 3 },
             { text: 'Regular', value: 2 },
-            { text: 'Necesita mejorar', value: 1 }
+            { text: 'Necessita millorar', value: 1 }
           ]
         },
         {
           type: 'text',
-          title: '¿Qué aspectos del curso crees que podrían mejorarse?'
+          title: 'Quins aspectes del curs creus que es podrien millorar?'
         }
       ]
     }
   ])
 
   const categories = {
-    evaluacion: 'Evaluación Académica',
-    tutoria: 'Tutoría y Seguimiento',
-    feedback: 'Feedback y Mejora'
+    evaluacion: 'Avaluació Acadèmica',
+    tutoria: 'Tutoria i Seguiment',
+    feedback: 'Feedback i Millora'
   }
 
   const getTemplateById = (id) => {

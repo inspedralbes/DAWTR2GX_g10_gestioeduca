@@ -43,22 +43,21 @@ class AuthenticatedSessionController extends Controller
         ]);
 
         if (!Auth::attempt($request->only('email', 'password'))) {
-            throw ValidationException::withMessages([
-                'email' => ['Les credencials proporcionades no coincideixen amb els nostres registres.'],
-            ]);
+            return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
-        $user = $request->user();
-        
-        // Revocar tokens existents si es desitja
+        $user = Auth::user();
+
+        // Revocar tokens existentes
         $user->tokens()->delete();
 
-        // Crear un nou token
+        // Crear nuevo token
         $token = $user->createToken('Groupify')->plainTextToken;
 
         return response()->json([
             'token' => $token,
-            'user' => $user
+            'role' => $user->role->name, // Asegúrate de que la relación está configurada
+            'user' => $user, // Opcional, según lo que necesites
         ]);
     }
 

@@ -22,9 +22,9 @@ const statusClasses = {
 }
 
 const statusLabels = {
-  pending: 'Pendiente',
-  completed: 'Completado',
-  expired: 'Expirado'
+  pending: 'Pendent',
+  completed: 'Completat',
+  expired: 'Expirat'
 }
 
 const sortedAssignments = computed(() => {
@@ -39,8 +39,8 @@ const sortedAssignments = computed(() => {
 <template>
   <div class="bg-white rounded-lg shadow-md p-6 mt-6">
     <div class="flex justify-between items-center mb-6">
-      <h3 class="text-lg font-medium text-gray-900">Formularios Asignados</h3>
-      <button class="btn btn-primary">Asignar Nuevo</button>
+      <h3 class="text-lg font-medium text-gray-900">Formularis Assignats</h3>
+      <button class="btn btn-primary">Asignar Nou</button>
     </div>
 
     <div class="space-y-4">
@@ -52,10 +52,10 @@ const sortedAssignments = computed(() => {
         <div class="flex-1">
           <h4 class="font-medium text-gray-900">{{ assignment.formTitle }}</h4>
           <p class="text-sm text-gray-500">
-            Asignado: {{ new Date(assignment.assignedDate).toLocaleDateString() }}
+            Asignat: {{ new Date(assignment.assignedDate).toLocaleDateString() }}
           </p>
           <p v-if="assignment.dueDate" class="text-sm text-gray-500">
-            Fecha límite: {{ new Date(assignment.dueDate).toLocaleDateString() }}
+            Data límit: {{ new Date(assignment.dueDate).toLocaleDateString() }}
           </p>
         </div>
 
@@ -72,7 +72,7 @@ const sortedAssignments = computed(() => {
             v-if="assignment.status === 'pending'"
             class="text-primary hover:text-primary/80"
           >
-            Ver formulario
+            Veure formulari
           </button>
         </div>
       </div>

@@ -5,6 +5,7 @@ import PasswordInput from './PasswordInput.vue';
 import TextInput from './TextInput.vue';
 
 const name = ref('');
+const last_name = ref('');
 const email = ref('');
 const password = ref('');
 const confirmPassword = ref('');
@@ -15,6 +16,10 @@ const msgError = ref('');
 const validateForm = () => {
     if (!name.value) {
         msgError.value = "El nom és obligatori";
+        return false;
+    }
+    if (!last_name.value) {
+        msgError.value = "El cognom és obligatori";
         return false;
     }
     if (!email.value) {
@@ -50,6 +55,7 @@ const gestioSubmit = async (e) => {
             },
             body: JSON.stringify({
                 name: name.value,
+                last_name: last_name.value,
                 email: email.value,
                 password: password.value,
                 password_confirmation: confirmPassword.value, // Añade esto
@@ -70,7 +76,7 @@ const gestioSubmit = async (e) => {
         }
 
         // Registro exitoso
-        console.log('Usuari registrat!', data);
+        // console.log('Usuari registrat!', data);
 
     } catch (err) {
         msgError.value = err.message || "No s'ha pogut registrar l'usuari. Si us plau, torna-ho a provar.";
@@ -89,7 +95,8 @@ const gestioSubmit = async (e) => {
             </div>
 
             <form @submit="gestioSubmit" class="login-form">
-                <TextInput v-model="name" placeholder="Nom complet" :has-msgError="msgError && !name" />
+                <TextInput v-model="name" placeholder="Nom " :has-msgError="msgError && !name" />
+                <TextInput v-model="last_name" placeholder="Cognom " :has-msgError="msgError && !last_name" />
                 <TextInput v-model="email" placeholder="Correu electrònic" :has-msgError="msgError && !email" />
                 <PasswordInput v-model="password" :has-msgError="msgError && !password" />
                 <PasswordInput v-model="confirmPassword" :has-msgError="msgError && !confirmPassword"
@@ -98,6 +105,11 @@ const gestioSubmit = async (e) => {
                 <button type="submit" class="sign-in-button" :disabled="isLoading">
                     {{ isLoading ? 'Registrant...' : 'Registrar-se' }}
                 </button>
+
+
+                <div class="login-link">
+                    <p>Ja tens un compte? <router-link to="/login"><b>Inicia sessió</b></router-link></p>
+                </div>
 
                 <div v-if="msgError" class="msgError-message">
                     {{ msgError }}

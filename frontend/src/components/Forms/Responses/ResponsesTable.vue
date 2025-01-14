@@ -56,19 +56,19 @@ const isSelected = (responseId) => props.selected.includes(responseId)
               />
             </th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-              Estudiante
+              Estudiant
             </th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-              Curso
+              Curs
             </th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-              Fecha
+              Data
             </th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-              Estado
+              Estat
             </th>
             <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
-              Acciones
+              Accions
             </th>
           </tr>
         </thead>
@@ -92,7 +92,7 @@ const isSelected = (responseId) => props.selected.includes(responseId)
               </div>
             </td>
             <td class="px-6 py-4 text-sm text-gray-500">
-              {{ response.grade }}
+              {{ response.course }}
             </td>
             <td class="px-6 py-4 text-sm text-gray-500">
               {{ format(new Date(response.submittedAt), 'dd/MM/yyyy HH:mm') }}
@@ -101,11 +101,11 @@ const isSelected = (responseId) => props.selected.includes(responseId)
               <span 
                 class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
                 :class="{
-                  'bg-green-100 text-green-800': response.status === 'completed',
-                  'bg-yellow-100 text-yellow-800': response.status === 'partial'
+                  'bg-green-100 text-green-800': response.division === 'completed',
+                  'bg-yellow-100 text-yellow-800': response.division === 'partial'
                 }"
               >
-                {{ response.status }}
+                {{ response.division }}
               </span>
             </td>
             <td class="px-6 py-4 text-right space-x-3">

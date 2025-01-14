@@ -18,7 +18,7 @@ const props = defineProps({
 const totalResponses = computed(() => props.responses.length)
 
 const completedResponses = computed(() => 
-  props.responses.filter(r => r.status === 'completed').length
+  props.responses.filter(r => r.division === 'completed').length
 )
 
 const completionRate = computed(() => 
@@ -35,24 +35,24 @@ const averageTime = computed(() => {
 <template>
   <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
     <StatCard
-      title="Total Respuestas"
+      title="Total Respostes"
       :value="totalResponses"
       :icon="UserGroupIcon"
     />
     <StatCard
-      title="Completadas"
+      title="Completades"
       :value="completedResponses"
       :icon="CheckCircleIcon"
       color="success"
     />
     <StatCard
-      title="Tasa de Finalización"
+      title="Tasa de Finalització"
       :value="`${completionRate}%`"
       :icon="ChartBarIcon"
       color="primary"
     />
     <StatCard
-      title="Tiempo Promedio"
+      title="Temps Mitjà"
       :value="averageTime"
       :icon="ClockIcon"
       color="warning"

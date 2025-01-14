@@ -1,13 +1,11 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { 
   PlusIcon, 
-  FunnelIcon,
   DocumentDuplicateIcon,
   PencilIcon,
   TrashIcon,
-  EyeIcon,
   UserGroupIcon,
   ChartBarIcon
 } from '@heroicons/vue/24/outline'
@@ -15,50 +13,37 @@ import AssignFormModal from '../../components/Forms/AssignFormModal.vue'
 
 const router = useRouter()
 const searchQuery = ref('')
-const selectedStatus = ref('all')
+const selectedDivision = ref('all')
 const selectedDate = ref('all')
 const showAssignModal = ref(false)
 const selectedForm = ref(null)
+const forms = ref([])
 
-const forms = ref([
-  {
-    id: 1,
-    title: 'Evaluación Trimestral',
-    description: 'Evaluación del primer trimestre',
-    status: 'active',
-    responses: 24,
-    createdAt: '2024-02-15'
-  },
-  {
-    id: 2,
-    title: 'Cuestionario de Hábitos de Estudio',
-    description: 'Evaluación de hábitos y técnicas de estudio',
-    status: 'active',
-    responses: 12,
-    createdAt: '2024-02-20'
-  }
-])
+onMounted(async () => {
+  try {
+    const response = await fetch('http://localhost:8000/api/forms', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+      },
+    });
 
-const students = ref([
-  {
-    id: 1,
-    name: 'Ana García',
-    grade: '1º ESO'
-  },
-  {
-    id: 2,
-    name: 'Carlos Rodríguez',
-    grade: '2º ESO'
-  },
-  {
-    id: 3,
-    name: 'Laura Martínez',
-    grade: '1º ESO'
+    if (!response.ok) {
+      throw new Error('Error obteniendo los datos.');
+    }
+
+    forms.value = await response.json();
+  } catch (error) {
+    console.error('Error:', error);
   }
-])
+});
 
 const navigateToCreate = () => {
   router.push({ name: 'CreateForm' })
+}
+
+const goToDashboard = () => {
+  router.push('/dashboard')
 }
 
 const viewResponses = (formId) => {
@@ -72,78 +57,92 @@ const openAssignModal = (form) => {
 
 const handleFormAssigned = (assignments) => {
   console.log('Form assigned to students:', assignments)
-  // Show success message
-  alert('Formulario asignado correctamente a los estudiantes seleccionados')
+  alert('Formulari assignat correctament als estudiants seleccionats')
 }
 </script>
 
 <template>
   <div class="p-6">
-    <div class="flex justify-between items-center mb-6">
-      <h1 class="text-2xl font-bold">Formularios</h1>
+    <!-- Contenedor del título y botón de volver -->
+    <div class="relative flex items-center mb-6">
+      <!-- Botón de volver -->
+      <button 
+        @click="goToDashboard" 
+        class="absolute left-0 flex items-center space-x-1 text-gray-700 hover:text-gray-900"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+        </svg>
+        <span>Tornar</span>
+      </button>
+
+      <!-- Título centrado -->
+      <h1 class="flex-grow text-center text-2xl font-bold">Formularis</h1>
+
+      <!-- Botón de nuevo formulario -->
       <button 
         @click="navigateToCreate"
-        class="btn btn-primary flex items-center space-x-2"
+        class="absolute right-0 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 flex items-center space-x-2"
       >
         <PlusIcon class="w-5 h-5" />
-        <span>Nuevo Formulario</span>
+        <span>Nou Formulari</span>
       </button>
     </div>
 
-    <!-- Filters -->
+    <!-- Filtros -->
     <div class="bg-white rounded-lg shadow p-4 mb-6">
       <div class="flex flex-wrap gap-4">
         <div class="flex-1 min-w-[200px]">
           <input
             v-model="searchQuery"
             type="text"
-            placeholder="Buscar formularios..."
+            placeholder="Buscar formularis..."
             class="w-full px-4 py-2 border rounded-lg"
           />
         </div>
         <div class="flex space-x-4">
           <select
-            v-model="selectedStatus"
+            v-model="selectedDivision"
             class="px-4 py-2 border rounded-lg"
           >
-            <option value="all">Todos los estados</option>
-            <option value="active">Activos</option>
-            <option value="draft">Borradores</option>
-            <option value="closed">Cerrados</option>
+            <option value="all">Tots los estats</option>
+            <option value="active">Actius</option>
+            <option value="draft">Borradors</option>
+            <option value="closed">Tancats</option>
           </select>
           <select
             v-model="selectedDate"
             class="px-4 py-2 border rounded-lg"
           >
-            <option value="all">Todas las fechas</option>
-            <option value="today">Hoy</option>
-            <option value="week">Esta semana</option>
-            <option value="month">Este mes</option>
+            <option value="all">Totes les dates</option>
+            <option value="today">Avui</option>
+            <option value="week">Aquesta setmana</option>
+            <option value="month">Aquest mes</option>
           </select>
         </div>
       </div>
     </div>
 
-    <!-- Forms List -->
+    <!-- Lista de formularios -->
     <div class="bg-white rounded-lg shadow overflow-hidden">
       <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200">
           <thead class="bg-gray-50">
             <tr>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Título
+                Títol
               </th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Estado
+                Estat
               </th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Respuestas
+                Respostes
               </th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Fecha
+                Data
               </th>
               <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Acciones
+                Accions
               </th>
             </tr>
           </thead>
@@ -156,18 +155,17 @@ const handleFormAssigned = (assignments) => {
               <td class="px-6 py-4">
                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
                   :class="{
-                    'bg-green-100 text-green-800': form.status === 'active',
-                    'bg-gray-100 text-gray-800': form.status === 'draft',
-                    'bg-red-100 text-red-800': form.status === 'closed'
+                  'bg-green-100 text-green-800': form.status === 1,
+                  'bg-red-100 text-red-800': form.status === 0
                   }">
-                  {{ form.status }}
+                  {{ form.status === 1 ? 'actiu' : 'inactiu' }}
                 </span>
               </td>
               <td class="px-6 py-4 text-sm text-gray-500">
                 {{ form.responses }}
               </td>
               <td class="px-6 py-4 text-sm text-gray-500">
-                {{ new Date(form.createdAt).toLocaleDateString() }}
+                {{ new Date(form.created_at).toLocaleDateString() }}
               </td>
               <td class="px-6 py-4 text-right text-sm font-medium">
                 <div class="flex justify-end space-x-3">
@@ -177,7 +175,7 @@ const handleFormAssigned = (assignments) => {
                     title="Asignar a estudiantes"
                   >
                     <UserGroupIcon class="w-4 h-4" />
-                    <span>Asignar</span>
+                    <span>Assignar</span>
                   </button>
                   <button 
                     v-if="form.responses > 0"
@@ -186,7 +184,7 @@ const handleFormAssigned = (assignments) => {
                     title="Ver respuestas"
                   >
                     <ChartBarIcon class="w-4 h-4" />
-                    <span>Ver Respuestas</span>
+                    <span>Veure Respostes</span>
                   </button>
                   <button class="text-gray-400 hover:text-primary">
                     <PencilIcon class="w-5 h-5" />
@@ -205,11 +203,10 @@ const handleFormAssigned = (assignments) => {
       </div>
     </div>
 
-    <!-- Assignment Modal -->
+    <!-- Modal de asignación -->
     <AssignFormModal
       v-model="showAssignModal"
-      :form="selectedForm"
-      :students="students"
+      :form="selectedForm || {}"
       @assigned="handleFormAssigned"
     />
   </div>

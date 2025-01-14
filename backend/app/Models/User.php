@@ -6,15 +6,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Form;
 
 class User extends Authenticatable
 {
     use HasFactory, Notifiable, HasApiTokens;
     protected $fillable = [
+        'image',
         'name',
+        'last_name',
         'email',
         'password',
         'role_id',
+
     ];
 
     protected $hidden = [
@@ -33,7 +37,7 @@ class User extends Authenticatable
 
     public function courses()
     {
-        return $this->belongsToMany(Course::class);
+        return $this->belongsToMany(Course::class, 'course_user');
     }
 
     public function subjects()
@@ -45,13 +49,19 @@ class User extends Authenticatable
     {
         return $this->hasMany(Answer::class);
     }
-
     public function divisions()
     {
         return $this->belongsToMany(Division::class);
     }
+
     public function groups()
     {
-        return $this->belongsToMany(Group::class);
+        return $this->belongsToMany(Group::class, 'group_user', 'user_id', 'id_group');
     }
+    public function forms()
+    {
+        return $this->belongsToMany(Form::class, 'form_user', 'user_id', 'form_id');
+    }
+
+
 }

@@ -4,19 +4,43 @@ import { ref } from 'vue'
 export const useFormAssignmentsStore = defineStore('formAssignments', () => {
   const assignments = ref([])
 
-  const assignFormToStudents = (form, students, dueDate) => {
+  const assignFormToStudents = async (form, students) => {
     const newAssignments = students.map(student => ({
-      id: Date.now() + Math.random(),
       formId: form.id,
-      formTitle: form.title,
       studentId: student.id,
-      studentName: student.name,
       assignedDate: new Date().toISOString(),
-      dueDate: dueDate?.toISOString(),
-      status: 'pending'
+      division: 'pending'
     }))
 
     assignments.value.push(...newAssignments)
+
+    // Realizar la solicitud POST para cada asignación
+    for (const assignment of newAssignments) {
+      try {
+        const response = await fetch('http://localhost:8000/api/assign-form-to-user', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+
+          },
+          body: JSON.stringify({
+            user_id: assignment.studentId,
+            form_id: assignment.formId
+          })
+        })
+
+        if (!response.ok) {
+          throw new Error('Error en la asignación del formulario')
+        }
+
+        const result = await response.json()
+        console.log('Assignació exitosa:', result)
+      } catch (error) {
+        console.error('Error al assignar el formulari:', error)
+      }
+    }
+
     return newAssignments
   }
 

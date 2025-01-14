@@ -8,7 +8,7 @@ import TextInput from './TextInput.vue';
 const router = useRouter();
 const route = useRoute();
 
-const username = ref('');
+const email = ref('');
 const password = ref('');
 const isLoading = ref(false);
 const msgError = ref('');
@@ -23,8 +23,8 @@ onMounted(() => {
 
 // Valida el formulario
 const validateForm = () => {
-    if (!username.value) {
-        msgError.value = "El nom d'usuari és obligatori";
+    if (!email.value) {
+        msgError.value = "El email és obligatori";
         return false;
     }
     if (!password.value) {
@@ -51,7 +51,7 @@ const gestioSubmit = async (e) => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                email: username.value,
+                email: email.value,
                 password: password.value,
             }),
         });
@@ -62,14 +62,19 @@ const gestioSubmit = async (e) => {
             throw new Error('No s\'ha pogut iniciar la sessió. Si us plau, torna-ho a provar.');
         }
 
-        // Guardar el token en localStorage
+        // Guardar el token, rol y usuario en localStorage
         localStorage.setItem('auth_token', data.token);
-
-        // IMPORTANTE: Guarda también la información del usuario
+        localStorage.setItem('role', data.role);
         localStorage.setItem('user', JSON.stringify(data.user));
 
-        // Redirigir al dashboard
-        router.push('/dashboard');  // Cambia a ruta directa en lugar de nombre
+        // Redirigir a la vista correspondiente según el rol
+        if (data.role === 'admin') {
+            router.push('/dashboard');
+        } else if (data.role === 'profesor') {
+            router.push('/dashboard');
+        } else if (data.role === 'alumno') {
+            router.push('/student/dashboard');
+        }
 
     } catch (err) {
         msgError.value = err.message || "No s'ha pogut iniciar la sessió. Si us plau, torna-ho a provar.";
@@ -93,7 +98,7 @@ const gestioSubmit = async (e) => {
                     {{ successMessage }}
                 </div>
 
-                <TextInput v-model="username" placeholder="Nom d'usuari" :has-msgError="msgError && !username" />
+                <TextInput v-model="email" placeholder="Email" :has-msgError="msgError && !email" />
 
                 <PasswordInput v-model="password" :has-msgError="msgError && !password" />
 
@@ -110,6 +115,9 @@ const gestioSubmit = async (e) => {
                 </div>
 
                 <div class="divider"></div>
+                <div class="register-link">
+                    <p>No tens un compte? <a @click.prevent="router.push('/register')"> <b class="cursor-pointer">Registrar-se</b></a></p>
+                </div>
 
                 <SocialLogin />
             </form>

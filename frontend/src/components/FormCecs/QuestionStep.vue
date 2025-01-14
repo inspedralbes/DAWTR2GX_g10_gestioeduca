@@ -32,7 +32,7 @@
       </div>
       
       <p class="text-sm text-gray-600 mt-2">
-        Seleccionados: {{ selectedStudents.length }}/3
+        Seleccionats: {{ selectedStudents.length }}/3
       </p>
     </div>
   </template>

@@ -2,35 +2,33 @@
 
 namespace Database\Seeders;
 
-use App\Models\Form;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Form;
 
 class FormSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
+    public function run()
     {
-        Form::create([
-            'title' => 'Formulario de actitud',
-        ]);
+        // Verificar si el formulario ya existe antes de crear uno nuevo
+        if (!Form::where('title', 'Formulario de prueba')->exists()) {
+            Form::create([
+                'title' => 'Formulario de prueba',
+                'description' => 'Un formulario generado para pruebas.',
+            ]);
+        }
 
-        Form::create([
-            'title' => 'Formulario de asistencia',
-        ]);
-
-        Form::create([
-            'title' => 'Formulario de rendimiento',
-        ]);
-
-        Form::create([
-            'title' => 'Formulario de comportamiento',
-        ]);
-
-        Form::create([
-            'title' => 'Formulario de satisfacción',
-        ]);
+        if (!Form::where('title', 'Formulario CESC')->exists()) {
+            Form::create([
+                'title' => 'Formulario CESC',
+                'description' => 'Conducta y Experiencias Sociales en Clase',
+            ]);
+        }
+        
+        if (!Form::where('title', 'Formulario Sociograma')->exists()) {
+            Form::create([
+                'title' => 'Formulario Sociograma',
+                'description' => 'Relaciones entre estudiantes en el aula.',
+            ]);
+        }
     }
 }

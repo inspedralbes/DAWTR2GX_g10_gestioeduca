@@ -15,9 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('title')->unique();
             $table->string('description')->nullable();
-            $table->boolean('status')->default(true);
+            $table->integer('status')->default(1);
+            $table->boolean('division')->default(true);
+            $table->date('date_limit')->nullable();
             $table->timestamps();
-
         });
     }
 
