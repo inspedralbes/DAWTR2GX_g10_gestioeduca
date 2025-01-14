@@ -102,54 +102,64 @@ class UserController extends Controller
 
 
      public function store(Request $request)
-     {
-         $validator = Validator::make($request->all(), [
-             'name' => 'required|string|max:255',
-             'last_name' => 'required|string|max:255',
-             'email' => 'required|string|email|max:255|unique:users',
-             'password' => 'required|string|min:8',
-             'role_id' => 'required|exists:roles,id',
-             'image' => 'nullable|string|max:255', // Imagen opcional
-             'courses' => 'required_if:role_id,3|array', // Solo si el rol es Alumno
-             'divisions' => 'required_if:role_id,3|array', // Solo si el rol es Alumno
-         ]);
+{
+    // Validación base para todos los usuarios
+    $baseValidation = [
+        'name' => 'required|string|max:255',
+        'last_name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users',
+        'password' => 'required|string|min:8',
+        'role_id' => 'required|exists:roles,id',
+        'image' => 'nullable|string|max:255',
+    ];
 
-         if ($validator->fails()) {
-             if ($request->wantsJson()) {
-                 return response()->json($validator->errors(), 400);
-             } else {
-                 return redirect()->back()->withErrors($validator)->withInput();
-             }
-         }
+    // Validación adicional para alumnos y profesores
+    //if (in_array($request->role_id, [1, 2])) { // Si es profesor (1) o alumno (2)
+        //$baseValidation['courses'] = 'required|array';
+        //$baseValidation['divisions'] = 'required|array';
+    //}
 
-         // Crear el usuario
-         $userData = [
-             'name' => $request->name,
-             'last_name' => $request->last_name,
-             'email' => $request->email,
-             'password' => bcrypt($request->password),
-             'role_id' => $request->role_id,
-         ];
+    $validator = Validator::make($request->all(), $baseValidation);
 
-         // Solo agregar la imagen si está presente en la solicitud
-         if ($request->has('image')) {
-             $userData['image'] = $request->image;
-         }
+    if ($validator->fails()) {
+        if ($request->wantsJson()) {
+            return response()->json($validator->errors(), 400);
+        } else {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+    }
 
-         $user = User::create($userData);
+    // Crear el usuario
+    $userData = [
+        'name' => $request->name,
+        'last_name' => $request->last_name,
+        'email' => $request->email,
+        'password' => bcrypt($request->password),
+        'role_id' => $request->role_id,
+    ];
 
-         // Si el rol es Alumno (ID = 3), asociar cursos y divisiones
-         if ($request->role_id == 3) {
-             $user->courses()->sync($request->courses); // Asociar cursos
-             $user->divisions()->sync($request->divisions); // Asociar divisiones
-         }
+    if ($request->has('image')) {
+        $userData['image'] = $request->image;
+    }
 
-         if ($request->wantsJson()) {
-             return response()->json($user, 201);
-         }
+    $user = User::create($userData);
 
-         return redirect()->route('users.index')->with('success', 'User created successfully');
-     }
+    // Asociar cursos y divisiones para profesores y alumnos
+    //if (in_array($request->role_id, [1, 2])) {
+        //if ($request->has('courses')) {
+            //$user->courses()->sync($request->courses);
+        //}
+        //if ($request->has('divisions')) {
+            //$user->divisions()->sync($request->divisions);
+        //}
+    //}
+
+    if ($request->wantsJson()) {
+        return response()->json($user, 201);
+    }
+
+    return redirect()->route('users.index')->with('success', 'User created successfully');
+}
 
 
 

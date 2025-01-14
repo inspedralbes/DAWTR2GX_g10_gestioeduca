@@ -7,28 +7,29 @@
         @csrf
         @method('PUT')
 
-        <div>
+        <div class="form-group mb-3">
             <label for="name">Name</label>
-            <input type="text" id="name" name="name" value="{{ old('name', $user->name) }}">
+            <input type="text" id="name" name="name" value="{{ old('name', $user->name) }}" class="form-control">
         </div>
 
-        <div>
+        <div class="form-group mb-3">
             <label for="last_name">Last Name</label>
-            <input type="text" id="last_name" name="last_name" value="{{ old('last_name', $user->last_name) }}">
+            <input type="text" id="last_name" name="last_name" value="{{ old('last_name', $user->last_name) }}" class="form-control">
         </div>
 
-        <div>
+        <div class="form-group mb-3">
             <label for="email">Email</label>
-            <input type="email" id="email" name="email" value="{{ old('email', $user->email) }}">
-        </div>
-        <div>
-            <label for="image">Image URL</label>
-            <input type="text" id="image" name="image" value="{{ old('image', $user->image) }}">
+            <input type="email" id="email" name="email" value="{{ old('email', $user->email) }}" class="form-control">
         </div>
 
-        <div>
+        <div class="form-group mb-3">
+            <label for="image">Image URL</label>
+            <input type="text" id="image" name="image" value="{{ old('image', $user->image) }}" class="form-control">
+        </div>
+
+        <div class="form-group mb-3">
             <label for="role_id">Role</label>
-            <select name="role_id" id="role_id">
+            <select name="role_id" id="role_id" class="form-control">
                 @foreach($roles as $role)
                     <option value="{{ $role->id }}" {{ $user->role_id == $role->id ? 'selected' : '' }}>
                         {{ $role->name }}
@@ -36,10 +37,9 @@
                 @endforeach
             </select>
         </div>
-        <button type="submit">Update</button>
 
+        <button type="submit" class="btn btn-primary mt-3 w-100">Update</button>
     </form>
-    <a href="{{ route('users.index') }}" class="btn btn-primary mt-3">Back to Users List</a>
-
+    <a href="{{ route('users.index') }}" class="btn btn-primary mt-3 w-100">Back to Users List</a>
 </div>
 @endsection
