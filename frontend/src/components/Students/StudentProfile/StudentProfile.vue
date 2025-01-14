@@ -26,11 +26,11 @@ onMounted(async () => {
     student.value = studentsStore.getStudentById(Number(studentId))
 
     if (!student.value) {
-      error.value = 'Estudiante no encontrado'
+      error.value = 'Estudiant no trobat'
     }
   } catch (err) {
     console.error(err)
-    error.value = 'Error al cargar los estudiantes'
+    error.value = 'Error al cargar els estudiants'
   } finally {
     isLoading.value = false
   }
@@ -43,7 +43,7 @@ onMounted(async () => {
     <!-- Loading Spinner -->
     <div v-if="isLoading" class="text-center py-8">
       <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-      <p class="mt-4 text-gray-500">Cargando perfil del estudiante...</p>
+      <p class="mt-4 text-gray-500">Cargant perfil del estudiant...</p>
     </div>
 
     <!-- Mostrar error -->
@@ -59,8 +59,8 @@ onMounted(async () => {
         </div>
         <h1 class="text-3xl font-bold">{{ student.name }}</h1>
       </div>
-      <p class="text-lg"><strong>Curso:</strong> {{ student.course }}</p>
-      <p class="text-lg"><strong>División:</strong> {{ student.division }}</p>
+      <p class="text-lg"><strong>Curs:</strong> {{ student.course }}</p>
+      <p class="text-lg"><strong>Divisió:</strong> {{ student.division }}</p>
       <p class="text-lg"><strong>Email:</strong> {{ student.email }}</p>
     </div>
   </div>

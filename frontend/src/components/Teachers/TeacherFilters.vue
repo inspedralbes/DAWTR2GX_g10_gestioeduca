@@ -17,7 +17,7 @@ defineEmits(['update:searchQuery', 'update:selectedCourse', 'update:selectedDivi
           :value="searchQuery"
           @input="$emit('update:searchQuery', $event.target.value)"
           type="text"
-          placeholder="Buscar por nombre o email..."
+          placeholder="Buscar per nom o email..."
           class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
         />
       </div>
@@ -27,20 +27,20 @@ defineEmits(['update:searchQuery', 'update:selectedCourse', 'update:selectedDivi
           @change="$emit('update:selectedCourse', $event.target.value)"
           class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
         >
-          <option value="all">Todos los cursos</option>
+          <option value="all">Tots els cursos</option>
           <option value="1">1º ESO</option>
           <option value="2">2º ESO</option>
           <option value="3">3º ESO</option>
           <option value="4">4º ESO</option>
-          <option value="1 BACHILLERATO">1ºBACHILLERATO</option>
-          <option value="2 BACHILLERATO">2ºBACHILLERATO</option>
+          <option value="1 BACHILLERATO">1ºBATXILLERAT</option>
+          <option value="2 BACHILLERATO">2ºBATXILLERAT</option>
         </select>
         <select
           :value="selectedDivision"
           @change="$emit('update:selectedDivision', $event.target.value)"
           class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
         >
-          <option value="all">Todas las clases</option>
+          <option value="all">Totes les classes</option>
           <option value="A">A</option>
           <option value="B">B</option>
           <option value="C">C</option>

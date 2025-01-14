@@ -58,7 +58,7 @@ onMounted(async () => {
 
         <!-- Lista de estudiantes -->
         <div class="student-list mt-8">
-          <h3 class="text-2xl font-semibold text-gray-900">Estudiantes del grupo</h3>
+          <h3 class="text-2xl font-semibold text-gray-900">Estudiants del grup</h3>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mt-6">
             <div v-for="student in group.students" :key="student.student_id" class="student-card bg-gray-100 p-4 rounded-lg shadow-md">
@@ -79,7 +79,7 @@ onMounted(async () => {
   </div>
 
   <div v-else class="text-center">
-    <p>No se ha encontrado el grupo con ID {{ route.params.id }}.</p>
+    <p>No s'ha trobat el grup amb ID {{ route.params.id }}.</p>
   </div>
 </template>
 

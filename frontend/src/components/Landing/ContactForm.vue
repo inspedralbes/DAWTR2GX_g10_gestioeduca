@@ -5,18 +5,18 @@
       <form @submit.prevent="handleSubmit" class="space-y-6">
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div>
-            <label for="first-name" class="block text-sm font-medium text-gray-700">Nombre</label>
+            <label for="first-name" class="block text-sm font-medium text-gray-700">Nom</label>
             <input type="text" id="first-name" v-model="form.firstName" required
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
           </div>
           <div>
-            <label for="last-name" class="block text-sm font-medium text-gray-700">Apellido</label>
+            <label for="last-name" class="block text-sm font-medium text-gray-700">Cognom</label>
             <input type="text" id="last-name" v-model="form.lastName" required
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
           </div>
         </div>
         <div>
-          <label for="phone" class="block text-sm font-medium text-gray-700">Número de Teléfono</label>
+          <label for="phone" class="block text-sm font-medium text-gray-700">Número de Telèfon</label>
           <input type="tel" id="phone" v-model="form.phone" required
             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
         </div>

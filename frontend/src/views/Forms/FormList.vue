@@ -57,7 +57,7 @@ const openAssignModal = (form) => {
 
 const handleFormAssigned = (assignments) => {
   console.log('Form assigned to students:', assignments)
-  alert('Formulario asignado correctamente a los estudiantes seleccionados')
+  alert('Formulari assignat correctament als estudiants seleccionats')
 }
 </script>
 
@@ -73,11 +73,11 @@ const handleFormAssigned = (assignments) => {
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
         </svg>
-        <span>Volver</span>
+        <span>Tornar</span>
       </button>
 
       <!-- Título centrado -->
-      <h1 class="flex-grow text-center text-2xl font-bold">Formularios</h1>
+      <h1 class="flex-grow text-center text-2xl font-bold">Formularis</h1>
 
       <!-- Botón de nuevo formulario -->
       <button 
@@ -85,7 +85,7 @@ const handleFormAssigned = (assignments) => {
         class="absolute right-0 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 flex items-center space-x-2"
       >
         <PlusIcon class="w-5 h-5" />
-        <span>Nuevo Formulario</span>
+        <span>Nou Formulari</span>
       </button>
     </div>
 
@@ -96,7 +96,7 @@ const handleFormAssigned = (assignments) => {
           <input
             v-model="searchQuery"
             type="text"
-            placeholder="Buscar formularios..."
+            placeholder="Buscar formularis..."
             class="w-full px-4 py-2 border rounded-lg"
           />
         </div>
@@ -105,19 +105,19 @@ const handleFormAssigned = (assignments) => {
             v-model="selectedDivision"
             class="px-4 py-2 border rounded-lg"
           >
-            <option value="all">Todos los estados</option>
-            <option value="active">Activos</option>
-            <option value="draft">Borradores</option>
-            <option value="closed">Cerrados</option>
+            <option value="all">Tots los estats</option>
+            <option value="active">Actius</option>
+            <option value="draft">Borradors</option>
+            <option value="closed">Tancats</option>
           </select>
           <select
             v-model="selectedDate"
             class="px-4 py-2 border rounded-lg"
           >
-            <option value="all">Todas las fechas</option>
-            <option value="today">Hoy</option>
-            <option value="week">Esta semana</option>
-            <option value="month">Este mes</option>
+            <option value="all">Totes les dates</option>
+            <option value="today">Avui</option>
+            <option value="week">Aquesta setmana</option>
+            <option value="month">Aquest mes</option>
           </select>
         </div>
       </div>
@@ -130,19 +130,19 @@ const handleFormAssigned = (assignments) => {
           <thead class="bg-gray-50">
             <tr>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Título
+                Títol
               </th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Estado
+                Estat
               </th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Respuestas
+                Respostes
               </th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Fecha
+                Data
               </th>
               <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Acciones
+                Accions
               </th>
             </tr>
           </thead>
@@ -175,7 +175,7 @@ const handleFormAssigned = (assignments) => {
                     title="Asignar a estudiantes"
                   >
                     <UserGroupIcon class="w-4 h-4" />
-                    <span>Asignar</span>
+                    <span>Assignar</span>
                   </button>
                   <button 
                     v-if="form.responses > 0"
@@ -184,7 +184,7 @@ const handleFormAssigned = (assignments) => {
                     title="Ver respuestas"
                   >
                     <ChartBarIcon class="w-4 h-4" />
-                    <span>Ver Respuestas</span>
+                    <span>Veure Respostes</span>
                   </button>
                   <button class="text-gray-400 hover:text-primary">
                     <PencilIcon class="w-5 h-5" />

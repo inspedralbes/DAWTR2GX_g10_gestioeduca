@@ -1,6 +1,6 @@
 <template>
   <div class="space-y-6">
-    <h2 class="text-2xl font-bold">Mis Formularios</h2>
+    <h2 class="text-2xl font-bold">Formularis</h2>
     <div v-for="form in forms" :key="form.id" class="bg-white rounded-lg shadow p-4 mb-4">
       <h3 class="text-lg font-semibold">{{ form.title }}</h3>
       <p class="text-sm text-gray-500">{{ form.description }}</p>
@@ -24,7 +24,7 @@ onMounted(async () => {
     await formsStore.loadForms();  // Llamamos al método para cargar los formularios
     forms.value = formsStore.forms;  // Asignamos los formularios al ref
   } catch (error) {
-    console.error("Error al cargar formularios", error);
+    console.error("Error al cargar formularis", error);
   }
 });
 

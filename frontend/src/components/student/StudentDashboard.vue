@@ -53,8 +53,8 @@ import {
 // Elementos del menú
 const menuItems = [
   { name: 'Dashboard', path: '/student/dashboard', icon: HomeIcon },
-  { name: 'Mis Grupos', path: '/student/group', icon: UserGroupIcon },
-  { name: 'Formularios', path: '/student/forms', icon: DocumentTextIcon },
+  { name: 'Grups', path: '/student/group', icon: UserGroupIcon },
+  { name: 'Formularis', path: '/student/forms', icon: DocumentTextIcon },
   { name: 'Log out', path: '/tancar-sessio', icon: PowerIcon }
 ]
 

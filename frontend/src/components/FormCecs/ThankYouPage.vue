@@ -22,16 +22,16 @@
         <h2 class="text-3xl font-bold text-blue-700 mb-4">¡Gracias, {{ studentInfo.name }}!</h2>
         
         <p class="text-gray-600 mb-6">
-          Tu cuestionario ha sido enviado correctamente. 
-          Apreciamos tu tiempo y colaboración.
+          El teu qüestionari ha estat enviat correctament. 
+          Apreciem el teu temps i col·laboració.
         </p>
         
         <div class="bg-blue-50 p-4 rounded-lg mb-6">
           <h3 class="font-semibold text-blue-800 mb-2">Detalles del Envío</h3>
           <ul class="text-gray-700 text-left max-w-xs mx-auto">
-            <li><strong>Centro:</strong> {{ studentInfo.school }}</li>
-            <li><strong>Curso:</strong> {{ studentInfo.course }}</li>
-            <li><strong>Fecha de envío:</strong> {{ formattedDate }}</li>
+            <li><strong>Centre:</strong> {{ studentInfo.school }}</li>
+            <li><strong>Curs:</strong> {{ studentInfo.course }}</li>
+            <li><strong>Data d'enviament:</strong> {{ formattedDate }}</li>
           </ul>
         </div>
         
@@ -39,7 +39,7 @@
           @click="$emit('reset')"
           class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-full"
         >
-          Volver al inicio
+          Tonar al inici
         </button>
       </div>
     </div>

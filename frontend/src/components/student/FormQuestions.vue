@@ -1,7 +1,7 @@
 <template>
     <div class="space-y-6 p-6">
       <!-- Título del formulario -->
-      <h2 class="text-2xl font-bold">Formulario: {{ formId }}</h2>
+      <h2 class="text-2xl font-bold">Formulari: {{ formId }}</h2>
       
       <!-- Mostrar las preguntas del formulario -->
       <div v-for="(question, index) in questions" :key="question.id" class="space-y-4">
@@ -56,14 +56,14 @@
   
           <!-- Mostrar respuestas de la pregunta -->
           <div v-if="question.answers && question.answers.length > 0" class="mt-4">
-            <h4 class="text-lg font-semibold text-gray-800">Respuestas:</h4>
+            <h4 class="text-lg font-semibold text-gray-800">Respostes:</h4>
             <div class="space-y-2 mt-2">
               <div v-for="answer in question.answers" :key="answer.id" class="p-2 bg-gray-100 rounded-lg">
                 <div class="text-gray-700">
-                  <strong>Respuesta:</strong> {{ answer.answer }}
+                  <strong>Resposta:</strong> {{ answer.answer }}
                 </div>
                 <div class="text-sm text-gray-500 mt-1">
-                  <strong>Usuario:</strong> {{ answer.user_name || 'Desconocido' }}
+                  <strong>Usuari:</strong> {{ answer.user_name || 'Desconocido' }}
                 </div>
               </div>
             </div>

@@ -24,10 +24,10 @@ defineProps({
       <table class="w-full">
         <thead>
           <tr class="border-b">
-            <th class="text-left py-3">Nombre</th>
-            <th class="text-left py-3">Curso</th>
-            <th class="text-left py-3">Clase</th>
-            <th class="text-left py-3">Ficha</th>
+            <th class="text-left py-3">Nom</th>
+            <th class="text-left py-3">Curs</th>
+            <th class="text-left py-3">Classe</th>
+            <th class="text-left py-3">Fitxa</th>
           </tr>
         </thead>
         <tbody>
@@ -43,7 +43,7 @@ defineProps({
 
     <!-- Mostrar mensaje si la lista está vacía -->
     <div v-if="teachers.length === 0" class="text-center py-8 text-gray-500">
-      No se encontraron profesores con los filtros seleccionados
+      No s'han trobat professors amb els filtres seleccionats
     </div>
   </div>
 </template>

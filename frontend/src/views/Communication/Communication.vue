@@ -6,7 +6,7 @@ const activeTab = ref('chat')
 
 <template>
   <div class="p-6">
-    <h1 class="text-2xl font-bold mb-6">Comunicación</h1>
+    <h1 class="text-2xl font-bold mb-6">Comunicació</h1>
 
     <div class="bg-white rounded-lg shadow">
       <div class="border-b px-4">
@@ -24,7 +24,7 @@ const activeTab = ref('chat')
       </div>
 
       <div class="p-4">
-        <p class="text-gray-500">Contenido de {{ activeTab }}</p>
+        <p class="text-gray-500">Contingut de {{ activeTab }}</p>
       </div>
     </div>
   </div>

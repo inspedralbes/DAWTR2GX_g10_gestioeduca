@@ -18,7 +18,7 @@ const emit = defineEmits(['action'])
 <template>
   <div v-if="selectedCount > 0" class="flex items-center space-x-3">
     <span class="text-sm text-gray-500">
-      {{ selectedCount }} seleccionados
+      {{ selectedCount }} seleccionats
     </span>
     
     <button

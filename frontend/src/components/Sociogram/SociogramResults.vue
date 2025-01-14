@@ -67,7 +67,7 @@ const goBack = () => {
   <div class="max-w-4xl mx-auto mt-8 p-4 bg-gray-50 rounded-lg shadow-md">
     
     <!-- Contenedor principal -->
-    <h1 class="text-2xl font-bold text-center mb-6 text-gray-800">Sociograma test de relaciones en clase</h1>
+    <h1 class="text-2xl font-bold text-center mb-6 text-gray-800">Sociograma test de relacions a classe</h1>
     <div class="relative w-full flex justify-center items-center" :style="{ height: `${height}px`, width: `${width}px` }">
       <!-- Mostrar nodos de usuarios -->
       <div 
@@ -105,7 +105,7 @@ const goBack = () => {
       @click="goBack" 
       class="mb-4 px-4 py-2 bg-blue-500 text-white rounded-full shadow-md hover:bg-blue-400"
     >
-      Volver a Dashboard
+      Tornar al Dashboard
     </button>
   </div>
 </template>

@@ -83,11 +83,11 @@ export default {
 
         const students = await response.json();
         const student = students.find((s) => s.id_student === id); 
-        if (!student) throw new Error("Estudiante no encontrado");
+        if (!student) throw new Error("Estudiant no trobat");
 
         // Asignar los valores del estudiante
         this.studentName = `${student.name} ${student.surname}`;
-        this.studentCurs = student.curs || "Curso no especificado.";
+        this.studentCurs = student.curs || "Curs no especificat.";
       } catch (error) {
         this.error = error.message; // Mostrar el mensaje de error
       } finally {

@@ -50,10 +50,10 @@ const formatAnswer = (answer, question) => {
 
         <div class="mb-6">
           <h3 class="text-lg font-medium text-gray-900">
-            Respuesta de {{ response.studentName }}
+            Resposta de {{ response.studentName }}
           </h3>
           <p class="text-sm text-gray-500">
-            Enviado el {{ format(new Date(response.submittedAt), 'dd/MM/yyyy HH:mm') }}
+            Enviat el {{ format(new Date(response.submittedAt), 'dd/MM/yyyy HH:mm') }}
           </p>
           <div class="mt-1">
             <span 
@@ -88,12 +88,12 @@ const formatAnswer = (answer, question) => {
             class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-800"
             @click="close"
           >
-            Cerrar
+            Tancar
           </button>
           <button
             class="px-4 py-2 text-sm font-medium text-white bg-primary rounded-md hover:bg-primary/90"
           >
-            Añadir Comentario
+            Agregar Comentari
           </button>
         </div>
       </div>

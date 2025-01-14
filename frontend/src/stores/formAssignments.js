@@ -35,9 +35,9 @@ export const useFormAssignmentsStore = defineStore('formAssignments', () => {
         }
 
         const result = await response.json()
-        console.log('Asignación exitosa:', result)
+        console.log('Assignació exitosa:', result)
       } catch (error) {
-        console.error('Error al asignar el formulario:', error)
+        console.error('Error al assignar el formulari:', error)
       }
     }
 
