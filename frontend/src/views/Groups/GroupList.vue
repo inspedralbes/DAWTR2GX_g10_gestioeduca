@@ -3,6 +3,9 @@ import { ref } from 'vue'
 // import { PlusIcon } from '@heroicons/vue/24/outline'
 import GroupGenerator from '../../components/Groups/GroupGenerator.vue'
 import GroupPreview from '../../components/Groups/GroupPreview.vue'
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 const students = ref([
   {
     id: 1,
@@ -44,6 +47,10 @@ const students = ref([
 
 const groups = ref([])
 
+const goManualCreateGroup = () => {
+  router.push('/manualCreateGroup'); 
+};
+
 const handleGenerateGroups = (newGroups) => {
   groups.value = newGroups
 }
@@ -53,7 +60,7 @@ const handleGenerateGroups = (newGroups) => {
   <div class="p-4 sm:p-6">
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
       <h1 class="text-xl sm:text-2xl font-bold">Grupos de Clase</h1>
-      <button class="w-full sm:w-auto btn btn-primary flex items-center justify-center space-x-2">
+      <button class="w-full sm:w-auto btn btn-primary flex items-center justify-center space-x-2 " @click="goManualCreateGroup">
         <PlusIcon class="w-5 h-5" />
         <span>Nuevo Grupo Manual</span>
       </button>
