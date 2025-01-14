@@ -78,11 +78,14 @@ const filteredForms = computed(() => {
   return forms.value.filter(form => form.answered === 0);
 });
 
+// Manejador del clic en el formulario
 const handleFormClick = (formId) => {
-  if (formId === 3) {
-    window.location.href = '/sociogram';
+  if (formId === 2) {
+    window.location.href = `/formCecs/${formId}`;  // Redirige a la ruta /formCecs si el formId es 2
+  } else if (formId === 3) {
+    window.location.href = '/sociogram';  // Redirige a /sociogram si el formId es 3
   } else {
-    window.location.href = `/student/forms/${formId}`;
+    window.location.href = `/student/forms/${formId}`;  // Redirige a la ruta correspondiente para cualquier otro formId
   }
 };
 </script>

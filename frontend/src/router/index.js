@@ -153,9 +153,9 @@ const router = createRouter({
       meta: { requiresAuth: true},
     },
     {
-      path: '/formCecs',
+      path: '/formCecs/:id',
       name: 'formCecs',
-      component: () => import('../components/FormCecs/FormCecsComponent.vue'),
+      component: () => import('../components/student/SescForm.vue'),
     },
     {
       path: '/sociogram',

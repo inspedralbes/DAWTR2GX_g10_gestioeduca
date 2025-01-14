@@ -1,8 +1,8 @@
 <template>
   <div class="space-y-6">
-    <h2 class="text-2xl font-bold">Els meus Formularis</h2>
+    <h2 class="text-2xl font-bold">Mis Formularios</h2>
     <div v-if="forms.length === 0" class="text-gray-500">
-      No tens formularis assignats.
+      No tienes formularios asignados.
     </div>
     <div v-else>
       <div v-for="form in forms" :key="form.id" class="bg-white rounded-lg shadow p-4 mb-4">
@@ -60,10 +60,13 @@ onMounted(() => {
 
 // Manejador del clic en el formulario
 const handleFormClick = (formId) => {
-  if (formId === 3) {
-    window.location.href = '/sociogram';
+  if (formId === 2) {
+    window.location.href = `/formCecs/${formId}`;  // Redirige a la ruta /formCecs si el formId es 2
+  } else if (formId === 3) {
+    window.location.href = '/sociogram';  // Redirige a /sociogram si el formId es 3
   } else {
-    window.location.href = `/student/forms/${formId}`;
+    window.location.href = `/student/forms/${formId}`;  // Redirige a la ruta correspondiente para cualquier otro formId
   }
 };
+
 </script>
