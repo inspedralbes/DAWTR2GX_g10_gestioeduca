@@ -1,8 +1,75 @@
+<template>
+  <div>
+    <!-- Toast mensaje -->
+    <div v-if="showToast" :class="toastType" class="toast">
+      {{ toastMessage }}
+    </div>
+    
+    <div class="space-y-6">
+      <div v-if="title" class="card animate-fade-in">
+        <div class="flex justify-between items-center">
+          <h2 class="text-2xl font-bold mb-2">{{ titleContent }}</h2>
+          <button @click="handleDownload" class="text-gray-600 hover:text-primary transition duration-200">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+            </svg>
+          </button>
+        </div>
+        <p class="text-gray-600">{{ descriptionContent }}</p>
+      </div>
+
+      <div v-for="(question, index) in visibleQuestions" :key="index"
+        class="border rounded-lg p-6 bg-white animate-slide-up">
+        <div class="flex justify-between items-start mb-4">
+          <h3 class="text-lg font-medium">{{ question.title }}</h3>
+          <QuestionActions :question="question" :is-loading="loadingQuestionId === question.id" @edit="handleEditQuestion"
+            @regenerate="handleRegenerateQuestion" />
+        </div>
+
+        <div class="space-y-4">
+          <template v-if="['multiple', 'checkbox'].includes(question.type)">
+            <div v-for="option in question.options" :key="option.value" class="flex items-center space-x-2">
+              <input :type="question.type === 'multiple' ? 'radio' : 'checkbox'" :name="`question-${index}`"
+                :value="option.value" class="w-4 h-4 text-primary focus:ring-primary" />
+              <label class="text-gray-700">{{ option.text }}</label>
+            </div>
+          </template>
+
+          <template v-else-if="question.type === 'text'">
+            <textarea rows="3"
+              class="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
+              placeholder="Tu respuesta..."></textarea>
+          </template>
+
+          <template v-else-if="question.type === 'number'">
+            <input type="number"
+              class="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
+              placeholder="0" />
+          </template>
+        </div>
+      </div>
+
+      <div v-if="localQuestions.length > 0" class="flex justify-end space-x-4 pt-4">
+        <button @click="handleSave" class="btn bg-gray-100 text-gray-700 hover:bg-gray-200">
+          Guardar
+        </button>
+        <button @click="handleSend" class="btn btn-primary">
+          Enviar
+        </button>
+      </div>
+
+    </div>
+  </div>
+</template>
+
 <script setup>
 import { ref, watch } from 'vue';
 import { useTypingEffect } from '../utils/chat';
 import QuestionActions from './QuestionActions.vue';
 import QuestionEditorModal from './QuestionEditorModal.vue';
+import { useRouter } from 'vue-router';
 
 const props = defineProps({
   questions: {
@@ -22,6 +89,8 @@ const showEditorModal = ref(false);
 const selectedQuestion = ref(null);
 const { content: titleContent, typeMessage: typeTitle } = useTypingEffect(50);
 const { content: descriptionContent, typeMessage: typeDescription } = useTypingEffect(30);
+const router = useRouter();  // Obtén el router
+
 
 // Sincronizar cambios en props con la copia local
 watch(
@@ -64,24 +133,20 @@ watch(
   { immediate: true }
 );
 
-const handleEditQuestion = (question) => {
-  selectedQuestion.value = question;
-  showEditorModal.value = true;
-};
+// Mostrar Toast
+const showToast = ref(false);
+const toastMessage = ref('');
+const toastType = ref('success-toast');
 
-const handleSaveQuestion = (editedQuestion) => {
-  const index = localQuestions.value.findIndex((q) => q.id === editedQuestion.id);
-  if (index !== -1) {
-    localQuestions.value.splice(index, 1, editedQuestion);
-  }
-  emit('edit-question', { question: editedQuestion });
-};
 
-const handleRegenerateQuestion = async (question) => {
-  loadingQuestionId.value = question.id;
-  await emit('regenerate-question', question);
-  loadingQuestionId.value = null;
-};
+function showToastMessage(message, type = 'success-toast') {
+  toastMessage.value = message;
+  toastType.value = type;
+  showToast.value = true;
+  setTimeout(() => {
+    showToast.value = false;
+  }, 3000); // Toast desaparece después de 3 segundos
+}
 
 const handleSave = async () => {
   const formData = {
@@ -104,17 +169,23 @@ const handleSave = async () => {
     if (!response.ok) {
       const errorData = await response.json();
       console.error('Errors de validació:', errorData);
-      alert('Errors en les dades enviades: ' + JSON.stringify(errorData.errors, null, 2));
+      showToastMessage('Errors en les dades enviades: ' + JSON.stringify(errorData.errors, null, 2), 'error-toast');
       return;
     }
 
     const result = await response.json();
     console.log('Resposta del servidor:', result);
-    alert('Formulari desat amb éxit.');
+    showToastMessage('Formulari desat amb èxit.');
+
+    // Redirigir a la lista de formularios después de guardar
+    setTimeout(() => {
+      // Redirigir a la ruta '/formularios'
+    router.push({ name: 'FormList' });
+    }, 1000); // Espera 1.5 segundos para que el toast sea visible antes de redirigir
 
   } catch (error) {
     console.error('Error en desar el formulari:', error);
-    alert('Hi va haver un error en desar el formulari. Si us plau, torna-ho a intentar.');
+    showToastMessage('Hi va haver un error en desar el formulari. Si us plau, torna-ho a intentar.', 'error-toast');
   }
 };
 
@@ -139,62 +210,43 @@ const handleDownload = () => {
 };
 </script>
 
-<template>
-  <div class="space-y-6">
-    <div v-if="title" class="card animate-fade-in">
-      <div class="flex justify-between items-center">
-        <h2 class="text-2xl font-bold mb-2">{{ titleContent }}</h2>
-        <button @click="handleDownload" class="text-gray-600 hover:text-primary transition duration-200">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-            stroke="currentColor" class="size-6">
-            <path stroke-linecap="round" stroke-linejoin="round"
-              d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
-          </svg>
-        </button>
-      </div>
-      <p class="text-gray-600">{{ descriptionContent }}</p>
-    </div>
+<style scoped>
+/* Estilos para el Toast */
+.toast {
+  position: fixed;
+  top: 20px; /* Coloca el toast en la parte superior */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #28a745; /* Verde para éxito */
+  color: white;
+  padding: 15px;
+  border-radius: 8px;
+  font-size: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  animation: toast-animation 0.5s forwards;
+  z-index: 9999; /* Asegura que se muestre encima de todo */
+}
 
-    <div v-for="(question, index) in visibleQuestions" :key="index"
-      class="border rounded-lg p-6 bg-white animate-slide-up">
-      <div class="flex justify-between items-start mb-4">
-        <h3 class="text-lg font-medium">{{ question.title }}</h3>
-        <QuestionActions :question="question" :is-loading="loadingQuestionId === question.id" @edit="handleEditQuestion"
-          @regenerate="handleRegenerateQuestion" />
-      </div>
+@keyframes toast-animation {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
 
-      <div class="space-y-4">
-        <template v-if="['multiple', 'checkbox'].includes(question.type)">
-          <div v-for="option in question.options" :key="option.value" class="flex items-center space-x-2">
-            <input :type="question.type === 'multiple' ? 'radio' : 'checkbox'" :name="`question-${index}`"
-              :value="option.value" class="w-4 h-4 text-primary focus:ring-primary" />
-            <label class="text-gray-700">{{ option.text }}</label>
-          </div>
-        </template>
+/* Toast para errores */
+.error-toast {
+  background-color: #dc3545; /* Rojo para error */
+}
 
-        <template v-else-if="question.type === 'text'">
-          <textarea rows="3"
-            class="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
-            placeholder="Tu respuesta..."></textarea>
-        </template>
+/* Toast para mensajes generales */
+.success-toast {
+  background-color: #28a745; /* Verde para éxito */
+}
 
-        <template v-else-if="question.type === 'number'">
-          <input type="number"
-            class="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
-            placeholder="0" />
-        </template>
-      </div>
-    </div>
-
-    <div v-if="localQuestions.length > 0" class="flex justify-end space-x-4 pt-4">
-      <button @click="handleSave" class="btn bg-gray-100 text-gray-700 hover:bg-gray-200">
-        Guardar
-      </button>
-      <button @click="handleSend" class="btn btn-primary">
-        Enviar
-      </button>
-    </div>
-
-    <QuestionEditorModal v-model="showEditorModal" :question="selectedQuestion" @save="handleSaveQuestion" />
-  </div>
-</template>
+</style>
