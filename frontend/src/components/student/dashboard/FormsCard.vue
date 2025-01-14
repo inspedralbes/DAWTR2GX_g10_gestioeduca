@@ -79,7 +79,10 @@ const filteredForms = computed(() => {
 });
 
 const handleFormClick = (formId) => {
-  // Redirigir al formulario específico para completar
-  window.location.href = `/student/forms/${formId}`;  // Esto redirige a la página de formulario
+  if (formId === 3) {
+    window.location.href = '/sociogram';
+  } else {
+    window.location.href = `/student/forms/${formId}`;
+  }
 };
 </script>
