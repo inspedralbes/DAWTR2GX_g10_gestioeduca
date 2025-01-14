@@ -1,93 +1,137 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Asignaturas</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body>
-    <div class="container mx-auto mt-10">
-        <h1 class="text-3xl font-bold mb-6">Gestión de Asignaturas</h1>
+@extends('layouts.app')
 
-        <!-- Mostrar mensajes de éxito -->
-        <?php if (session('success')): ?>
-            <div class="bg-green-100 text-green-700 px-4 py-2 rounded mb-4">
-                <?php echo session('success'); ?>
+@section('content')
+<div class="container">
+    <!-- Encabezado y botón de retorno -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="display-5 mb-0">Gestión de Asignaturas</h1>
+        <a href="{{ route('dashboard') }}" class="btn btn-outline-primary">
+            <i class="fas fa-arrow-left me-2"></i>
+            Volver al Dashboard
+        </a>
+    </div>
+
+    <!-- Mensajes de éxito -->
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    <!-- Grid de dos columnas -->
+    <div class="row">
+        <!-- Lista de asignaturas -->
+        <div class="col-lg-8 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white py-3">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-list me-2" style="color: var(--primary-color)"></i>
+                        Lista de Asignaturas
+                    </h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="px-4">ID</th>
+                                    <th>Nombre</th>
+                                    <th>Descripción</th>
+                                    <th class="text-end px-4">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($subjects as $subject)
+                                    <tr>
+                                        <td class="px-4">{{ $subject->id }}</td>
+                                        <td>{{ $subject->name }}</td>
+                                        <td>{{ $subject->description }}</td>
+                                        <td class="text-end px-4">
+                                            <!-- Editar -->
+                                            <a href="{{ route('subjects.index', ['edit' => $subject->id]) }}" 
+                                               class="btn btn-sm btn-warning me-2 mb-2 w-100">
+                                                <i class="fas fa-edit me-1"></i>
+                                                Editar
+                                            </a>
+                                            <!-- Eliminar -->
+                                            <form action="{{ route('subjects.destroy', $subject->id) }}" 
+                                                  method="POST" 
+                                                  class="d-inline w-100">
+                                                @method('DELETE')
+                                                @csrf
+                                                <button type="submit" 
+                                                        class="btn btn-sm btn-danger w-100" 
+                                                        onclick="return confirm('¿Estás seguro de eliminar esta asignatura?')">
+                                                    <i class="fas fa-trash-alt me-1"></i>
+                                                    Eliminar
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-        <?php endif; ?>
-
-        <!-- Listado de asignaturas -->
-        <h2 class="text-2xl font-semibold mb-4">Lista de Asignaturas</h2>
-        <table class="table-auto w-full border-collapse border border-gray-300">
-            <thead class="bg-gray-100">
-                <tr>
-                    <th class="border border-gray-300 px-4 py-2">ID</th>
-                    <th class="border border-gray-300 px-4 py-2">Nombre</th>
-                    <th class="border border-gray-300 px-4 py-2">Descripción</th>
-                    <th class="border border-gray-300 px-4 py-2">Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($subjects as $subject): ?>
-                    <tr>
-                        <td class="border border-gray-300 px-4 py-2"><?php echo $subject->id; ?></td>
-                        <td class="border border-gray-300 px-4 py-2"><?php echo $subject->name; ?></td>
-                        <td class="border border-gray-300 px-4 py-2"><?php echo $subject->description; ?></td>
-                        <td class="border border-gray-300 px-4 py-2">
-                            <!-- Botón para Editar -->
-                            <a href="<?php echo route('subjects.index', ['edit' => $subject->id]); ?>" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Editar</a>
-
-                            <!-- Formulario para Eliminar -->
-                            <form action="<?php echo route('subjects.destroy', $subject->id); ?>" method="POST" class="inline">
-                                <input type="hidden" name="_method" value="DELETE">
-                                <?php echo csrf_field(); ?>
-                                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Eliminar</button>
-                            </form>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+        </div>
 
         <!-- Formulario para Crear o Editar Asignaturas -->
-        <h2 class="text-2xl font-semibold mt-8 mb-4">
-            <?php echo isset($_GET['edit']) ? 'Editar Asignatura' : 'Crear Nueva Asignatura'; ?>
-        </h2>
-        <form action="<?php echo isset($_GET['edit']) ? route('subjects.update', $_GET['edit']) : route('subjects.store'); ?>" method="POST" class="bg-gray-100 p-6 rounded shadow-md">
-            <?php if (isset($_GET['edit'])): ?>
-                <input type="hidden" name="_method" value="PUT">
-            <?php endif; ?>
-            <?php echo csrf_field(); ?>
+        <div class="col-lg-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white py-3">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-{{ isset($_GET['edit']) ? 'edit' : 'plus' }} me-2" 
+                           style="color: var(--primary-color)"></i>
+                        {{ isset($_GET['edit']) ? 'Editar Asignatura' : 'Crear Nueva Asignatura' }}
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form action="{{ isset($_GET['edit']) ? route('subjects.update', $_GET['edit']) : route('subjects.store') }}" 
+                          method="POST">
+                        @if(isset($_GET['edit']))
+                            @method('PUT')
+                        @endif
+                        @csrf
 
-            <div class="mb-4">
-                <label for="name" class="block text-gray-700 font-medium">Nombre de la Asignatura</label>
-                <input 
-                    type="text" 
-                    id="name" 
-                    name="name" 
-                    value="<?php echo isset($_GET['edit']) ? htmlspecialchars($subjects->firstWhere('id', $_GET['edit'])->name) : ''; ?>" 
-                    class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500" 
-                    required>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Nombre de la Asignatura</label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="name" 
+                                   name="name" 
+                                   value="{{ isset($_GET['edit']) ? $subjects->firstWhere('id', $_GET['edit'])->name : '' }}" 
+                                   required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Descripción</label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="description" 
+                                   name="description" 
+                                   value="{{ isset($_GET['edit']) ? $subjects->firstWhere('id', $_GET['edit'])->description : '' }}">
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>
+                                {{ isset($_GET['edit']) ? 'Actualizar' : 'Guardar' }}
+                            </button>
+                            
+                            @if(isset($_GET['edit']))
+                                <a href="{{ route('subjects.index') }}" class="btn btn-outline-secondary">
+                                    <i class="fas fa-times me-2"></i>
+                                    Cancelar
+                                </a>
+                            @endif
+                        </div>
+                    </form>
+                </div>
             </div>
-
-            <div class="mb-4">
-                <label for="description" class="block text-gray-700 font-medium">Descripción</label>
-                <input 
-                    type="text" 
-                    id="description" 
-                    name="description" 
-                    value="<?php echo isset($_GET['edit']) ? htmlspecialchars($subjects->firstWhere('id', $_GET['edit'])->description) : ''; ?>" 
-                    class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500">
-            </div>
-
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                <?php echo isset($_GET['edit']) ? 'Actualizar' : 'Guardar'; ?>
-            </button>
-            <?php if (isset($_GET['edit'])): ?>
-                <a href="<?php echo route('subjects.index'); ?>" class="ml-2 text-gray-500 hover:underline">Cancelar</a>
-            <?php endif; ?>
-        </form>
+        </div>
     </div>
-</body>
-</html>
+</div>
+@endsection

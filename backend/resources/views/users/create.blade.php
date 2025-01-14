@@ -59,9 +59,11 @@
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary mt-3">Create User</button>
+        <div class="d-grid gap-2 mt-3">
+            <button type="submit" class="btn btn-primary w-100">Create User</button>
+            <a href="{{ route('users.index') }}" class="btn btn-primary mt-3 w-100">Back to Users List</a>
+        </div>
     </form>
-    <a href="{{ route('users.index') }}" class="btn btn-primary mt-3">Back to Users List</a>
 </div>
 
 <!-- Agregar este script al final -->
