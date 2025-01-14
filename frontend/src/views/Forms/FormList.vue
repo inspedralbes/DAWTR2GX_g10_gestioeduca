@@ -158,7 +158,7 @@ const handleFormAssigned = (assignments) => {
                   'bg-green-100 text-green-800': form.status === 1,
                   'bg-red-100 text-red-800': form.status === 0
                   }">
-                  {{ form.status === 1 ? 'activo' : 'inactivo' }}
+                  {{ form.status === 1 ? 'actiu' : 'inactiu' }}
                 </span>
               </td>
               <td class="px-6 py-4 text-sm text-gray-500">
