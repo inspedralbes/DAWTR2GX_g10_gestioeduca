@@ -1,10 +1,177 @@
+<script setup>
+import { ref, watch } from 'vue';
+import { useTypingEffect } from '../utils/chat';
+import QuestionActions from './QuestionActions.vue';
+import QuestionEditorModal from './QuestionEditorModal.vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+const props = defineProps({
+  questions: {
+    type: Array,
+    required: true,
+  },
+  title: String,
+  description: String,
+  context: String,
+});
+
+const emit = defineEmits(['edit-question', 'regenerate-question', 'save', 'send']);
+const localQuestions = ref([...props.questions]); // Copia local de las preguntas
+const visibleQuestions = ref([]);
+const loadingQuestionId = ref(null);
+const showEditorModal = ref(false);
+const selectedQuestion = ref(null);
+const { content: titleContent, typeMessage: typeTitle } = useTypingEffect(50);
+const { content: descriptionContent, typeMessage: typeDescription } = useTypingEffect(30);
+
+// Sincronizar cambios en props con la copia local
+watch(
+  () => props.questions,
+  (newQuestions) => {
+    localQuestions.value = [...newQuestions];
+  },
+  { immediate: true }
+);
+
+watch(
+  () => props.title,
+  async (newTitle) => {
+    if (newTitle) {
+      await typeTitle(newTitle);
+    }
+  },
+  { immediate: true }
+);
+
+watch(
+  () => props.description,
+  async (newDescription) => {
+    if (newDescription) {
+      await typeDescription(newDescription);
+    }
+  },
+  { immediate: true }
+);
+
+watch(
+  () => localQuestions.value,
+  async (newQuestions) => {
+    visibleQuestions.value = [];
+    for (let i = 0; i < newQuestions.length; i++) {
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      visibleQuestions.value.push(newQuestions[i]);
+    }
+  },
+  { immediate: true }
+);
+
+const handleEditQuestion = (question) => {
+  selectedQuestion.value = question;
+  showEditorModal.value = true;
+};
+
+const handleSaveQuestion = (editedQuestion) => {
+  const index = localQuestions.value.findIndex((q) => q.id === editedQuestion.id);
+  if (index !== -1) {
+    localQuestions.value.splice(index, 1, editedQuestion);
+  }
+  emit('edit-question', { question: editedQuestion });
+};
+
+const handleRegenerateQuestion = async (question) => {
+  loadingQuestionId.value = question.id;
+  await emit('regenerate-question', question);
+  loadingQuestionId.value = null;
+};
+
+const handleSave = async () => {
+  const formData = {
+    title: props.title,
+    description: props.description,
+    questions: localQuestions.value,
+  };
+
+  console.log('Datos que se enviarán:', JSON.stringify(formData, null, 2)); // Verifica la estructura del objeto
+
+  try {
+    const response = await fetch('http://localhost:8000/api/forms-save', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      // console.error('Errors de validació:', errorData);
+      // showToastMessage('Errors en les dades enviades: ' + JSON.stringify(errorData.errors, null, 2), 'error-toast');
+      return;
+    }
+
+    const result = await response.json();
+    // console.log('Resposta del servidor:', result);
+    showToastMessage('Formulari desat amb èxit.');
+
+    // Espera 1 segundo antes de redirigir
+    setTimeout(() => {
+      router.push({ name: 'FormList' });
+    }, 1000); // Redirigir después de 1 segundo
+
+  } catch (error) {
+    // console.error('Error en desar el formulari:', error);
+    showToastMessage('Hi va haver un error en desar el formulari. Si us plau, torna-ho a intentar.', 'error-toast');
+  }
+};
+
+
+
+
+const handleSend = () => {
+  emit('send');
+};
+
+const handleDownload = () => {
+  const formData = {
+    title: props.title,
+    description: props.description,
+    questions: localQuestions.value,
+  };
+
+  const json = JSON.stringify(formData, null, 2); // Convertir a JSON con formato legible
+  const blob = new Blob([json], { type: 'application/json' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = 'formulario.json'; // Nombre del archivo a descargar
+  link.click();
+};
+
+// Mostrar Toast
+const showToast = ref(false);
+const toastMessage = ref('');
+const toastType = ref('success-toast');
+
+function showToastMessage(message, type = 'success-toast') {
+  toastMessage.value = message;
+  toastType.value = type;
+  showToast.value = true;
+
+  // Usar un timeout para cerrar el toast después de 3 segundos
+  setTimeout(() => {
+    showToast.value = false;
+  }, 1000);
+}
+
+</script>
+
 <template>
   <div>
     <!-- Toast mensaje -->
     <div v-if="showToast" :class="toastType" class="toast">
       {{ toastMessage }}
     </div>
-    
+
     <div class="space-y-6">
       <div v-if="title" class="card animate-fade-in">
         <div class="flex justify-between items-center">
@@ -60,155 +227,10 @@
         </button>
       </div>
 
+      <QuestionEditorModal v-model="showEditorModal" :question="selectedQuestion" @save="handleSaveQuestion" />
     </div>
   </div>
 </template>
-
-<script setup>
-import { ref, watch } from 'vue';
-import { useTypingEffect } from '../utils/chat';
-import QuestionActions from './QuestionActions.vue';
-import QuestionEditorModal from './QuestionEditorModal.vue';
-import { useRouter } from 'vue-router';
-
-const props = defineProps({
-  questions: {
-    type: Array,
-    required: true,
-  },
-  title: String,
-  description: String,
-  context: String,
-});
-
-const emit = defineEmits(['edit-question', 'regenerate-question', 'save', 'send']);
-const localQuestions = ref([...props.questions]); // Copia local de las preguntas
-const visibleQuestions = ref([]);
-const loadingQuestionId = ref(null);
-const showEditorModal = ref(false);
-const selectedQuestion = ref(null);
-const { content: titleContent, typeMessage: typeTitle } = useTypingEffect(50);
-const { content: descriptionContent, typeMessage: typeDescription } = useTypingEffect(30);
-const router = useRouter();  // Obtén el router
-
-
-// Sincronizar cambios en props con la copia local
-watch(
-  () => props.questions,
-  (newQuestions) => {
-    localQuestions.value = [...newQuestions];
-  },
-  { immediate: true }
-);
-
-watch(
-  () => props.title,
-  async (newTitle) => {
-    if (newTitle) {
-      await typeTitle(newTitle);
-    }
-  },
-  { immediate: true }
-);
-
-watch(
-  () => props.description,
-  async (newDescription) => {
-    if (newDescription) {
-      await typeDescription(newDescription);
-    }
-  },
-  { immediate: true }
-);
-
-watch(
-  () => localQuestions.value,
-  async (newQuestions) => {
-    visibleQuestions.value = [];
-    for (let i = 0; i < newQuestions.length; i++) {
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      visibleQuestions.value.push(newQuestions[i]);
-    }
-  },
-  { immediate: true }
-);
-
-// Mostrar Toast
-const showToast = ref(false);
-const toastMessage = ref('');
-const toastType = ref('success-toast');
-
-
-function showToastMessage(message, type = 'success-toast') {
-  toastMessage.value = message;
-  toastType.value = type;
-  showToast.value = true;
-  setTimeout(() => {
-    showToast.value = false;
-  }, 3000); // Toast desaparece después de 3 segundos
-}
-
-const handleSave = async () => {
-  const formData = {
-    title: props.title,
-    description: props.description,
-    questions: localQuestions.value,
-  };
-
-  console.log('Datos que se enviarán:', JSON.stringify(formData, null, 2)); // Verifica la estructura del objeto
-
-  try {
-    const response = await fetch('http://localhost:8000/api/forms-save', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      console.error('Errors de validació:', errorData);
-      showToastMessage('Errors en les dades enviades: ' + JSON.stringify(errorData.errors, null, 2), 'error-toast');
-      return;
-    }
-
-    const result = await response.json();
-    console.log('Resposta del servidor:', result);
-    showToastMessage('Formulari desat amb èxit.');
-
-    // Redirigir a la lista de formularios después de guardar
-    setTimeout(() => {
-      // Redirigir a la ruta '/formularios'
-    router.push({ name: 'FormList' });
-    }, 1000); // Espera 1.5 segundos para que el toast sea visible antes de redirigir
-
-  } catch (error) {
-    console.error('Error en desar el formulari:', error);
-    showToastMessage('Hi va haver un error en desar el formulari. Si us plau, torna-ho a intentar.', 'error-toast');
-  }
-};
-
-
-const handleSend = () => {
-  emit('send');
-};
-
-const handleDownload = () => {
-  const formData = {
-    title: props.title,
-    description: props.description,
-    questions: localQuestions.value,
-  };
-
-  const json = JSON.stringify(formData, null, 2); // Convertir a JSON con formato legible
-  const blob = new Blob([json], { type: 'application/json' });
-  const link = document.createElement('a');
-  link.href = URL.createObjectURL(blob);
-  link.download = 'formulario.json'; // Nombre del archivo a descargar
-  link.click();
-};
-</script>
 
 <style scoped>
 /* Estilos para el Toast */
@@ -248,5 +270,4 @@ const handleDownload = () => {
 .success-toast {
   background-color: #28a745; /* Verde para éxito */
 }
-
 </style>
