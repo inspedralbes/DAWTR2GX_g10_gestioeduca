@@ -19,72 +19,80 @@ class AnswerController extends Controller
 {
 
     public function submitResponses(Request $request, $formId)
-{
-    Log::info('Datos recibidos en submitResponses:', ['request_data' => $request->all()]);
+    {
+        Log::info('Datos recibidos en submitResponses:', ['request_data' => $request->all()]);
 
-    // Obtener el ID del usuario del cuerpo de la solicitud
-    $userId = $request->input('user_id');
+        // Obtener el ID del usuario del cuerpo de la solicitud
+        $userId = $request->input('user_id');
 
-    // Validar las respuestas (asegurándonos de que son válidas)
-    $validator = Validator::make($request->all(), [
-        'responses' => 'required|array',
-        'responses.*.question_id' => 'required|integer|exists:questions,id',
-        'responses.*.answer' => 'required',
-        'responses.*.answer_type' => 'required|in:string,number,boolean,array,object,multiple,checkbox',
-    ]);
-
-    if ($validator->fails()) {
-        Log::error('Errores de validación:', $validator->errors()->toArray());
-        return response()->json(['errors' => $validator->errors()], 422);
-    }
-
-    $validated = $validator->validated();
-
-    // Guardar las respuestas en la tabla "answers"
-    foreach ($validated['responses'] as $response) {
-        Log::info('Guardando respuesta:', $response);
-
-        Answer::create([
-            'user_id' => $userId,  // Se usa el userId que vino en la solicitud
-            'form_id' => $formId,  // ID del formulario que vino en la URL
-            'question_id' => $response['question_id'],  // ID de la pregunta
-            'answer' => $this->formatAnswer($response),  // Formateamos la respuesta
-            'answer_type' => $response['answer_type'],  // Guardamos el tipo de respuesta
+        // Validar las respuestas (asegurándonos de que son válidas)
+        $validator = Validator::make($request->all(), [
+            'responses' => 'required|array',
+            'responses.*.question_id' => 'required|integer|exists:questions,id',
+            'responses.*.answer' => 'required',
+            'responses.*.answer_type' => 'required|in:string,number,boolean,array,object,multiple,checkbox',
         ]);
+
+        if ($validator->fails()) {
+            Log::error('Errores de validación:', $validator->errors()->toArray());
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $validated = $validator->validated();
+
+        // Guardar las respuestas en la tabla "answers"
+        foreach ($validated['responses'] as $response) {
+            Log::info('Guardando respuesta:', $response);
+
+            Answer::create([
+                'user_id' => $userId,  // Se usa el userId que vino en la solicitud
+                'form_id' => $formId,  // ID del formulario que vino en la URL
+                'question_id' => $response['question_id'],  // ID de la pregunta
+                'answer' => $this->formatAnswer($response),  // Formateamos la respuesta
+                'answer_type' => $response['answer_type'],  // Guardamos el tipo de respuesta
+            ]);
+        }
+
+        // Incrementar el contador de respuestas en el formulario
+        $form = Form::find($formId);
+        if ($form) {
+            // Incrementar el contador de respuestas del formulario
+            $form->increment('responses_count'); // Esto incrementa el campo `responses_count`
+        } else {
+            Log::error('Formulario no encontrado', ['form_id' => $formId]);
+        }
+
+        // Marcar como respondido en la tabla intermedia "form_user"
+        $user = User::find($userId);
+        if ($user && $form) {
+            // Actualizar la tabla pivot "form_user", seteando el campo "answered" a true
+            $user->forms()->updateExistingPivot($formId, ['answered' => true]);
+        }
+
+        Log::info('Form ID recibido:', ['form_id' => $formId]);
+
+        return response()->json(['message' => 'Respuestas guardadas correctamente'], 200);
     }
 
-    // Marcar como respondido en la tabla intermedia "form_user"
-    $user = User::find($userId);
-    $form = Form::find($formId);
-
-    if ($user && $form) {
-        // Actualizar la tabla pivot "form_user", seteando el campo "answered" a true
-        $user->forms()->updateExistingPivot($formId, ['answered' => true]);
-    }
-
-    Log::info('Form ID recibido:', ['form_id' => $formId]);
-
-    return response()->json(['message' => 'Respuestas guardadas correctamente'], 200);
-}
 
 
     // Método para formatear la respuesta según su tipo
     protected function formatAnswer($response)
-{
-    switch ($response['answer_type']) {
-        case 'checkbox':
-        case 'multiple':
-            return json_encode($response['answer']); // Convertir arrays a JSON
-        case 'number':
-            return (int) $response['answer']; // Convertir a número
-        case 'string':
-            return (string) $response['answer']; // Convertir a string
-        case 'boolean':
-            return (bool) $response['answer']; // Convertir a booleano
-        default:
-            return $response['answer']; // Dejarlo tal cual
+    {
+        switch ($response['answer_type']) {
+            case 'checkbox':
+            case 'multiple':
+                return json_encode($response['answer']); // Convertir arrays a JSON
+            case 'number':
+                return (int) $response['answer']; // Convertir a número
+            case 'string':
+                return (string) $response['answer']; // Convertir a string
+            case 'boolean':
+                return (bool) $response['answer']; // Convertir a booleano
+            default:
+                return $response['answer']; // Dejarlo tal cual
+        }
     }
-}
 
     /**
      * @OA\Get(

@@ -181,7 +181,7 @@ const handleFormAssigned = (assignments) => {
                 </span>
               </td>
               <td class="px-6 py-4 text-sm text-gray-500">
-                {{ form.responses }}
+                {{ form.responses_count }}
               </td>
               <td class="px-6 py-4 text-sm text-gray-500">
                 {{ new Date(form.created_at).toLocaleDateString() }}
