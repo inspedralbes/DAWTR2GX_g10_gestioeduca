@@ -37,8 +37,7 @@ class DatabaseSeeder extends Seeder
             FormSeeder::class,   // Crear formularios primero
             QuestionSeeder::class, // Crear preguntas después
             OptionSeeder::class,   // Opciones relacionadas a preguntas
-            AnswerSeeder::class,
-            
+
             CourseUserSeeder::class,
             CourseDivisionSeeder::class,
         ]);

@@ -49,7 +49,6 @@ class User extends Authenticatable
     {
         return $this->hasMany(Answer::class);
     }
-
     public function divisions()
     {
         return $this->belongsToMany(Division::class);
