@@ -127,29 +127,28 @@ class UserController extends Controller
              
          ]);
 
-         if ($validator->fails()) {
-             if ($request->wantsJson()) {
-                 return response()->json($validator->errors(), 400);
-             } else {
-                 return redirect()->back()->withErrors($validator)->withInput();
-             }
-         }
+    if ($validator->fails()) {
+        if ($request->wantsJson()) {
+            return response()->json($validator->errors(), 400);
+        } else {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+    }
 
-         // Crear el usuario
-         $userData = [
-             'name' => $request->name,
-             'last_name' => $request->last_name,
-             'email' => $request->email,
-             'password' => bcrypt($request->password),
-             'role_id' => $request->role_id,
-         ];
+    // Crear el usuario
+    $userData = [
+        'name' => $request->name,
+        'last_name' => $request->last_name,
+        'email' => $request->email,
+        'password' => bcrypt($request->password),
+        'role_id' => $request->role_id,
+    ];
 
-         // Solo agregar la imagen si está presente en la solicitud
-         if ($request->has('image')) {
-             $userData['image'] = $request->image;
-         }
+    if ($request->has('image')) {
+        $userData['image'] = $request->image;
+    }
 
-         $user = User::create($userData);
+    $user = User::create($userData);
 
          // Si el rol es Alumno (ID = 2), asociar cursos y divisiones
          if ($request->role_id == 2) {
@@ -166,12 +165,12 @@ class UserController extends Controller
             }
         }
 
-         if ($request->wantsJson()) {
-             return response()->json($user, 201);
-         }
+    if ($request->wantsJson()) {
+        return response()->json($user, 201);
+    }
 
-         return redirect()->route('users.index')->with('success', 'User created successfully');
-     }
+    return redirect()->route('users.index')->with('success', 'User created successfully');
+}
 
 
 

@@ -45,7 +45,6 @@
             </select>
         </div>
 
-
         <!-- Subject Assignment (Only for Teachers) -->
         <div class="form-group" id="subject-group" style="display: none;">
             <label for="subject">Subject:</label>
@@ -120,8 +119,23 @@
 
 
 </script>
+
+<!-- Agregar este script al final -->
+<script>
+document.getElementById('role').addEventListener('change', function() {
+    const courseDivisionFields = document.getElementById('courseDivisionFields');
+    // Mostrar campos solo para profesores (1) y alumnos (2)
+    if (this.value == '1' || this.value == '2') {
+        courseDivisionFields.style.display = 'block';
+    } else {
+        courseDivisionFields.style.display = 'none';
+    }
+});
+
+// Ejecutar el evento change al cargar la página para manejar el valor inicial
+document.addEventListener('DOMContentLoaded', function() {
+    const roleSelect = document.getElementById('role');
+    roleSelect.dispatchEvent(new Event('change'));
+});
+</script>
 @endsection
-
-
-
-

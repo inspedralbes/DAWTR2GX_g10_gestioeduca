@@ -19,7 +19,8 @@ use Illuminate\Auth\Events\Authenticated;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/', function () {
+
+Route::get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
