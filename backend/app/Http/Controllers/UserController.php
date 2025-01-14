@@ -122,8 +122,9 @@ class UserController extends Controller
              'password' => 'required|string|min:8',
              'role_id' => 'required|exists:roles,id',
              'image' => 'nullable|string|max:255', // Imagen opcional
-             'courses' => 'required_if:role_id,3|array', // Solo si el rol es Alumno
+             'courses' => 'nullable|array', // Asegúrate de que esto sea un array
              'divisions' => 'required_if:role_id,3|array', // Solo si el rol es Alumno
+             
          ]);
 
          if ($validator->fails()) {
@@ -199,7 +200,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::find($id);
+        $user = User::with(['role', 'subjects'])->find($id); // Cargar rol y asignaturas relacionadas
 
         if (is_null($user)) {
             return response()->json(['message' => 'User not found'], 404);
@@ -211,6 +212,7 @@ class UserController extends Controller
 
         return view('users.show', compact('user'));
     }
+
 
     /**
      * @OA\Put(

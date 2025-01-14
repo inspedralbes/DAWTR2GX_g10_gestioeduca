@@ -62,8 +62,8 @@
         <div id="student-fields" style="display: none;">
             <div class="form-group">
                 <label for="course">Course:</label>
-                <select name="course_id" id="course" class="form-control">
-                    <option value="">Select a course</option>
+                <select name="courses[]" id="course" class="form-control" multiple>
+                <option value="">Select a course</option>
                     @foreach ($courses as $course)
                         <option value="{{ $course->id }}">{{ $course->name }}</option>
                     @endforeach
@@ -82,6 +82,7 @@
         </div>
         </div>
 
+        
 
         <button type="submit" class="btn btn-primary mt-3">Create User</button>
     </form>
@@ -113,6 +114,7 @@
             studentFields.style.display = 'block';
             divisionGroup.style.display = 'block'; // Mostrar divisiones cuando el rol es "Alumno"
         }
+        console.log("Rol seleccionado:", selectedRole);
     });
 });
 

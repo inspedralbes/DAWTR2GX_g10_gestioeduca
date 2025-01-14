@@ -12,8 +12,20 @@
         <div class="card">
             <div class="card-body">
                 <p class="card-title"><strong>Nombre:</strong> {{ $user->name }}</p>
-                <p><strong>Apellido:</strong> {{ $user->last_name}}</p>
+                <p><strong>Apellido:</strong> {{ $user->last_name }}</p>
                 <p class="card-text"><strong>Email:</strong> {{ $user->email }}</p>
+                <p class="card-text"><strong>Rol:</strong> {{ $user->role->name }}</p>
+
+                @if ($user->role->name === 'Profesor') {{-- Verifica si es un profesor --}}
+                    <p class="card-text"><strong>Asignatura:</strong> 
+                        @if ($user->subjects->isEmpty())
+                            No asignada
+                        @else
+                            {{ $user->subjects->pluck('name')->join(', ') }}
+                        @endif
+                    </p>
+                @endif
+
                 <p class="card-text"><strong>Created At:</strong> {{ $user->created_at }}</p>
                 <p class="card-text"><strong>Updated At:</strong> {{ $user->updated_at }}</p>
             </div>
