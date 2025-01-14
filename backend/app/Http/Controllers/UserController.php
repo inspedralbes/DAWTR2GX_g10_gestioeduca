@@ -114,19 +114,20 @@ class UserController extends Controller
 
 
      public function store(Request $request)
-     {
-         $validator = Validator::make($request->all(), [
-             'name' => 'required|string|max:255',
-             'last_name' => 'required|string|max:255',
-             'email' => 'required|string|email|max:255|unique:users',
-             'password' => 'required|string|min:8',
-             'role_id' => 'required|exists:roles,id',
-             'image' => 'nullable|string|max:255', // Imagen opcional
-             'courses' => 'nullable|array', // Asegúrate de que esto sea un array
-             'divisions' => 'required_if:role_id,3|array', // Solo si el rol es Alumno
-             
-         ]);
+{
+    // Validación base para todos los usuarios
+    $validator = Validator::make($request->all(), [
+        'name' => 'required|string|max:255',
+        'last_name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users',
+        'password' => 'required|string|min:8',
+        'role_id' => 'required|exists:roles,id',
+        'image' => 'nullable|string|max:255', // Imagen opcional
+        'courses' => 'nullable|array', // Asegúrate de que esto sea un array
+        'divisions' => 'nullable|array', // Divisiones son opcionales
+    ]);
 
+    // Si la validación falla, retorna errores
     if ($validator->fails()) {
         if ($request->wantsJson()) {
             return response()->json($validator->errors(), 400);
@@ -135,7 +136,7 @@ class UserController extends Controller
         }
     }
 
-    // Crear el usuario
+    // Crear los datos base del usuario
     $userData = [
         'name' => $request->name,
         'last_name' => $request->last_name,
@@ -144,33 +145,41 @@ class UserController extends Controller
         'role_id' => $request->role_id,
     ];
 
+    // Si se ha proporcionado una imagen, agregarla a los datos del usuario
     if ($request->has('image')) {
         $userData['image'] = $request->image;
     }
 
+    // Crear el usuario en la base de datos
     $user = User::create($userData);
 
-         // Si el rol es Alumno (ID = 2), asociar cursos y divisiones
-         if ($request->role_id == 2) {
-            // Asociar cursos con el usuario
+    // Si el rol es Alumno (ID = 2) o Profesor (ID = 1), asociar cursos y divisiones
+    if (in_array($request->role_id, [1, 2])) {
+        // Validar y asociar los cursos si el usuario es Profesor o Alumno
+        if ($request->has('courses') && count($request->courses) > 0) {
             $user->courses()->sync($request->courses);
-    
-            // Asociar divisiones a los cursos del usuario
+        }
+
+        // Si el usuario es Alumno, asociar divisiones a los cursos seleccionados
+        if ($request->role_id == 2 && $request->has('divisions') && count($request->divisions) > 0) {
             foreach ($request->courses as $courseId) {
                 $course = Course::find($courseId);
                 if ($course) {
-                    // Asociar divisiones al curso
                     $course->divisions()->sync($request->divisions);
                 }
             }
         }
+    }
 
+    // Si la solicitud es JSON, devolver el usuario recién creado
     if ($request->wantsJson()) {
         return response()->json($user, 201);
     }
 
+    // Si la solicitud es HTML, redirigir con mensaje de éxito
     return redirect()->route('users.index')->with('success', 'User created successfully');
 }
+
 
 
 
