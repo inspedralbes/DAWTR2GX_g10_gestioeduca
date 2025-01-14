@@ -24,18 +24,21 @@ class GroupController extends Controller
      *     )
      * )
      */
+
+     
     public function index(Request $request)
-    {
-        $groups = Group::all();
+{
+    // Cargar todos los grupos con sus usuarios (integrantes)
+    $groups = Group::with('users')->get();
 
-        // Verificar si la solicitud es API
-        if ($request->expectsJson()) {
-            return response()->json($groups, 200);
-        }
-
-        // Para la vista
-        return view('groups', compact('groups'));
+    // Verificar si la solicitud es API
+    if ($request->expectsJson()) {
+        return response()->json($groups, 200);
     }
+
+    // Para la vista
+    return view('groups', compact('groups'));
+}
 
     /**
      * @OA\Post(

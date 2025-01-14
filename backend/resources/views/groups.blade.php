@@ -24,36 +24,47 @@
         <!-- Listado de Grupos -->
         <h2 class="text-2xl font-semibold mb-4">Lista de Grupos</h2>
         <table class="table-auto w-full border-collapse border border-gray-300 mb-8">
-            <thead class="bg-gray-100">
-                <tr>
-                    <th class="border border-gray-300 px-4 py-2">ID</th>
-                    <th class="border border-gray-300 px-4 py-2">Nombre</th>
-                    <th class="border border-gray-300 px-4 py-2">Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($groups as $group): ?>
-                    <tr>
-                        <td class="border border-gray-300 px-4 py-2"><?php echo e($group->id); ?></td>
-                        <td class="border border-gray-300 px-4 py-2"><?php echo e($group->name); ?></td>
-                        <td class="border border-gray-300 px-4 py-2">
-                            <!-- Ver -->
-                            <a href="<?php echo e(route('groups.show', $group->id)); ?>" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Ver</a>
+    <thead class="bg-gray-100">
+        <tr>
+            <th class="border border-gray-300 px-4 py-2">ID</th>
+            <th class="border border-gray-300 px-4 py-2">Nombre</th>
+            <th class="border border-gray-300 px-4 py-2">Integrantes</th>
+            <th class="border border-gray-300 px-4 py-2">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($groups as $group): ?>
+            <tr>
+                <td class="border border-gray-300 px-4 py-2"><?php echo e($group->id); ?></td>
+                <td class="border border-gray-300 px-4 py-2"><?php echo e($group->name); ?></td>
+                <td class="border border-gray-300 px-4 py-2">
+                    <!-- Mostrar nombres de integrantes -->
+                    <?php if($group->users->isEmpty()): ?>
+                        <span class="text-gray-500">Sin integrantes</span>
+                    <?php else: ?>
+                        <ul class="list-disc list-inside">
+                            <?php foreach ($group->users as $user): ?>
+                                <li><?php echo e($user->name); ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php endif; ?>
+                </td>
+                <td class="border border-gray-300 px-4 py-2">
+                    <!-- Editar -->
+                    <a href="<?php echo e(route('groups.index', ['edit' => $group->id])); ?>" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Editar</a>
+                    <!-- Eliminar -->
+                    <form action="<?php echo e(route('groups.destroy', $group->id)); ?>" method="POST" class="inline">
+                        <?php echo csrf_field(); ?>
+                        <?php echo method_field('DELETE'); ?>
+                        <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Eliminar</button>
+                    </form>
+                    
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
 
-                            <!-- Editar -->
-                            <a href="<?php echo e(route('groups.index', ['edit' => $group->id])); ?>" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Editar</a>
-
-                            <!-- Eliminar -->
-                            <form action="<?php echo e(route('groups.destroy', $group->id)); ?>" method="POST" class="inline">
-                                <?php echo csrf_field(); ?>
-                                <?php echo method_field('DELETE'); ?>
-                                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Eliminar</button>
-                            </form>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
 
         <!-- Formulario Crear o Editar -->
         <h2 class="text-2xl font-semibold mt-8 mb-4">
