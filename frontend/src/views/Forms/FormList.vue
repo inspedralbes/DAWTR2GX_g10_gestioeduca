@@ -60,7 +60,6 @@ const updateFormStatus = async (formId, newStatus) => {
 
     // Obtener la respuesta y el formulario actualizado
     const data = await response.json();
-    alert(data.message);  // Mensaje de éxito
 
     // Actualizar el estado local de los formularios en tiempo real
     forms.value = forms.value.map(form => 
