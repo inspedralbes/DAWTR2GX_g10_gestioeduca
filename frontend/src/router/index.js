@@ -189,13 +189,13 @@ router.beforeEach((to, from, next) => {
   const role = localStorage.getItem('role');
 
   if (to.meta.requiresAuth && !isAuthenticated) {
-    console.log('Usuario no autenticado, redirigiendo al login.');
+    // console.log('Usuario no autenticado, redirigiendo al login.');
     next('/login');
   } else if (to.meta.requiresAuth && to.meta.role && to.meta.role !== role) {
-    console.log(`Rol no autorizado. Requiere ${to.meta.role}, pero el usuario tiene ${role}.`);
+    // console.log(`Rol no autorizado. Requiere ${to.meta.role}, pero el usuario tiene ${role}.`);
     next('/unauthorized');
   } else {
-    console.log('Autorizado, permitiendo el acceso.');
+    // console.log('Autorizado, permitiendo el acceso.');
     next();
   }
 });

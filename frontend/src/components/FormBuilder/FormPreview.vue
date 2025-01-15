@@ -92,7 +92,7 @@ const handleSave = async () => {
     questions: localQuestions.value,
   };
 
-  console.log('Datos que se enviarán:', JSON.stringify(formData, null, 2)); // Verifica la estructura del objeto
+  // console.log('Datos que se enviarán:', JSON.stringify(formData, null, 2)); // Verifica la estructura del objeto
 
   try {
     const response = await fetch('http://localhost:8000/api/forms-save', {
@@ -123,13 +123,6 @@ const handleSave = async () => {
     // console.error('Error en desar el formulari:', error);
     showToastMessage('Hi va haver un error en desar el formulari. Si us plau, torna-ho a intentar.', 'error-toast');
   }
-};
-
-
-
-
-const handleSend = () => {
-  emit('send');
 };
 
 const handleDownload = () => {
@@ -219,12 +212,10 @@ function showToastMessage(message, type = 'success-toast') {
       </div>
 
       <div v-if="localQuestions.length > 0" class="flex justify-end space-x-4 pt-4">
-        <button @click="handleSave" class="btn bg-gray-100 text-gray-700 hover:bg-gray-200">
+        <button @click="handleSave" class="btn btn-primary">
           Guardar
         </button>
-        <button @click="handleSend" class="btn btn-primary">
-          Enviar
-        </button>
+
       </div>
 
       <QuestionEditorModal v-model="showEditorModal" :question="selectedQuestion" @save="handleSaveQuestion" />

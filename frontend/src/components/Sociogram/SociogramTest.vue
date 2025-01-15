@@ -14,7 +14,7 @@ const loggedStudentId = ref(null);
 onMounted(async () => {
   // Obtén el ID del estudiante logueado
   loggedStudentId.value = getLoggedStudentId();
-  console.log("ID del estudiante logueado:", loggedStudentId.value);
+  // console.log("ID del estudiante logueado:", loggedStudentId.value);
   if (!loggedStudentId.value) {
     // Si no hay usuario logueado, mostrar error y redirigir o detener ejecución
     errorMessage.value = "Por favor, inicie sesión antes de completar el cuestionario.";
