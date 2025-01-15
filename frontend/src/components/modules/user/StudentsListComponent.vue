@@ -29,7 +29,7 @@ onMounted(async () => {
     }
 
     students.value = await response.json();
-    console.log(students.value)
+    // console.log(students.value)
   } catch (error) {
     console.error('Error:', error);
   } finally {

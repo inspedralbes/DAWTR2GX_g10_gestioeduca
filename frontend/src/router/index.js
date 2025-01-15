@@ -189,7 +189,7 @@ const router = createRouter({
 
 // Global navigation guard
 router.beforeEach((to, from, next) => {
-  console.log(`Navegando de ${from.fullPath} a ${to.fullPath}`);
+  // console.log(`Navegando de ${from.fullPath} a ${to.fullPath}`);
   
   const isAuthenticated = !!localStorage.getItem('auth_token');
   const role = localStorage.getItem('role');

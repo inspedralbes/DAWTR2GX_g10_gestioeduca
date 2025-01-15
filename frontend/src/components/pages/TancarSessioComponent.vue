@@ -9,7 +9,7 @@
           class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 focus:ring-2 focus:ring-red-500">
           Tancar Sessió
         </button>
-        <router-link to="/"
+        <router-link to="/dashboard"
           class="px-6 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 focus:ring-2 focus:ring-gray-400">
           Cancel·lar
         </router-link>
@@ -23,31 +23,50 @@ export default {
   name: 'TancarSessio',
   methods: {
     async handleLogout() {
-      try {
-        // Send logout request to API
-        const response = await fetch('http://localhost:8000/api/logout', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
-            'Content-Type': 'application/json',
-          },
-        });
+  try {
+    const authToken = localStorage.getItem('auth_token');
+    
+    if (!authToken) {
+      console.warn('No hay token de autenticación disponible. Se redirigirá al inicio de sesión.');
+      this.$router.push('/login');
+      return;
+    }
 
-        if (!response.ok) {
-          throw new Error('Error tancant la sessió. Si us plau, torna-ho a intentar.');
-        }
+    // console.log(authToken)
 
-        // Clear auth token and user info from localStorage
-        localStorage.removeItem('auth_token');
-        localStorage.removeItem('user');
+    // Solicitud para cerrar sesión
+    const response = await fetch('http://localhost:8000/api/logout', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${authToken}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+    });
 
-        // Redirect to login page
-        this.$router.push('/login');
-        console.log('Sessió tancada correctament');
-      } catch (error) {
-        console.error(error.message || 'Error desconegut tancant sessió.');
-      }
-    },
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Error al cerrar sesión. Intenta nuevamente.');
+    }
+
+    // Limpieza del almacenamiento local
+    localStorage.removeItem('auth_token');
+    localStorage.removeItem('user');
+
+    // Redirección al login
+    if (this.$router) {
+      this.$router.push('/login');
+    } else {
+      window.location.href = '/login';
+    }
+
+    // console.log('Sesión cerrada correctamente');
+  } catch (error) {
+    console.error('Error cerrando sesión:', error.message || 'Error desconocido.');
+    alert(error.message || 'Ocurrió un error desconocido al cerrar sesión. Intenta nuevamente.');
+  }
+},
+
   },
 };
 </script>

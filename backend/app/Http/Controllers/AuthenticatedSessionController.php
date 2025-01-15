@@ -75,21 +75,13 @@ class AuthenticatedSessionController extends Controller
      */
     public function logout(Request $request)
     {
-        // Si el usuario tiene tokens (para API), los eliminamos
+        // Revocar todos los tokens del usuario autenticado
         if ($request->user()) {
-            $request->user()->tokens()->delete();
+            $request->user()->tokens()->delete(); // Esto elimina todos los tokens activos del usuario
         }
 
-        // Cerramos la sesión
-        Auth::logout();
-        
-        // Invalidamos la sesión
-        $request->session()->invalidate();
-        
-        // Regeneramos el token CSRF
-        $request->session()->regenerateToken();
-        
-        // Redirigimos al login o la página principal
-        return redirect()->route('landing');
+        return response()->json([
+            'message' => 'Sesión cerrada correctamente.'
+        ], 200);
     }
 }
