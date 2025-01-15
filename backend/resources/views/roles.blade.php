@@ -4,7 +4,7 @@
 <div class="container">
     <!-- Encabezado y botón de retorno -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="display-5 mb-0">Gestión de Roles</h1>
+        <h1 class="px-4">Gestión de Roles</h1>
         <a href="{{ route('dashboard') }}" class="btn btn-outline-primary">
             <i class="fas fa-arrow-left me-2"></i>
             Volver al Dashboard
@@ -105,7 +105,7 @@
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-primary">
                                 <i class="fas fa-save me-2"></i>
-                                {{ isset($_GET['edit']) ? 'Actualizar' : 'Guardar' }}
+                                {{ isset($_GET['edit']) ? 'Actualizar' : 'Desar' }}
                             </button>
                             
                             @if(isset($_GET['edit']))

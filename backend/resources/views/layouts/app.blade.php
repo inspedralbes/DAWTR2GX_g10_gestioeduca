@@ -6,23 +6,44 @@
     <title>CRUD Dashboard</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
         :root {
             --primary-color: rgb(0, 173, 238);
             --primary-hover: rgb(0, 153, 218);
+            --background-color: #f2f2f2;
+            --card-background-color: #ffffff;
+        }
+
+        body {
+            background-color: var(--background-color);
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         }
 
         .navbar {
             background-color: var(--primary-color) !important;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0; 
         }
 
         .navbar-brand, .nav-link {
             color: white !important;
         }
 
+        .navbar-brand h1 {
+            font-weight: 700; 
+            font-size: 2rem;
+            margin: 0;
+        }
+
         .navbar-brand:hover, .nav-link:hover {
             color: rgba(255, 255, 255, 0.9) !important;
+        }
+
+        .display-4 {
+            font-size: 2.5rem;
+            font-weight: 700; 
+            margin-bottom: 1rem;
         }
 
         .btn-primary {
@@ -36,7 +57,6 @@
         }
 
         .content-wrapper {
-            background-color: #f8f9fa;
             min-height: calc(100vh - 56px);
             padding: 2rem;
             max-width: 1200px;
@@ -44,6 +64,7 @@
         }
 
         .card {
+            background-color: var(--card-background-color);
             border: none;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             transition: transform 0.2s;
@@ -58,7 +79,7 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            padding: 0.5rem 1rem;
+            padding: 0.2rem 1rem;
             border-radius: 0.25rem;
             transition: background-color 0.2s;
         }
@@ -74,8 +95,7 @@
     <nav class="navbar navbar-expand-lg">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="{{ route('dashboard') }}">
-                <i class="fas fa-cube me-2"></i>
-                GRUPIFY CRUD
+                <h1>Panell Administrador</h1>
             </a>
             <div class="ms-auto">
                 <a href="#" class="logout-btn">

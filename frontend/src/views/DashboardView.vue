@@ -47,7 +47,12 @@ const navigateTo = (route) => {
 
 <template>
   <div class="min-h-screen bg-gray-100 p-6">
-    <div class="max-w-7xl mx-auto">
+    <!-- Navbar -->
+    <div class="bg-[#00ADEC] text-white p-5 flex justify-between items-center">
+      <h1 class="text-3xl font-bold ml-4">Panell Professor</h1> <!-- Agregamos 'ml-4' para moverlo a la izquierda -->
+    </div>
+
+    <div class="max-w-7xl mx-auto mt-6"> 
       <!-- Welcome Section -->
       <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
         <div v-if="userData" class="text-center">
@@ -59,7 +64,7 @@ const navigateTo = (route) => {
       </div>
 
       <!-- Menu Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 m-0">
         <button
           v-for="item in menuItems"
           :key="item.title"
@@ -95,4 +100,5 @@ const navigateTo = (route) => {
   max-width: 1200px;
   margin: 0 auto;
 }
+
 </style>
