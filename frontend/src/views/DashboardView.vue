@@ -43,13 +43,38 @@ onMounted(() => {
 const navigateTo = (route) => {
   router.push(route);
 };
+
+const logout = () => {
+  localStorage.removeItem('user');
+  router.push('/tancar-sessio');
+};
 </script>
 
 <template>
   <div class="min-h-screen bg-gray-100 p-6">
     <!-- Navbar -->
     <div class="bg-[#00ADEC] text-white p-5 flex justify-between items-center">
-      <h1 class="text-3xl font-bold ml-4">Panell Professor</h1> <!-- Agregamos 'ml-4' para moverlo a la izquierda -->
+      <h1 class="text-3xl font-bold ml-4">Panell Professor</h1>
+      <button 
+        @click="logout"
+          class="flex items-center gap-2 px-4 py-2 hover:bg-white/10 rounded-lg transition-colors duration-200 underline hover:no-underline"
+        >
+        <svg
+          class="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+          />
+        </svg>
+        <span>Logout</span>
+      </button>
     </div>
 
     <div class="max-w-7xl mx-auto mt-6"> 
@@ -101,4 +126,7 @@ const navigateTo = (route) => {
   margin: 0 auto;
 }
 
+.text-primary {
+  color: #00ADEC;
+}
 </style>
