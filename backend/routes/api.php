@@ -58,6 +58,9 @@ Route::get('/forms/{formId}/questions-and-answers', [FormController::class, 'get
 
 Route::post('/forms/{formId}/submit-responses', [AnswerController::class, 'submitResponses']);
 
+//RUTA PARA ACTUALIZAR ESTADO DE FORMULARIO
+Route::patch('/forms/{formId}/status', [FormController::class, 'updateFormStatus']);
+
 
 
 Route::get('/roles', [RoleController::class, 'index']);

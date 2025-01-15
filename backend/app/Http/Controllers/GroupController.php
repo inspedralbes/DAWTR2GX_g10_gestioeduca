@@ -25,20 +25,20 @@ class GroupController extends Controller
      * )
      */
 
-     
+
     public function index(Request $request)
-{
-    // Cargar todos los grupos con sus usuarios (integrantes)
-    $groups = Group::with('users')->get();
+    {
+        // Cargar todos los grupos con sus usuarios (integrantes)
+        $groups = Group::with('users')->get();
 
-    // Verificar si la solicitud es API
-    if ($request->expectsJson()) {
-        return response()->json($groups, 200);
+        // Verificar si la solicitud es API
+        if ($request->expectsJson()) {
+            return response()->json($groups, 200);
+        }
+
+        // Para la vista
+        return view('groups', compact('groups'));
     }
-
-    // Para la vista
-    return view('groups', compact('groups'));
-}
 
     /**
      * @OA\Post(
@@ -213,14 +213,38 @@ class GroupController extends Controller
     public function getMembers($id)
     {
         $group = Group::find($id);
-    
+
         if (!$group) {
-        return response()->json(['message' => 'Grupo no encontrado'], 404);
+            return response()->json(['message' => 'Grupo no encontrado'], 404);
         }
 
-        $members = $group->users; 
+        $members = $group->users;
 
         return response()->json($members);
     }
 
+    // Añadir estudiantes a un grupo desde vista profesor 
+    public function addStudentsToGroup(Request $request, $groupId)
+    {
+        // Validar los IDs de los estudiantes
+        $request->validate([
+            'student_ids' => 'required|array',
+            'student_ids.*' => 'exists:users,id', // Los IDs deben existir en la tabla de usuarios
+        ]);
+
+        $group = Group::findOrFail($groupId);
+
+        $currentTimestamp = now(); // Obtener el timestamp actual
+
+        // Asociar los estudiantes seleccionados al grupo con los timestamps
+        foreach ($request->student_ids as $studentId) {
+            // Insertar cada relación entre el grupo y los estudiantes
+            $group->users()->attach($studentId, [
+                'created_at' => $currentTimestamp,
+                'updated_at' => $currentTimestamp
+            ]);
+        }
+
+        return response()->json(['message' => 'Estudiantes asignados correctamente al grupo.'], 200);
+    }
 }

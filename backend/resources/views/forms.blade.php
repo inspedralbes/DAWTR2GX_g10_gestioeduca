@@ -1,92 +1,129 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Formularios</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body>
-    <div class="container mx-auto mt-10">
-        <h1 class="text-3xl font-bold mb-6">Gestión de Formularios</h1>
+@extends('layouts.app')
 
-        <!-- Mostrar mensajes de éxito o error -->
-        <?php if (session('success')): ?>
-            <div class="bg-green-100 text-green-700 px-4 py-2 rounded mb-4">
-                <?= session('success'); ?>
-            </div>
-        <?php elseif (session('error')): ?>
-            <div class="bg-red-100 text-red-700 px-4 py-2 rounded mb-4">
-                <?= session('error'); ?>
-            </div>
-        <?php endif; ?>
-
-        <!-- Listado de Formularios -->
-        <h2 class="text-2xl font-semibold mb-4">Lista de Formularios</h2>
-        <table class="table-auto w-full border-collapse border border-gray-300 mb-8">
-            <thead class="bg-gray-100">
-                <tr>
-                    <th class="border border-gray-300 px-4 py-2">ID</th>
-                    <th class="border border-gray-300 px-4 py-2">Título</th>
-                    <th class="border border-gray-300 px-4 py-2">Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($forms as $form): ?>
-                    <tr>
-                        <td class="border border-gray-300 px-4 py-2"><?= $form->id; ?></td>
-                        <td class="border border-gray-300 px-4 py-2"><?= $form->title; ?></td>
-                        <td class="border border-gray-300 px-4 py-2">
-                            <!-- Botón para Ver -->
-                            <a href="<?= route('forms.show', $form->id); ?>" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Ver</a>
-
-                            <!-- Botón para Editar -->
-                            <a href="<?= route('forms.index', ['edit' => $form->id]); ?>" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Editar</a>
-
-                            <!-- Formulario para Eliminar -->
-                            <form action="<?= route('forms.destroy', $form->id); ?>" method="POST" class="inline">
-                                <input type="hidden" name="_method" value="DELETE">
-                                <?= csrf_field(); ?>
-                                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Eliminar</button>
-                            </form>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-
-        <!-- Formulario para Crear o Editar -->
-        <h2 class="text-2xl font-semibold mt-8 mb-4">
-            <?php if (isset($_GET['edit'])): ?>
-                Editar Formulario
-            <?php else: ?>
-                Crear Nuevo Formulario
-            <?php endif; ?>
-        </h2>
-        <form action="<?= isset($_GET['edit']) ? route('forms.update', $_GET['edit']) : route('forms.store'); ?>" method="POST" class="bg-gray-100 p-6 rounded shadow-md">
-            <?php if (isset($_GET['edit'])): ?>
-                <input type="hidden" name="_method" value="PUT">
-            <?php endif; ?>
-            <?= csrf_field(); ?>
-
-            <div class="mb-4">
-                <label for="title" class="block text-gray-700 font-medium">Título del Formulario</label>
-                <input
-                    type="text"
-                    id="title"
-                    name="title"
-                    value="<?= isset($_GET['edit']) ? htmlspecialchars($forms->firstWhere('id', $_GET['edit'])->title) : ''; ?>"
-                    class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
-                    required>
-            </div>
-
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                <?= isset($_GET['edit']) ? 'Actualizar' : 'Guardar'; ?>
-            </button>
-            <?php if (isset($_GET['edit'])): ?>
-                <a href="<?= route('forms.index'); ?>" class="ml-2 text-gray-500 hover:underline">Cancelar</a>
-            <?php endif; ?>
-        </form>
+@section('content')
+<div class="container">
+    <!-- Capçalera i botó de retorn -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="display-5 mb-0">Gestió de Formularis</h1>
+        <a href="{{ route('dashboard') }}" class="btn btn-outline-primary">
+            <i class="fas fa-arrow-left me-2"></i>
+            Tornar al Dashboard
+        </a>
     </div>
-</body>
-</html>
+
+    <!-- Missatges d'èxit o error -->
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @elseif (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-times-circle me-2"></i>
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    <!-- Llista de Formularis -->
+    <div class="row">
+        <div class="col-lg-8 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white py-3">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-list me-2" style="color: var(--primary-color)"></i>
+                        Llista de Formularis
+                    </h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="px-4">ID</th>
+                                    <th>Títol</th>
+                                    <th class="text-end px-4">Accions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($forms as $form)
+                                    <tr>
+                                        <td class="px-4">{{ $form->id }}</td>
+                                        <td>{{ $form->title }}</td>
+                                        <td class="text-end px-4">
+                                            <a href="{{ route('forms.index', ['edit' => $form->id]) }}" 
+                                               class="btn btn-sm btn-warning me-2">
+                                                <i class="fas fa-edit me-1"></i>
+                                                Editar
+                                            </a>
+                                            <form action="{{ route('forms.destroy', $form->id) }}" 
+                                                  method="POST" 
+                                                  class="d-inline">
+                                                @method('DELETE')
+                                                @csrf
+                                                <button type="submit" 
+                                                        class="btn btn-sm btn-danger" 
+                                                        onclick="return confirm('Estàs segur de voler eliminar aquest formulari?')">
+                                                    <i class="fas fa-trash-alt me-1"></i>
+                                                    Eliminar
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulari per Crear o Editar -->
+        <div class="col-lg-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white py-3">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-{{ isset($_GET['edit']) ? 'edit' : 'plus' }} me-2" 
+                           style="color: var(--primary-color)"></i>
+                        {{ isset($_GET['edit']) ? 'Editar Formulari' : 'Crear Nou Formulari' }}
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form action="{{ isset($_GET['edit']) ? route('forms.update', $_GET['edit']) : route('forms.store') }}" 
+                          method="POST">
+                        @if(isset($_GET['edit']))
+                            @method('PUT')
+                        @endif
+                        @csrf
+
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Títol del Formulari</label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="title" 
+                                   name="title" 
+                                   value="{{ isset($_GET['edit']) ? $forms->firstWhere('id', $_GET['edit'])->title : '' }}" 
+                                   required>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>
+                                {{ isset($_GET['edit']) ? 'Actualizar' : 'Desar' }}
+                            </button>
+
+                            @if(isset($_GET['edit']))
+                                <a href="{{ route('forms.index') }}" class="btn btn-outline-secondary">
+                                    <i class="fas fa-times me-2"></i>
+                                    Cancel·lar
+                                </a>
+                            @endif
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection

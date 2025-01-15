@@ -69,7 +69,7 @@ const gestioSubmit = async (e) => {
 
         // Redirigir a la vista correspondiente según el rol
         if (data.role === 'admin') {
-            router.push('/dashboard');
+            router.push('/dashboardAdmin');
         } else if (data.role === 'profesor') {
             router.push('/dashboard');
         } else if (data.role === 'alumno') {

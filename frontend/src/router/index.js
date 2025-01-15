@@ -11,6 +11,7 @@ import StudentProfile from '../views/Students/StudentProfile.vue';
 import CreateForm from '@/views/CreateForm.vue';
 import StudentForms from '@/components/student/StudentForms.vue';
 import FormQuestions from '@/components/student/FormQuestions.vue';
+import DashboardAdmin from '@/components/admin/DashboardAdmin.vue'; // Ajusta la ruta si es necesario
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -90,7 +91,7 @@ const router = createRouter({
           component: StudentForms,
         },
         {
-          path: 'forms/:id',  // Aquí se corrige la ruta para las preguntas del formulario
+          path: 'forms/:id',  
           name: 'formQuestions',
           component: FormQuestions,
           meta: { requiresAuth: true, role: 'alumno' },
@@ -146,9 +147,15 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
-      path: '/formCecs',
+      path: '/dashboardAdmin',
+      name: 'dashboardAdmin',
+      component: DashboardAdmin,
+      meta: { requiresAuth: true},
+    },
+    {
+      path: '/formCecs/:id',
       name: 'formCecs',
-      component: () => import('../components/FormCecs/FormCecsComponent.vue'),
+      component: () => import('../components/student/SescForm.vue'),
     },
     {
       path: '/sociogram',

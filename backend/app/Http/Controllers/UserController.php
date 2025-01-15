@@ -6,6 +6,7 @@ use App\Models\Role;
 use App\Models\User;
 use App\Models\Division;
 use App\Models\Course;
+use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -40,13 +41,21 @@ class UserController extends Controller
             return response()->json(['message' => 'User not found'], 404);
         }
 
-        // Asociar el curso y la división con el usuario
+        // Asociar el curso con el usuario
         $user->courses()->syncWithoutDetaching([$request->course_id]);
-        $user->divisions()->syncWithoutDetaching([$request->division_id]);
+
+        // Asociar la división al curso (ya que la división está asociada a un curso)
+        $course = Course::find($request->course_id);
+        if (!$course) {
+            return response()->json(['message' => 'Course not found'], 404);
+        }
+
+        // Asociar la división al curso
+        $course->divisions()->syncWithoutDetaching([$request->division_id]);
 
         return response()->json([
             'message' => 'Course and division assigned successfully',
-            'user' => $user->load(['courses', 'divisions']),
+            'user' => $user->load(['courses.divisions']),  // Cargar los cursos y divisiones
         ], 200);
     }
 
@@ -90,19 +99,23 @@ class UserController extends Controller
      public function create()
      {
          // Obtener todos los cursos y divisiones disponibles
-         $courses = Course::all();
-         $divisions = Division::all();
+        $courses = Course::all();
+        $divisions = Division::all();
+        $roles = Role::all(); 
+        $subjects = Subject::all(); 
+        
 
          // Obtener los roles disponibles
          $roles = Role::all();
 
          // Pasar los datos a la vista
-         return view('users.create', compact('courses', 'divisions', 'roles'));
+         return view('users.create', compact('courses', 'divisions', 'roles','subjects'));
      }
 
 
      public function store(Request $request)
      {
+         // Validación base para todos los usuarios
          $validator = Validator::make($request->all(), [
              'name' => 'required|string|max:255',
              'last_name' => 'required|string|max:255',
@@ -110,10 +123,11 @@ class UserController extends Controller
              'password' => 'required|string|min:8',
              'role_id' => 'required|exists:roles,id',
              'image' => 'nullable|string|max:255', // Imagen opcional
-             'courses' => 'required_if:role_id,3|array', // Solo si el rol es Alumno
-             'divisions' => 'required_if:role_id,3|array', // Solo si el rol es Alumno
+             'courses' => 'nullable|array', // Asegúrate de que esto sea un array
+             'divisions' => 'nullable|array', // Divisiones son opcionales
          ]);
-
+     
+         // Si la validación falla, retorna errores
          if ($validator->fails()) {
              if ($request->wantsJson()) {
                  return response()->json($validator->errors(), 400);
@@ -121,8 +135,8 @@ class UserController extends Controller
                  return redirect()->back()->withErrors($validator)->withInput();
              }
          }
-
-         // Crear el usuario
+     
+         // Crear los datos base del usuario
          $userData = [
              'name' => $request->name,
              'last_name' => $request->last_name,
@@ -130,26 +144,42 @@ class UserController extends Controller
              'password' => bcrypt($request->password),
              'role_id' => $request->role_id,
          ];
-
-         // Solo agregar la imagen si está presente en la solicitud
+     
+         // Si se ha proporcionado una imagen, agregarla a los datos del usuario
          if ($request->has('image')) {
              $userData['image'] = $request->image;
          }
-
+     
+         // Crear el usuario en la base de datos
          $user = User::create($userData);
-
-         // Si el rol es Alumno (ID = 3), asociar cursos y divisiones
-         if ($request->role_id == 3) {
-             $user->courses()->sync($request->courses); // Asociar cursos
-             $user->divisions()->sync($request->divisions); // Asociar divisiones
+     
+         // Si el rol es Alumno (ID = 2) o Profesor (ID = 1), asociar cursos y divisiones
+         if (in_array($request->role_id, [1, 2])) {
+             // Validar y asociar los cursos si el usuario es Profesor o Alumno
+             if ($request->has('courses') && count($request->courses) > 0) {
+                 $user->courses()->sync($request->courses);
+             }
+     
+             // Si el usuario es Alumno, asociar divisiones a los cursos seleccionados
+             if ($request->role_id == 2 && $request->has('divisions') && count($request->divisions) > 0) {
+                 foreach ($request->courses as $courseId) {
+                     $course = Course::find($courseId);
+                     if ($course) {
+                         $course->divisions()->sync($request->divisions);
+                     }
+                 }
+             }
          }
-
+     
+         // Si la solicitud es JSON, devolver el usuario recién creado
          if ($request->wantsJson()) {
              return response()->json($user, 201);
          }
-
+     
+         // Si la solicitud es HTML, redirigir con mensaje de éxito
          return redirect()->route('users.index')->with('success', 'User created successfully');
      }
+     
 
 
 
@@ -178,7 +208,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::find($id);
+        $user = User::with(['role', 'subjects'])->find($id); // Cargar rol y asignaturas relacionadas
 
         if (is_null($user)) {
             return response()->json(['message' => 'User not found'], 404);
@@ -190,6 +220,7 @@ class UserController extends Controller
 
         return view('users.show', compact('user'));
     }
+
 
     /**
      * @OA\Put(

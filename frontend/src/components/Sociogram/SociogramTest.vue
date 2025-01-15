@@ -214,7 +214,7 @@ const handleFinish = async () => {
 </script>
 
 <template>
-  <div class="max-w-4xl mx-auto">
+  <div class="max-w-4xl mx-auto mt-12 mb-12">
     <!-- Mensaje de Error -->
     <div v-if="errorMessage" class="bg-red-100 text-red-700 border-l-4 border-red-500 p-4 rounded-lg">
       <p class="font-semibold">{{ errorMessage }}</p>

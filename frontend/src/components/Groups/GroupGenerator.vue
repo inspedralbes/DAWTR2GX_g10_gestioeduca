@@ -16,9 +16,9 @@ const balanceBy = ref('none')
 const generatedGroups = ref([])
 
 const balanceOptions = [
-  { value: 'none', label: 'Aleatorio' },
-  { value: 'performance', label: 'Rendimiento' },
-  { value: 'attendance', label: 'Asistencia' }
+  { value: 'none', label: 'Aleatori' },
+  { value: 'performance', label: 'Rendimient' },
+  { value: 'attendance', label: 'Assistència' }
 ]
 
 const handleGenerate = () => {
@@ -39,14 +39,14 @@ const handleGenerate = () => {
 
 <template>
   <div class="card">
-    <h2 class="text-lg font-semibold mb-4">Generador de Grupos</h2>
+    <h2 class="text-lg font-semibold mb-4">Generador de Grups</h2>
     
     <div class="space-y-4">
       <!-- Configuration -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">
-            Tamaño de los grupos
+            Tamany dels grups
           </label>
           <input
             v-model.number="groupSize"
@@ -59,7 +59,7 @@ const handleGenerate = () => {
         
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">
-            Equilibrar por
+            Equilibrar per
           </label>
           <select
             v-model="balanceBy"
@@ -80,7 +80,7 @@ const handleGenerate = () => {
         @click="handleGenerate"
         class="w-full btn btn-primary"
       >
-        Generar Grupos
+        Generar Grups
       </button>
     </div>
   </div>

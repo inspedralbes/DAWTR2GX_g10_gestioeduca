@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('form_id')->constrained()->onDelete('cascade');
+            $table->boolean('answered')->default(false);
             $table->timestamps();
         });
 
@@ -25,6 +26,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('form_user');
+        Schema::table('form_user', function (Blueprint $table) {
+            $table->dropColumn('answered');
+        });
+
     }
 };

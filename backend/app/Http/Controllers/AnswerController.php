@@ -6,6 +6,8 @@ use App\Models\Answer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
+use App\Models\User;
+use App\Models\Form;
 
 /**
  * @OA\Tag(
@@ -38,9 +40,7 @@ class AnswerController extends Controller
 
         $validated = $validator->validated();
 
-
-
-        // Guardar las respuestas en la tabla "answer"
+        // Guardar las respuestas en la tabla "answers"
         foreach ($validated['responses'] as $response) {
             Log::info('Guardando respuesta:', $response);
 
@@ -53,28 +53,46 @@ class AnswerController extends Controller
             ]);
         }
 
+        // Incrementar el contador de respuestas en el formulario
+        $form = Form::find($formId);
+        if ($form) {
+            // Incrementar el contador de respuestas del formulario
+            $form->increment('responses_count'); // Esto incrementa el campo `responses_count`
+        } else {
+            Log::error('Formulario no encontrado', ['form_id' => $formId]);
+        }
+
+        // Marcar como respondido en la tabla intermedia "form_user"
+        $user = User::find($userId);
+        if ($user && $form) {
+            // Actualizar la tabla pivot "form_user", seteando el campo "answered" a true
+            $user->forms()->updateExistingPivot($formId, ['answered' => true]);
+        }
+
         Log::info('Form ID recibido:', ['form_id' => $formId]);
 
         return response()->json(['message' => 'Respuestas guardadas correctamente'], 200);
     }
 
+
+
     // Método para formatear la respuesta según su tipo
     protected function formatAnswer($response)
-{
-    switch ($response['answer_type']) {
-        case 'checkbox':
-        case 'multiple':
-            return json_encode($response['answer']); // Convertir arrays a JSON
-        case 'number':
-            return (int) $response['answer']; // Convertir a número
-        case 'string':
-            return (string) $response['answer']; // Convertir a string
-        case 'boolean':
-            return (bool) $response['answer']; // Convertir a booleano
-        default:
-            return $response['answer']; // Dejarlo tal cual
+    {
+        switch ($response['answer_type']) {
+            case 'checkbox':
+            case 'multiple':
+                return json_encode($response['answer']); // Convertir arrays a JSON
+            case 'number':
+                return (int) $response['answer']; // Convertir a número
+            case 'string':
+                return (string) $response['answer']; // Convertir a string
+            case 'boolean':
+                return (bool) $response['answer']; // Convertir a booleano
+            default:
+                return $response['answer']; // Dejarlo tal cual
+        }
     }
-}
 
     /**
      * @OA\Get(

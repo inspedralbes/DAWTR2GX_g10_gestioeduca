@@ -21,8 +21,8 @@
       </div>
       <!-- Desktop navigation -->
       <div class="hidden lg:flex lg:flex-1 lg:justify-end space-x-4">
-        <button @click="$emit('show-contact')" class="text-sm font-semibold text-gray-900 hover:text-indigo-600">Contacto</button>
-        <router-link to="/login" class="text-sm font-semibold text-gray-900 hover:text-indigo-600">Empezar</router-link>
+        <button @click="$emit('show-contact')" class="text-sm font-semibold text-gray-900 hover:text-indigo-600">Contacte</button>
+        <router-link to="/login" class="text-sm font-semibold text-gray-900 hover:text-indigo-600">Començar</router-link>
       </div>
     </nav>
 

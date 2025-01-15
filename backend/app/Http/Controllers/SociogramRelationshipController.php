@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\SociogramRelationship;
+use App\Models\Form;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class SociogramRelationshipController extends Controller
@@ -32,26 +34,42 @@ class SociogramRelationshipController extends Controller
      * Guardar nuevas relaciones sociométricas.
      */
     public function store(Request $request)
-    {
-        $data = $request->validate([
-            'user_id' => 'required|exists:users,id', // Usuario que responde
-            'relationships' => 'required|array',
-            'relationships.*.peer_id' => 'required|exists:users,id',
-            'relationships.*.question_id' => 'required|exists:questions,id',
-            'relationships.*.relationship_type' => 'required|in:positive,negative',
+{
+    $data = $request->validate([
+        'user_id' => 'required|exists:users,id',
+        'relationships' => 'required|array',
+        'relationships.*.peer_id' => 'required|exists:users,id',
+        'relationships.*.question_id' => 'required|exists:questions,id',
+        'relationships.*.relationship_type' => 'required|in:positive,negative',
+    ]);
+
+    foreach ($data['relationships'] as $relationship) {
+        SociogramRelationship::create([
+            'user_id' => $data['user_id'],
+            'peer_id' => $relationship['peer_id'],
+            'question_id' => $relationship['question_id'],
+            'relationship_type' => $relationship['relationship_type'],
         ]);
-
-        foreach ($data['relationships'] as $relationship) {
-            SociogramRelationship::create([
-                'user_id' => $data['user_id'],
-                'peer_id' => $relationship['peer_id'],
-                'question_id' => $relationship['question_id'],
-                'relationship_type' => $relationship['relationship_type'],
-            ]);
-        }
-
-        return response()->json(['message' => 'Relaciones guardadas correctamente.'], 201);
     }
+
+    $form = Form::find(3);
+    if ($form) {
+        $form->increment('responses_count');
+    } else {
+        return response()->json(['error' => 'Formulario sociograma no encontrado.'], 404);
+    }
+
+    $user = User::find($data['user_id']);
+    if ($user) {
+        $user->forms()->updateExistingPivot($form->id, ['answered' => true]);
+    } else {
+        return response()->json(['error' => 'Usuario no encontrado.'], 404);
+    }
+
+    // Devolver una respuesta exitosa
+    return response()->json(['message' => 'Relaciones guardadas, contador de respuestas actualizado y formulario marcado como respondido.'], 201);
+}
+
 
     /**
      * Eliminar una relación específica.
