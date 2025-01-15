@@ -2,6 +2,7 @@
 import { ref, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
+import Toast from '@/components/common/Toast.vue';
 
 const route = useRoute();
 const formId = route.params.id;
@@ -14,6 +15,19 @@ const authStore = useAuthStore();
 const userId = authStore.user.id;
 const showConfirmation = ref(false); // Variable para controlar la confirmación
 
+// Control del toast
+const showToast = ref(false);
+const toastMessage = ref('');
+const toastType = ref('');
+
+// Función para mostrar el toast
+function triggerToast(message, type = 'success') {
+  toastMessage.value = message;
+  toastType.value = type;
+  showToast.value = true;
+  setTimeout(() => (showToast.value = false), 3000);
+}
+
 // Pregunta actual
 const currentQuestion = computed(() => questions.value[currentQuestionIndex.value]);
 
@@ -25,6 +39,7 @@ async function fetchQuestions() {
     questions.value = await response.json();
   } catch (error) {
     console.error('Error al cargar las preguntas:', error);
+    triggerToast('Error al cargar las preguntas.', 'error');
   }
 }
 
@@ -42,6 +57,7 @@ async function fetchUsers() {
     userNames.value = await response.json();
   } catch (error) {
     console.error('Error al cargar los usuarios:', error);
+    triggerToast('Error al cargar los usuarios.', 'error');
   }
 }
 
@@ -97,11 +113,11 @@ async function submitResponses() {
 
     if (!response.ok) throw new Error('Error al enviar respuestas');
 
-    alert('Respuestas enviadas correctamente');
-    window.location.href = '/student/dashboard';
+    triggerToast('Respuestas enviadas correctamente.', 'success');
+    setTimeout(() => (window.location.href = '/student/dashboard'), 2000);
   } catch (error) {
     console.error('Error al enviar las respuestas:', error);
-    alert('Error al enviar las respuestas');
+    triggerToast('Error al enviar las respuestas.', 'error');
   }
 }
 
@@ -151,7 +167,6 @@ onMounted(async () => {
         Seleccionados: {{ responses[currentQuestion?.id]?.length || 0 }}/3
       </div>
 
-      <!-- Modificación aquí: Mostrar botón de "Finalizar" en la última pregunta -->
       <button v-if="currentQuestionIndex < questions.length - 1 && responses[currentQuestion?.id]?.length === 3"
         @click="goToNextQuestion"
         class="mt-6 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors">
@@ -167,6 +182,9 @@ onMounted(async () => {
     <div v-else class="text-center">
       <h3 class="text-xl font-bold mb-4">¡Quiz completado!</h3>
     </div>
+
+    <!-- Toast -->
+    <Toast v-if="showToast" :message="toastMessage" :type="toastType" />
   </div>
 </template>
 
