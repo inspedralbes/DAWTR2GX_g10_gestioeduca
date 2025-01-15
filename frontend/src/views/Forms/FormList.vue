@@ -81,7 +81,7 @@ const openAssignModal = (form) => {
 };
 
 const handleFormAssigned = (assignments) => {
-  console.log('Form assigned to students:', assignments);
+  // console.log('Form assigned to students:', assignments);
 
   // Actualiza el mensaje y tipo de toast
   toastMessage.value = 'Formulario asignado correctamente a los estudiantes seleccionados';
