@@ -12,6 +12,7 @@ import CreateForm from '@/views/CreateForm.vue';
 import StudentForms from '@/components/student/StudentForms.vue';
 import FormQuestions from '@/components/student/FormQuestions.vue';
 import DashboardAdmin from '@/components/admin/DashboardAdmin.vue'; // Ajusta la ruta si es necesario
+import ManualCreateGroup from '@/views/Groups/ManualCreateGroup.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -65,6 +66,11 @@ const router = createRouter({
       path: '/brain',
       name: 'brain',
       component: () => import('@/components/Brain/ChatInterface.vue'),
+    },
+    {
+      path: '/manualCreateGroup',
+      name: 'CreateGroup',
+      component: ManualCreateGroup
     },
     {
       path: '/student',

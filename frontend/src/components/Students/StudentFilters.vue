@@ -32,8 +32,8 @@ defineEmits(['update:searchQuery', 'update:selectedCourse', 'update:selectedDivi
           <option value="2">2º ESO</option>
           <option value="3">3º ESO</option>
           <option value="4">4º ESO</option>
-          <option value="1 BACHILLERATO">1ºBATXILLERAT</option>
-          <option value="2 BACHILLERATO">2ºBATXILLERAT</option>
+          <option value="1 BATXILLERAT">1ºBATXILLERAT</option>
+          <option value="2 BATXILLERAT">2ºBATXILLERAT</option>
         </select>
         <select
           :value="selectedDivision"
