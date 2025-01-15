@@ -38,7 +38,19 @@
             </select>
         </div>
 
-        <!-- Nuevo: Campos para cursos y divisiones -->
+        <!-- Campos para profesores -->
+        <div id="subjectFields" style="display: none;">
+            <div class="form-group">
+                <label for="subjects">Subjects:</label>
+                <select name="subjects[]" id="subjects" class="form-control" multiple>
+                    @foreach($subjects as $subject)
+                        <option value="{{ $subject->id }}">{{ $subject->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+
+        <!-- Campos para alumnos -->
         <div id="courseDivisionFields" style="display: none;">
             <div class="form-group">
                 <label for="courses">Courses:</label>
@@ -69,11 +81,19 @@
 <!-- Agregar este script al final -->
 <script>
 document.getElementById('role').addEventListener('change', function() {
+    const role = this.value;
     const courseDivisionFields = document.getElementById('courseDivisionFields');
-    // Mostrar campos solo para profesores (1) y alumnos (2)
-    if (this.value == '1' || this.value == '2') {
+    const subjectFields = document.getElementById('subjectFields');
+
+    // Mostrar u ocultar campos en función del rol seleccionado
+    if (role == '1') { // Profesor
+        subjectFields.style.display = 'block';
+        courseDivisionFields.style.display = 'none';
+    } else if (role == '2') { // Alumno
+        subjectFields.style.display = 'none';
         courseDivisionFields.style.display = 'block';
-    } else {
+    } else { // Otros roles
+        subjectFields.style.display = 'none';
         courseDivisionFields.style.display = 'none';
     }
 });
