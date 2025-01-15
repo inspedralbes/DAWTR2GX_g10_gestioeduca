@@ -30,11 +30,6 @@ const menuItems = [
     title: 'Chat IA',
     icon: 'M8.5 2a1 1 0 000 2h2.086a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2H7a2 2 0 01-2-2V4a2 2 0 012-2h1.5z',
     route: '/brain'
-  },
-  {
-    title: 'Logout',
-    icon: 'M17 13l4-4m0 0l-4-4m4 4H3', 
-    route: '/tancar-sessio'
   }
 ];
 
