@@ -70,7 +70,7 @@ const handleCreateGroup = async () => {
         successMessage.value = "Grup creat amb èxit";
 
         setTimeout(() => {
-            router.push("/grupos");
+            router.push("/dashboard");
         }, 2000);
     } catch (error) {
         errorMessage.value = "Hi ha hagut un error al crear el grup";
@@ -80,7 +80,7 @@ const handleCreateGroup = async () => {
 };
 
 const goBack = () => {
-    router.push("/grupos");
+    router.push("/dashboard");
 };
 </script>
 
