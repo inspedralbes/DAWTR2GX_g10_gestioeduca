@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\CourseController;
@@ -23,6 +24,11 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
+
+Route::post('/logout', function () {
+    Auth::logout();
+    return response()->json(['message' => 'Logged out'], 200);
+})->name('logout');
 
 Route::get('/forms/{id}', [FormController::class, 'show'])->name('forms.show');
 

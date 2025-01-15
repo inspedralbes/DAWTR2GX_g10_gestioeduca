@@ -1,7 +1,7 @@
 <template>
   <div class="bg-white py-16">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h2 class="text-3xl font-semibold text-gray-900 text-center mb-12">Grados Educativos</h2>
+      <h2 class="text-3xl font-semibold text-gray-900 text-center mb-12">Graus Educatius</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8 justify-items-center">
         <div v-for="course in courses" :key="course.title" 
           class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 max-w-md w-full">
@@ -37,13 +37,13 @@ export default {
         {
           title: 'ESO',
           image: '../../../public/img/eso.jpg',
-          description: 'Descripción del primer grado educativo.',
+          description: 'Descripció del primer grau educatiu.',
           details: ['1º ESO', '2º ESO', '3º ESO', '4º ESO']
         },
         {
-          title: 'Bachillerato',
-          image: '../../../public/img/bachillerato.jpg',
-          description: 'El Bachillerato es la etapa de la educación secundaria posobligatoria que tiene por finalidad proporcionar al alumnado:',
+          title: 'Batxillerat',
+          image: '../../../public/img/Batxillerat.jpg',
+          description: 'El Batxillerat es la etapa de la educación secundaria posobligatoria que tiene por finalidad proporcionar al alumnado:',
           details: ['Formación', 'Madurez (intelectual y humana)', 'Conocimientos', 'Destrezas']
         }
       ]

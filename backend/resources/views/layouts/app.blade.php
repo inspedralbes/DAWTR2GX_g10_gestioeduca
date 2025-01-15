@@ -78,10 +78,11 @@
                 GRUPIFY CRUD
             </a>
             <div class="ms-auto">
-                <a href="#" class="logout-btn">
-                    <i class="fas fa-sign-out-alt"></i>
-                    Logout
-                </a>
+            <a href="#" class="logout-btn" onclick="handleLogout()">
+            <i class="fas fa-sign-out-alt"></i>
+            Tancar Sessió
+             </a>
+
             </div>
         </div>
     </nav>
@@ -92,5 +93,27 @@
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    function handleLogout() {
+        // Realizar una solicitud al servidor para cerrar sesión
+        fetch('/logout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        }).then(response => {
+            if (response.ok) {
+                // Redirigir al inicio
+                window.location.href = '/';
+            } else {
+                alert('Error al cerrar sesión.');
+            }
+        }).catch(error => {
+            console.error('Error:', error);
+        });
+    }
+</script>
+
 </body>
 </html>
