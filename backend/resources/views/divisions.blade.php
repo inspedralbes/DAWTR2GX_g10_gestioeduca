@@ -2,16 +2,16 @@
 
 @section('content')
 <div class="container">
-    <!-- Encabezado y botón de retorno -->
+    <!-- Encapçalament i botó de retorn -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="display-5 mb-0">Gestión de Divisiones</h1>
+        <h1 class="display-5 mb-0">Gestió de Divisions</h1>
         <a href="{{ route('dashboard') }}" class="btn btn-outline-primary">
             <i class="fas fa-arrow-left me-2"></i>
-            Volver al Dashboard
+            Tornar al Dashboard
         </a>
     </div>
 
-    <!-- Mensajes de éxito o error -->
+    <!-- Missatges d'èxit o error -->
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             <i class="fas fa-check-circle me-2"></i>
@@ -26,14 +26,14 @@
         </div>
     @endif
 
-    <!-- Lista de Divisiones -->
+    <!-- Llista de Divisions -->
     <div class="row">
         <div class="col-lg-8 mb-4">
             <div class="card shadow-sm">
                 <div class="card-header bg-white py-3">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-list me-2" style="color: var(--primary-color)"></i>
-                        Lista de Divisiones
+                        Llista de Divisions
                     </h5>
                 </div>
                 <div class="card-body p-0">
@@ -42,8 +42,8 @@
                             <thead class="table-light">
                                 <tr>
                                     <th class="px-4">ID</th>
-                                    <th>División</th>
-                                    <th class="text-end px-4">Acciones</th>
+                                    <th>Divisió</th>
+                                    <th class="text-end px-4">Accions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -64,7 +64,7 @@
                                                 @csrf
                                                 <button type="submit" 
                                                         class="btn btn-sm btn-danger" 
-                                                        onclick="return confirm('¿Estás seguro de eliminar esta división?')">
+                                                        onclick="return confirm('Estàs segur d’eliminar aquesta divisió?')">
                                                     <i class="fas fa-trash-alt me-1"></i>
                                                     Eliminar
                                                 </button>
@@ -79,14 +79,14 @@
             </div>
         </div>
 
-        <!-- Formulario para Crear o Editar -->
+        <!-- Formulari per Crear o Editar -->
         <div class="col-lg-4">
             <div class="card shadow-sm">
                 <div class="card-header bg-white py-3">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-{{ isset($_GET['edit']) ? 'edit' : 'plus' }} me-2" 
                            style="color: var(--primary-color)"></i>
-                        {{ isset($_GET['edit']) ? 'Editar División' : 'Crear Nueva División' }}
+                        {{ isset($_GET['edit']) ? 'Editar Divisió' : 'Crear Nova Divisió' }}
                     </h5>
                 </div>
                 <div class="card-body">
@@ -98,7 +98,7 @@
                         @csrf
 
                         <div class="mb-3">
-                            <label for="division" class="form-label">Nombre de la División</label>
+                            <label for="division" class="form-label">Nom de la Divisió</label>
                             <input type="text" 
                                    class="form-control" 
                                    id="division" 
@@ -110,13 +110,13 @@
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-primary">
                                 <i class="fas fa-save me-2"></i>
-                                {{ isset($_GET['edit']) ? 'Actualizar' : 'Guardar' }}
+                                {{ isset($_GET['edit']) ? 'Actualitzar' : 'Desar' }}
                             </button>
 
                             @if(isset($_GET['edit']))
                                 <a href="{{ route('divisions.index') }}" class="btn btn-outline-secondary">
                                     <i class="fas fa-times me-2"></i>
-                                    Cancelar
+                                    Cancel·lar
                                 </a>
                             @endif
                         </div>
