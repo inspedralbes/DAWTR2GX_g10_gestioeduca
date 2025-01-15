@@ -9,7 +9,7 @@ const userData = ref(null);
 const gestioGoogleLogin = async () => {
     try {
         const response = await googleAuthCodeLogin();
-        console.log('Login amb Google correctament!', response);
+        // console.log('Login amb Google correctament!', response);
         
         // Get user info from Google using the code
         const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {

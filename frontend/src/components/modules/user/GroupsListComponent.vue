@@ -17,7 +17,7 @@ onMounted(async () => {
     const response = await fetch('/groups.json');
     if (!response.ok) throw new Error('Error al cargar los datos.');
     groups.value = await response.json();
-    console.log("entran los datos")
+    // console.log("entran los datos")
   } catch (error) {
     console.error(error);
   } finally {

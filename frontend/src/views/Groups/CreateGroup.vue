@@ -20,7 +20,7 @@ const loadGroups = () => {
   fetch('/groups.json')
     .then(response => response.json())
     .then(data => {
-    console.log(data);
+    // console.log(data);
     groups.value = data;
     });
 };
