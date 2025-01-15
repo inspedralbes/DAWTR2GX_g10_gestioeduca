@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<head>
+    <!-- ... otros meta tags ... -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <!-- ... resto del head ... -->
+</head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CRUD Dashboard</title>
@@ -78,12 +83,14 @@
                 GRUPIFY CRUD
             </a>
             <div class="ms-auto">
-            <a href="#" class="logout-btn" onclick="handleLogout()">
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-inline">
+        @csrf
+        <a href="#" class="logout-btn" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
             <i class="fas fa-sign-out-alt"></i>
             Tancar Sessió
-             </a>
-
-            </div>
+        </a>
+    </form>
+</div>
         </div>
     </nav>
 
