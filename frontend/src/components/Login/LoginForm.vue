@@ -4,6 +4,7 @@ import { useRouter, useRoute } from 'vue-router'; // Importa useRouter y useRout
 import SocialLogin from './SocialLogin.vue';
 import PasswordInput from './PasswordInput.vue';
 import TextInput from './TextInput.vue';
+import NavBar from '../Landing/NavBar.vue'
 
 const router = useRouter();
 const route = useRoute();
@@ -45,7 +46,7 @@ const gestioSubmit = async (e) => {
     isLoading.value = true;
 
     try {
-        const response = await fetch('http://pruebag10.daw.inspedralbes.cat/backend/public/api/login', {
+        const response = await fetch('http://grupify.daw.inspedralbes.cat/backend/public/api/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -85,98 +86,114 @@ const gestioSubmit = async (e) => {
 </script>
 
 <template>
-    <div class="login-container">
+    <div class="bg-white min-h-screen flex flex-col">
+      <NavBar @show-contact="showContactForm" />
+      <ContactForm :is-visible="isContactFormVisible" @close="closeContactForm" />
+  
+      <div class="login-container">
         <div class="login-content">
-            <div class="login-header">
-                <h1>Benvingut!</h1>
-                <p>Gestió d'informació académica</p>
+          <div class="login-header">
+            <h1>Benvingut!</h1>
+            <p>Gestió d'informació académica</p>
+          </div>
+  
+          <form @submit="gestioSubmit" class="login-form">
+            <!-- Añade un mensaje de éxito cuando se registra un usuario -->
+            <div v-if="successMessage" class="success-message">
+              {{ successMessage }}
             </div>
-
-            <form @submit="gestioSubmit" class="login-form">
-                <!-- Añade un mensaje de éxito cuando se registra un usuario -->
-                <div v-if="successMessage" class="success-message">
-                    {{ successMessage }}
-                </div>
-
-                <TextInput v-model="email" placeholder="Email" :has-msgError="msgError && !email" />
-
-                <PasswordInput v-model="password" :has-msgError="msgError && !password" />
-
-                <div class="forgot-password">
-                    <a href="#">Heu oblidat la contrasenya?</a>
-                </div>
-
-                <button type="submit" class="sign-in-button" :disabled="isLoading">
-                    {{ isLoading ? 'Iniciant sessió...' : 'Iniciar sessió' }}
-                </button>
-
-                <div v-if="msgError" class="msgError-message">
-                    {{ msgError }}
-                </div>
-
-                <div class="divider"></div>
-                <div class="register-link">
-                    <p>No tens un compte? <a @click.prevent="router.push('/register')"> <b class="cursor-pointer">Registrar-se</b></a></p>
-                </div>
-
-                <SocialLogin />
-            </form>
+  
+            <TextInput v-model="email" placeholder="Email" :has-msgError="msgError && !email" />
+  
+            <PasswordInput v-model="password" :has-msgError="msgError && !password" />
+  
+            <div class="forgot-password">
+              <a href="#">Heu oblidat la contrasenya?</a>
+            </div>
+  
+            <button type="submit" class="sign-in-button" :disabled="isLoading">
+              {{ isLoading ? 'Iniciant sessió...' : 'Iniciar sessió' }}
+            </button>
+  
+            <div v-if="msgError" class="msgError-message">
+              {{ msgError }}
+            </div>
+  
+            <div class="divider"></div>
+            <div class="register-link">
+              <p>No tens un compte? <a @click.prevent="router.push('/register')"> <b class="cursor-pointer">Registrar-se</b></a></p>
+            </div>
+  
+            <SocialLogin />
+          </form>
         </div>
+      </div>
     </div>
-</template>
-
-<style scoped>
-.login-container {
-    min-height: 100vh;
+  </template>
+  
+  <style scoped>
+  /* Ajuste global para eliminar márgenes */
+  body, html {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .bg-white {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .login-container {
+    min-height: calc(100vh - 80px); /* Resta la altura del navbar (ajusta si es necesario) */
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 1rem;
-}
-
-.login-content {
+  }
+  
+  .login-content {
     width: 100%;
     max-width: 380px;
     background: var(--card-background);
     padding: 2rem 1.5rem;
     border-radius: 1.25rem;
     backdrop-filter: blur(10px);
-}
-
-.login-header {
+  }
+  
+  .login-header {
     text-align: center;
     margin-bottom: 2rem;
-}
-
-h1 {
+  }
+  
+  h1 {
     font-size: 1.75rem;
     font-weight: 600;
     color: var(--text-primary);
     margin-bottom: 0.5rem;
-}
-
-p {
+  }
+  
+  p {
     color: var(--text-secondary);
-}
-
-.login-form {
+  }
+  
+  .login-form {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-}
-
-.forgot-password {
+  }
+  
+  .forgot-password {
     text-align: right;
     margin-top: -0.5rem;
-}
-
-.forgot-password a {
+  }
+  
+  .forgot-password a {
     color: var(--text-secondary);
     font-size: 0.875rem;
     text-decoration: none;
-}
-
-.sign-in-button {
+  }
+  
+  .sign-in-button {
     background: var(--color-primary);
     color: white;
     border: none;
@@ -187,35 +204,33 @@ p {
     cursor: pointer;
     transition: opacity 0.2s;
     margin-top: 0.5rem;
-}
-
-.sign-in-button:hover {
+  }
+  
+  .sign-in-button:hover {
     opacity: 0.9;
-}
-
-.sign-in-button:disabled {
+  }
+  
+  .sign-in-button:disabled {
     opacity: 0.7;
     cursor: not-allowed;
-}
-
-.error-message {
+  }
+  
+  .error-message {
     color: #ff4d4f;
     font-size: 0.875rem;
     text-align: center;
-}
-
-
-
-.divider {
+  }
+  
+  .divider {
     position: relative;
     margin: 1.5rem 0;
     height: 1px;
     background: rgba(0, 0, 0, 0.1);
-}
-
-@media (min-width: 768px) {
+  }
+  
+  @media (min-width: 768px) {
     .login-content {
-        padding: 2.5rem;
+      padding: 2.5rem;
     }
-}
-</style>
+  }
+  </style>

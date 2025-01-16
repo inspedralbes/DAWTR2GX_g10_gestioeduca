@@ -1,7 +1,7 @@
 <template>
   <footer class="bg-primary text-white py-4 px-6">
     <div class="container mx-auto">
-      <p class="text-center">&copy; {{ currentYear }} GRUPIFY. Todos los derechos reservados.</p>
+      <p class="text-center">&copy; {{ currentYear }} GRUPIFY. Tots els drets reservats.</p>
     </div>
   </footer>
 </template>

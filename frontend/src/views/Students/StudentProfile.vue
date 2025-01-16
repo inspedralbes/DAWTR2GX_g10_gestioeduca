@@ -20,7 +20,7 @@ onMounted(async () => {
     await studentsStore.fetchStudents();
 
     // Verifica que los estudiantes estén cargados
-    console.log('Estudiantes cargados:', studentsStore.students);
+    // console.log('Estudiantes cargados:', studentsStore.students);
 
     if (!id) {
       console.error('No se pasó un ID de estudiante en la URL');
@@ -32,7 +32,7 @@ onMounted(async () => {
     student.value = studentsStore.getStudentById(id);
 
     // Verificar si se encontró al estudiante
-    console.log('Estudiante encontrado:', student.value);
+    // console.log('Estudiante encontrado:', student.value);
 
     if (!student.value) {
       console.error('Estudiante no encontrado con ID:', id);

@@ -14,7 +14,7 @@ const loggedStudentId = ref(null);
 onMounted(async () => {
   // Obtén el ID del estudiante logueado
   loggedStudentId.value = getLoggedStudentId();
-  console.log("ID del estudiante logueado:", loggedStudentId.value);
+  // console.log("ID del estudiante logueado:", loggedStudentId.value);
   if (!loggedStudentId.value) {
     // Si no hay usuario logueado, mostrar error y redirigir o detener ejecución
     errorMessage.value = "Por favor, inicie sesión antes de completar el cuestionario.";
@@ -179,7 +179,7 @@ const handleFinish = async () => {
     });
 
     // Enviar los datos al backend
-    const response = await fetch("http://pruebag10.daw.inspedralbes.cat/backend/public/api/sociogram-relationships", {
+    const response = await fetch("http://grupify.daw.inspedralbes.cat/backend/public/api/sociogram-relationships", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

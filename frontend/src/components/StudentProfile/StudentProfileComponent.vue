@@ -77,7 +77,7 @@ export default {
     async fetchStudentData(id) {
       try {
         // Usar correctamente this.studentId para la URL de la API
-        const response = await fetch(`http://pruebag10.daw.inspedralbes.cat/backend/public/api/users/${id}`);
+        const response = await fetch(`http://grupify.daw.inspedralbes.cat/backend/public/api/users/${id}`);
         
         if (!response.ok) throw new Error("Error al cargar los datos");
 

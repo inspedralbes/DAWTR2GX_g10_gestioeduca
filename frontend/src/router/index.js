@@ -12,6 +12,7 @@ import CreateForm from '@/views/CreateForm.vue';
 import StudentForms from '@/components/student/StudentForms.vue';
 import FormQuestions from '@/components/student/FormQuestions.vue';
 import DashboardAdmin from '@/components/admin/DashboardAdmin.vue'; // Ajusta la ruta si es necesario
+import ManualCreateGroup from '@/views/Groups/ManualCreateGroup.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -65,6 +66,11 @@ const router = createRouter({
       path: '/brain',
       name: 'brain',
       component: () => import('@/components/Brain/ChatInterface.vue'),
+    },
+    {
+      path: '/manualCreateGroup',
+      name: 'CreateGroup',
+      component: ManualCreateGroup
     },
     {
       path: '/student',
@@ -183,19 +189,19 @@ const router = createRouter({
 
 // Global navigation guard
 router.beforeEach((to, from, next) => {
-  console.log(`Navegando de ${from.fullPath} a ${to.fullPath}`);
+  // console.log(`Navegando de ${from.fullPath} a ${to.fullPath}`);
   
   const isAuthenticated = !!localStorage.getItem('auth_token');
   const role = localStorage.getItem('role');
 
   if (to.meta.requiresAuth && !isAuthenticated) {
-    console.log('Usuario no autenticado, redirigiendo al login.');
+    // console.log('Usuario no autenticado, redirigiendo al login.');
     next('/login');
   } else if (to.meta.requiresAuth && to.meta.role && to.meta.role !== role) {
-    console.log(`Rol no autorizado. Requiere ${to.meta.role}, pero el usuario tiene ${role}.`);
+    // console.log(`Rol no autorizado. Requiere ${to.meta.role}, pero el usuario tiene ${role}.`);
     next('/unauthorized');
   } else {
-    console.log('Autorizado, permitiendo el acceso.');
+    // console.log('Autorizado, permitiendo el acceso.');
     next();
   }
 });

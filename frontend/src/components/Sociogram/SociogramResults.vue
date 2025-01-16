@@ -10,7 +10,7 @@ const height = 600; // Alto del espacio SVG
 // Llamar a la API para obtener las relaciones
 const fetchRelationships = async () => {
   try {
-    const response = await fetch('http://pruebag10.daw.inspedralbes.cat/backend/public/api/sociogram-relationships');
+    const response = await fetch('http://grupify.daw.inspedralbes.cat/backend/public/api/sociogram-relationships');
     if (!response.ok) throw new Error('Error al obtener las relaciones');
     relationships.value = await response.json();
   } catch (error) {

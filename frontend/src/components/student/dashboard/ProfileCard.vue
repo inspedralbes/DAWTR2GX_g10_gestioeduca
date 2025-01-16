@@ -22,7 +22,7 @@ onMounted(() => {
       image: user.image 
     };
   } else {
-    console.log("No hay usuario autenticado");
+    // console.log("No hay usuario autenticado");
   }
 });
 </script>

@@ -16,7 +16,7 @@ const viewStudentDetails = (id) => {
 onMounted(async () => {
   try {
     // Realizar la solicitud fetch a la API
-    const response = await fetch('http://pruebag10.daw.inspedralbes.cat/backend/public/api/users', {
+    const response = await fetch('http://grupify.daw.inspedralbes.cat/backend/public/api/users', {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -29,7 +29,7 @@ onMounted(async () => {
     }
 
     students.value = await response.json();
-    console.log(students.value)
+    // console.log(students.value)
   } catch (error) {
     console.error('Error:', error);
   } finally {

@@ -30,7 +30,7 @@ const toggleSelection = (studentId) => {
 
 // Función para agregar estudiantes al grupo
 const addStudentsToGroup = async (groupId, studentIds) => {
-    await fetch(`http://localhost:8000/api/groups/${groupId}/addStudentsToGroup`, {
+    await fetch(`http://grupify.daw.inspedralbes.cat/backend/public/api/groups/${groupId}/addStudentsToGroup`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -55,7 +55,7 @@ const handleCreateGroup = async () => {
             number_of_students: selectedStudentsDetails.length,
         };
 
-        const response = await fetch("http://localhost:8000/api/groups", {
+        const response = await fetch("http://grupify.daw.inspedralbes.cat/backend/public/api/groups", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

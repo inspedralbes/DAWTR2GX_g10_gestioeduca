@@ -6,7 +6,7 @@ import Toast from '@/components/common/Toast.vue';
 
 const route = useRoute();
 const formId = route.params.id;
-console.log(formId); 
+// console.log(formId); 
 const questions = ref([]);
 const userNames = ref([]);
 const responses = ref({});
@@ -34,7 +34,7 @@ const currentQuestion = computed(() => questions.value[currentQuestionIndex.valu
 // Función para cargar preguntas
 async function fetchQuestions() {
   try {
-    const response = await fetch(`http://localhost:8000/api/forms/${formId}/questions-and-answers`);
+    const response = await fetch(`http://grupify.daw.inspedralbes.cat/backend/public/api/forms/${formId}/questions-and-answers`);
     if (!response.ok) throw new Error('Error al cargar las preguntas');
     questions.value = await response.json();
   } catch (error) {
@@ -46,7 +46,7 @@ async function fetchQuestions() {
 // Función para cargar usuarios
 async function fetchUsers() {
   try {
-    const response = await fetch('http://localhost:8000/api/get-students', {
+    const response = await fetch('http://grupify.daw.inspedralbes.cat/backend/public/api/get-students', {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -100,7 +100,7 @@ async function submitResponses() {
       };
     });
 
-    const response = await fetch(`http://localhost:8000/api/forms/${formId}/submit-responses`, {
+    const response = await fetch(`http://grupify.daw.inspedralbes.cat/backend/public/api/forms/${formId}/submit-responses`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -114,7 +114,7 @@ async function submitResponses() {
     if (!response.ok) throw new Error('Error al enviar respuestas');
 
     triggerToast('Respuestas enviadas correctamente.', 'success');
-    setTimeout(() => (window.location.href = '/student/dashboard'), 2000);
+    setTimeout(() => (window.location.href = '/student/dashboard'), 1000);
   } catch (error) {
     console.error('Error al enviar las respuestas:', error);
     triggerToast('Error al enviar las respuestas.', 'error');

@@ -85,7 +85,7 @@ const saveForm = () => {
     createdAt: new Date().toISOString()
   }
   
-  console.log('Guardant formulari:', form)
+  // console.log('Guardant formulari:', form)
   alert('Formulari guardat correctament')
   router.push('/formularios')
 }
@@ -99,7 +99,7 @@ const handleSendForm = () => {
 }
 
 const handleFormAssigned = (assignments) => {
-  console.log('Formulari assignat:', assignments)
+  // console.log('Formulari assignat:', assignments)
   alert('Formulari enviat correctament als alumnes seleccionats')
   router.push('/formularios')
 }

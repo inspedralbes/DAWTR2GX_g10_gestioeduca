@@ -153,7 +153,7 @@ const submitForm = () => {
     responses: responses.value
   }
 
-  console.log('Formulari complet:', formData)
+  // console.log('Formulari complet:', formData)
   
   // Aquí tenemos que enviar los datos al backend
   formState.value = 'thankyou'

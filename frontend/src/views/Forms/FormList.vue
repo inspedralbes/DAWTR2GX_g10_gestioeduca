@@ -20,7 +20,7 @@ const showToast = ref(false); // Variable para controlar la visibilidad del toas
 
 onMounted(async () => {
   try {
-    const response = await fetch('http://pruebag10.daw.inspedralbes.cat/backend/public/api/forms', {
+    const response = await fetch('http://grupify.daw.inspedralbes.cat/backend/public/api/forms', {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -39,7 +39,7 @@ onMounted(async () => {
 
 const updateFormStatus = async (formId, newStatus) => {
   try {
-    const response = await fetch(`http://localhost:8000/api/forms/${formId}/status`, {
+    const response = await fetch(`http://grupify.daw.inspedralbes.cat/backend/public/api/forms/${formId}/status`, {
       method: 'PATCH',
       headers: {
         'Accept': 'application/json',
@@ -81,7 +81,7 @@ const openAssignModal = (form) => {
 };
 
 const handleFormAssigned = (assignments) => {
-  console.log('Form assigned to students:', assignments);
+  // console.log('Form assigned to students:', assignments);
 
   // Actualiza el mensaje y tipo de toast
   toastMessage.value = 'Formulario asignado correctamente a los estudiantes seleccionados';

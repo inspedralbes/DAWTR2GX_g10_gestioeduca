@@ -43,10 +43,10 @@ export default {
           details: ['1º ESO', '2º ESO', '3º ESO', '4º ESO']
         },
         {
-          title: 'Bachillerato',
-          image: '/img/bachillerato.jpg',
-          description: 'El Bachillerato es la etapa de la educación secundaria posobligatoria que tiene por finalidad proporcionar al alumnado:',
-          details: ['Formación', 'Madurez (intelectual y humana)', 'Conocimientos', 'Destrezas']
+          title: 'Batxillerat',
+          image: '../../../public/img/bachillerato.jpg',
+          description: "El Batxillerat és l'etapa de l'educació secundària postobligatòria que té per finalitat proporcionar l'alumnat:",
+          details: ['Formació', 'Madurez (intel·lectual i humana)', 'Coneixements', 'Destreces']
         }
       ]
     }
