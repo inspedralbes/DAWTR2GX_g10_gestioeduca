@@ -179,7 +179,7 @@ const handleFinish = async () => {
     });
 
     // Enviar los datos al backend
-    const response = await fetch("http://localhost:8000/api/sociogram-relationships", {
+    const response = await fetch("http://grupify.daw.inspedralbes.cat/backend/public/api/sociogram-relationships", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

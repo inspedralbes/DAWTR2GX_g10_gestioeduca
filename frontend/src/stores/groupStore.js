@@ -8,7 +8,7 @@ export const useGroupStore = defineStore('groups', {
     async fetchGroups() {
       try {
         const token = localStorage.getItem('auth_token');  // Obtener el token de autenticación
-        const response = await fetch('http://localhost:8000/api/groups', {
+        const response = await fetch('http://grupify.daw.inspedralbes.cat/backend/public/api/groups', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -25,7 +25,7 @@ export const useGroupStore = defineStore('groups', {
 
         // Para cada grupo, obtener sus integrantes
         this.groups.forEach(async (group) => {
-          const membersResponse = await fetch(`http://localhost:8000/api/groups/${group.id}/members`, {
+          const membersResponse = await fetch(`http://grupify.daw.inspedralbes.cat/backend/public/api/groups/${group.id}/members`, {
             method: 'GET',
             headers: {
               'Authorization': `Bearer ${token}`,

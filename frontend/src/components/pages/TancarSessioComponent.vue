@@ -35,7 +35,7 @@ export default {
     // console.log(authToken)
 
     // Solicitud para cerrar sesión
-    const response = await fetch('http://localhost:8000/api/logout', {
+    const response = await fetch('http://grupify.daw.inspedralbes.cat/backend/public/api/logout', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${authToken}`,

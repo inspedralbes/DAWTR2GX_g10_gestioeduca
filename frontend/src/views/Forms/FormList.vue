@@ -20,7 +20,7 @@ const showToast = ref(false); // Variable para controlar la visibilidad del toas
 
 onMounted(async () => {
   try {
-    const response = await fetch('http://localhost:8000/api/forms', {
+    const response = await fetch('http://grupify.daw.inspedralbes.cat/backend/public/api/forms', {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -39,7 +39,7 @@ onMounted(async () => {
 
 const updateFormStatus = async (formId, newStatus) => {
   try {
-    const response = await fetch(`http://localhost:8000/api/forms/${formId}/status`, {
+    const response = await fetch(`http://grupify.daw.inspedralbes.cat/backend/public/api/forms/${formId}/status`, {
       method: 'PATCH',
       headers: {
         'Accept': 'application/json',

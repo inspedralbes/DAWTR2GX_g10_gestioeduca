@@ -35,7 +35,7 @@ const userId = user.id;
 // Cargar formularios del usuario al montar el componente
 const loadFormsByUserId = async (userId) => {
   try {
-    const response = await fetch(`http://localhost:8000/api/forms/user/${userId}`, {
+    const response = await fetch(`http://grupify.daw.inspedralbes.cat/backend/public/api/forms/user/${userId}`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
