@@ -33,7 +33,7 @@ onMounted(() => {
 // Función para hacer la solicitud Fetch al backend
 async function fetchFormWithQuestions() {
   try {
-    const response = await fetch(`http://localhost:8000/api/forms/${formId}/questions-and-answers`);
+    const response = await fetch(`http://grupify.daw.inspedralbes.cat/backend/public/api/forms/${formId}/questions-and-answers`);
 
     if (!response.ok) {
       throw new Error('Formulario no encontrado');
@@ -82,7 +82,7 @@ async function submitResponses() {
   }).filter(response => response !== null);  // Filtrar las respuestas vacías
 
   try {
-    const response = await fetch(`http://localhost:8000/api/forms/${formId}/submit-responses`, {
+    const response = await fetch(`http://grupify.daw.inspedralbes.cat/backend/public/api/forms/${formId}/submit-responses`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
