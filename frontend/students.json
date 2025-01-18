@@ -1,0 +1,58 @@
+[
+    {
+      "id_student": "1",
+      "name": "Juan",
+      "surname": "Pérez",
+      "email": "juan.perez@example.com",
+      "phone": "123456789",
+      "address": "Calle Ficticia 123, Barcelona",
+      "curs": "1º ESO",
+      "skills": [
+        "Comunicació",
+        "Creativitat",
+        "Treball en equip i cooperació"
+      ],
+      "teacherComments": "Muy buen comportamiento en clase.",
+      "groupAssignments": [
+        "Grupo A",
+        "Grupo B"
+      ]
+    },
+    {
+      "id_student": "2",
+      "name": "María",
+      "surname": "López",
+      "email": "maria.lopez@example.com",
+      "phone": "987654321",
+      "address": "Avenida de la Paz 45, Madrid",
+      "curs": "2º ESO",
+      "skills": [
+        "Autoconfiança",
+        "Lideratge",
+        "Empatia"
+      ],
+      "teacherComments": "Necesita mejorar en organización.",
+      "groupAssignments": [
+        "Grupo C"
+      ]
+    },
+    {
+      "id_student": "3",
+      "name": "Carlos",
+      "surname": "González",
+      "email": "carlos.gonzalez@example.com",
+      "phone": "456789123",
+      "address": "Calle Mayor 67, Valencia",
+      "curs": "3º ESO",
+      "skills": [
+        "Pensament analític",
+        "Orientació a l'assoliment",
+        "Iniciativa"
+      ],
+      "teacherComments": "Excelente en resolución de problemas.",
+      "groupAssignments": [
+        "Grupo D"
+      ]
+    }
+  ]
+  

@@ -1,0 +1,97 @@
+[
+    {
+        "group_id": 1,
+        "description": "Mathematics Project",
+        "course": "1º ESO",
+        "students": [
+            {
+                "student_id": 1,
+                "name": "Juan Pérez",
+                "surname": "Pérez"
+            },
+            {
+                "student_id": 2,
+                "name": "María Gómez",
+                "surname": "Gómez"
+            },
+            {
+                "student_id": 3,
+                "name": "Carlos López",
+                "surname": "López"
+            }
+        ]
+    },
+    {
+        "group_id": 2,
+        "description": "Science Project",
+        "course": "1º ESO",
+        "students": [
+            {
+                "student_id": 4,
+                "name": "Laura Sánchez",
+                "surname": "Sánchez"
+            },
+            {
+                "student_id": 5,
+                "name": "Pedro Rodríguez",
+                "surname": "Rodríguez"
+            }
+        ]
+    },
+    {
+        "group_id": 3,
+        "description": "Literature Club",
+        "course": "1º ESO",
+        "students": [
+            {
+                "student_id": 6,
+                "name": "Ana Martínez",
+                "surname": "Martínez"
+            },
+            {
+                "student_id": 7,
+                "name": "Miguel Torres",
+                "surname": "Torres"
+            }
+        ]
+    },
+    {
+        "group_id": 4,
+        "description": "School Football Team",
+        "course": "1º ESO",
+        "students": [
+            {
+                "student_id": 8,
+                "name": "Sofía Díaz",
+                "surname": "Díaz"
+            },
+            {
+                "student_id": 9,
+                "name": "Luis Gómez",
+                "surname": "Gómez"
+            }
+        ]
+    },
+    {
+        "group_id": 5,
+        "description": "Art Workshop",
+        "course": "1º ESO",
+        "students": [
+            {
+                "student_id": 10,
+                "name": "Isabel Romero",
+                "surname": "Romero"
+            },
+            {
+                "student_id": 1,
+                "name": "Juan Pérez",
+                "surname": "Pérez"
+            },
+            {
+                "student_id": 3,
+                "name": "Carlos López",
+                "surname": "López"
+            }
+        ]
+    }
+]

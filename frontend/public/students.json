@@ -1,0 +1,444 @@
+[
+  {
+    "id_student": "1",
+    "name": "Juan",
+    "surname": "Pérez",
+    "email": "juan.perez@example.com",
+    "phone": "123456789",
+    "address": "Calle Ficticia 123, Barcelona",
+    "curs": "1º ESO",
+    "skills": [
+      "Comunicació",
+      "Creativitat",
+      "Treball en equip i cooperació"
+    ],
+    "teacherComments": "Muy buen comportamiento en clase.",
+    "groupAssignments": [
+      "Grupo A",
+      "Grupo B"
+    ]
+  },
+  {
+    "id_student": "2",
+    "name": "María",
+    "surname": "López",
+    "email": "maria.lopez@example.com",
+    "phone": "987654321",
+    "address": "Avenida de la Paz 45, Madrid",
+    "curs": "2º ESO",
+    "skills": [
+      "Autoconfiança",
+      "Lideratge",
+      "Empatia"
+    ],
+    "teacherComments": "Necesita mejorar en organización.",
+    "groupAssignments": [
+      "Grupo C"
+    ]
+  },
+  {
+    "id_student": "3",
+    "name": "Carlos",
+    "surname": "González",
+    "email": "carlos.gonzalez@example.com",
+    "phone": "456789123",
+    "address": "Calle Mayor 67, Valencia",
+    "curs": "3º ESO",
+    "skills": [
+      "Pensament analític",
+      "Orientació a l'assoliment",
+      "Iniciativa"
+    ],
+    "teacherComments": "Excelente en resolución de problemas.",
+    "groupAssignments": [
+      "Grupo D"
+    ]
+  },
+  {
+    "id_student": "4",
+    "name": "Lucía",
+    "surname": "Martínez",
+    "email": "lucia.martinez@example.com",
+    "phone": "321654987",
+    "address": "Plaza Central 10, Sevilla",
+    "curs": "4º ESO",
+    "skills": [
+      "Empatia",
+      "Adaptabilitat",
+      "Resolució de conflictes"
+    ],
+    "teacherComments": "Participa activamente en clase.",
+    "groupAssignments": [
+      "Grupo E",
+      "Grupo F"
+    ]
+  },
+  {
+    "id_student": "5",
+    "name": "Diego",
+    "surname": "Ramírez",
+    "email": "diego.ramirez@example.com",
+    "phone": "741852963",
+    "address": "Avenida Libertad 99, Bilbao",
+    "curs": "1º Bachillerato",
+    "skills": [
+      "Lideratge",
+      "Organització",
+      "Resiliència"
+    ],
+    "teacherComments": "Tiene potencial, pero necesita más esfuerzo.",
+    "groupAssignments": [
+      "Grupo G"
+    ]
+  },
+  {
+    "id_student": "6",
+    "name": "Sara",
+    "surname": "Torres",
+    "email": "sara.torres@example.com",
+    "phone": "963258741",
+    "address": "Calle Nueva 22, Zaragoza",
+    "curs": "2º Bachillerato",
+    "skills": [
+      "Treball en equip",
+      "Autodisciplina",
+      "Empatia"
+    ],
+    "teacherComments": "Muy constante en su trabajo.",
+    "groupAssignments": [
+      "Grupo H",
+      "Grupo I"
+    ]
+  },
+  {
+    "id_student": "7",
+    "name": "Antonio",
+    "surname": "Hernández",
+    "email": "antonio.hernandez@example.com",
+    "phone": "159753486",
+    "address": "Calle Real 5, Málaga",
+    "curs": "3º ESO",
+    "skills": [
+      "Creativitat",
+      "Pensament crític",
+      "Orientació a resultats"
+    ],
+    "teacherComments": "Gran capacidad de innovación.",
+    "groupAssignments": [
+      "Grupo J"
+    ]
+  },
+  {
+    "id_student": "8",
+    "name": "Ana",
+    "surname": "García",
+    "email": "ana.garcia@example.com",
+    "phone": "852741963",
+    "address": "Paseo de las Flores 12, Granada",
+    "curs": "2º ESO",
+    "skills": [
+      "Atenció al detall",
+      "Pensament estratègic",
+      "Autoconfiança"
+    ],
+    "teacherComments": "Demuestra un excelente desempeño académico.",
+    "groupAssignments": [
+      "Grupo K",
+      "Grupo L"
+    ]
+  },
+  {
+    "id_student": "9",
+    "name": "Javier",
+    "surname": "Moreno",
+    "email": "javier.moreno@example.com",
+    "phone": "753951486",
+    "address": "Calle Peatonal 3, Valencia",
+    "curs": "4º ESO",
+    "skills": [
+      "Treball en equip",
+      "Responsabilitat",
+      "Creativitat"
+    ],
+    "teacherComments": "Debe participar más en clase.",
+    "groupAssignments": [
+      "Grupo M"
+    ]
+  },
+  {
+    "id_student": "10",
+    "name": "Isabel",
+    "surname": "Ruiz",
+    "email": "isabel.ruiz@example.com",
+    "phone": "456123789",
+    "address": "Calle Larga 44, Murcia",
+    "curs": "1º ESO",
+    "skills": [
+      "Empatia",
+      "Organització",
+      "Pensament analític"
+    ],
+    "teacherComments": "Una alumna ejemplar.",
+    "groupAssignments": [
+      "Grupo N",
+      "Grupo O"
+    ]
+  },
+  {
+    "id_student": "11",
+    "name": "Sofía",
+    "surname": "Ramírez",
+    "email": "sofia.ramirez@example.com",
+    "phone": "111222333",
+    "address": "Calle Primavera 18, Barcelona",
+    "curs": "1º ESO",
+    "skills": [
+      "Creativitat",
+      "Resolució de problemes",
+      "Autodisciplina"
+    ],
+    "teacherComments": "Es muy creativa y aporta ideas originales.",
+    "groupAssignments": [
+      "Grupo P"
+    ]
+  },
+  {
+    "id_student": "12",
+    "name": "Pedro",
+    "surname": "Martínez",
+    "email": "pedro.martinez@example.com",
+    "phone": "222333444",
+    "address": "Avenida del Sol 34, Valencia",
+    "curs": "2º ESO",
+    "skills": [
+      "Treball en equip",
+      "Orientació a resultats",
+      "Responsabilitat"
+    ],
+    "teacherComments": "Buen trabajo en grupo y con mucha responsabilidad.",
+    "groupAssignments": [
+      "Grupo Q",
+      "Grupo R"
+    ]
+  },
+  {
+    "id_student": "13",
+    "name": "Elena",
+    "surname": "Hernández",
+    "email": "elena.hernandez@example.com",
+    "phone": "333444555",
+    "address": "Calle Norte 55, Sevilla",
+    "curs": "3º ESO",
+    "skills": [
+      "Empatia",
+      "Creativitat",
+      "Autoconfiança"
+    ],
+    "teacherComments": "Destaca por su empatía y capacidad creativa.",
+    "groupAssignments": [
+      "Grupo S"
+    ]
+  },
+  {
+    "id_student": "14",
+    "name": "Miguel",
+    "surname": "Sánchez",
+    "email": "miguel.sanchez@example.com",
+    "phone": "444555666",
+    "address": "Calle Sur 89, Madrid",
+    "curs": "4º ESO",
+    "skills": [
+      "Pensament analític",
+      "Lideratge",
+      "Adaptabilitat"
+    ],
+    "teacherComments": "Líder nato y muy analítico.",
+    "groupAssignments": [
+      "Grupo T"
+    ]
+  },
+  {
+    "id_student": "15",
+    "name": "Patricia",
+    "surname": "Gómez",
+    "email": "patricia.gomez@example.com",
+    "phone": "555666777",
+    "address": "Plaza de España 8, Zaragoza",
+    "curs": "1º Bachillerato",
+    "skills": [
+      "Organització",
+      "Treball en equip",
+      "Pensament estratègic"
+    ],
+    "teacherComments": "Organizada y estratégica en sus tareas.",
+    "groupAssignments": [
+      "Grupo U",
+      "Grupo V"
+    ]
+  },
+  {
+    "id_student": "16",
+    "name": "Roberto",
+    "surname": "Mendoza",
+    "email": "roberto.mendoza@example.com",
+    "phone": "666777888",
+    "address": "Calle Alameda 21, Bilbao",
+    "curs": "2º Bachillerato",
+    "skills": [
+      "Resiliència",
+      "Autodisciplina",
+      "Creativitat"
+    ],
+    "teacherComments": "Resiliente y muy creativo en sus proyectos.",
+    "groupAssignments": [
+      "Grupo W"
+    ]
+  },
+  {
+    "id_student": "17",
+    "name": "Clara",
+    "surname": "Luna",
+    "email": "clara.luna@example.com",
+    "phone": "777888999",
+    "address": "Avenida Central 56, Granada",
+    "curs": "3º ESO",
+    "skills": [
+      "Empatia",
+      "Pensament analític",
+      "Adaptabilitat"
+    ],
+    "teacherComments": "Participativa y con excelente capacidad de análisis.",
+    "groupAssignments": [
+      "Grupo X",
+      "Grupo Y"
+    ]
+  },
+  {
+    "id_student": "18",
+    "name": "David",
+    "surname": "Ortega",
+    "email": "david.ortega@example.com",
+    "phone": "888999000",
+    "address": "Calle Castilla 98, Málaga",
+    "curs": "4º ESO",
+    "skills": [
+      "Orientació a l'assoliment",
+      "Resolució de conflictes",
+      "Autoconfiança"
+    ],
+    "teacherComments": "Siempre enfocado en lograr sus metas.",
+    "groupAssignments": [
+      "Grupo Z"
+    ]
+  },
+  {
+    "id_student": "19",
+    "name": "Laura",
+    "surname": "Villalobos",
+    "email": "laura.villalobos@example.com",
+    "phone": "999000111",
+    "address": "Avenida del Mar 76, Madrid",
+    "curs": "2º ESO",
+    "skills": [
+      "Creativitat",
+      "Treball en equip",
+      "Empatia"
+    ],
+    "teacherComments": "Es muy colaboradora y creativa.",
+    "groupAssignments": [
+      "Grupo AA"
+    ]
+  },
+  {
+    "id_student": "20",
+    "name": "Adrián",
+    "surname": "Fernández",
+    "email": "adrian.fernandez@example.com",
+    "phone": "000111222",
+    "address": "Calle del Sol 33, Barcelona",
+    "curs": "1º ESO",
+    "skills": [
+      "Pensament crític",
+      "Resolució de problemes",
+      "Autodisciplina"
+    ],
+    "teacherComments": "Crítico y resolutivo en sus tareas.",
+    "groupAssignments": [
+      "Grupo AB",
+      "Grupo AC"
+    ]
+  },
+  {
+    "id_student": "21",
+    "name": "Irene",
+    "surname": "Morales",
+    "email": "irene.morales@example.com",
+    "phone": "111222333",
+    "address": "Plaza Nueva 22, Sevilla",
+    "curs": "2º ESO",
+    "skills": [
+      "Lideratge",
+      "Pensament estratègic",
+      "Empatia"
+    ],
+    "teacherComments": "Lidera y organiza de manera eficiente.",
+    "groupAssignments": [
+      "Grupo AD"
+    ]
+  },
+  {
+    "id_student": "22",
+    "name": "Hugo",
+    "surname": "Martínez",
+    "email": "hugo.martinez@example.com",
+    "phone": "222333444",
+    "address": "Calle del Olivo 50, Valencia",
+    "curs": "3º ESO",
+    "skills": [
+      "Orientació a resultats",
+      "Treball en equip",
+      "Responsabilitat"
+    ],
+    "teacherComments": "Responsable y enfocado en sus objetivos.",
+    "groupAssignments": [
+      "Grupo AE"
+    ]
+  },
+  {
+    "id_student": "23",
+    "name": "Marta",
+    "surname": "Navarro",
+    "email": "marta.navarro@example.com",
+    "phone": "333444555",
+    "address": "Calle del Prado 29, Málaga",
+    "curs": "4º ESO",
+    "skills": [
+      "Creativitat",
+      "Adaptabilitat",
+      "Pensament analític"
+    ],
+    "teacherComments": "Creativa y adaptable a los cambios.",
+    "groupAssignments": [
+      "Grupo AF"
+    ]
+  },
+  {
+    "id_student": "24",
+    "name": "Pablo",
+    "surname": "Blanco",
+    "email": "pablo.blanco@example.com",
+    "phone": "444555666",
+    "address": "Calle del Carmen 71, Bilbao",
+    "curs": "2º Bachillerato",
+    "skills": [
+      "Pensament crític",
+      "Lideratge",
+      "Resolució de problemes"
+    ],
+    "teacherComments": "Lidera equipos y resuelve problemas con eficiencia.",
+    "groupAssignments": [
+      "Grupo AG",
+      "Grupo AH"
+    ]
+  }
+]

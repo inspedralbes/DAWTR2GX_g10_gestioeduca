@@ -1,0 +1,102 @@
+[
+  {
+    "id_teacher": "1",
+    "name": "Laura",
+    "surname": "García",
+    "email": "laura.teacher@example.com",
+    "assignatures": [
+      { "name": "Matemáticas", "isTutor": true },
+      { "name": "Física", "isTutor": false }
+    ]
+  },
+  {
+    "id_teacher": "2",
+    "name": "Antonio",
+    "surname": "López",
+    "email": "antonio.teacher@example.com",
+    "assignatures": [
+      { "name": "Historia", "isTutor": false },
+      { "name": "Geografía", "isTutor": true }
+    ]
+  },
+  {
+    "id_teacher": "3",
+    "name": "Carmen",
+    "surname": "Fernández",
+    "email": "carmen.teacher@example.com",
+    "assignatures": [
+      { "name": "Lengua", "isTutor": true },
+      { "name": "Literatura", "isTutor": false }
+    ]
+  },
+  {
+    "id_teacher": "4",
+    "name": "Miguel",
+    "surname": "Martínez",
+    "email": "miguel.teacher@example.com",
+    "assignatures": [
+      { "name": "Biología", "isTutor": false },
+      { "name": "Química", "isTutor": true }
+    ]
+  },
+  {
+    "id_teacher": "5",
+    "name": "Sara",
+    "surname": "Pérez",
+    "email": "sara.teacher@example.com",
+    "assignatures": [
+      { "name": "Educación Física", "isTutor": true },
+      { "name": "Salud", "isTutor": false }
+    ]
+  },
+  {
+    "id_teacher": "6",
+    "name": "José",
+    "surname": "González",
+    "email": "jose.teacher@example.com",
+    "assignatures": [
+      { "name": "Economía", "isTutor": false },
+      { "name": "Administración", "isTutor": true }
+    ]
+  },
+  {
+    "id_teacher": "7",
+    "name": "Marta",
+    "surname": "Rodríguez",
+    "email": "marta.teacher@example.com",
+    "assignatures": [
+      { "name": "Arte", "isTutor": true },
+      { "name": "Dibujo Técnico", "isTutor": false }
+    ]
+  },
+  {
+    "id_teacher": "8",
+    "name": "Pedro",
+    "surname": "Hernández",
+    "email": "pedro.teacher@example.com",
+    "assignatures": [
+      { "name": "Filosofía", "isTutor": false },
+      { "name": "Ética", "isTutor": true }
+    ]
+  },
+  {
+    "id_teacher": "9",
+    "name": "Lucía",
+    "surname": "Moreno",
+    "email": "lucia.teacher@example.com",
+    "assignatures": [
+      { "name": "Inglés", "isTutor": true },
+      { "name": "Francés", "isTutor": false }
+    ]
+  },
+  {
+    "id_teacher": "10",
+    "name": "Raúl",
+    "surname": "Sánchez",
+    "email": "raul.teacher@example.com",
+    "assignatures": [
+      { "name": "Tecnología", "isTutor": true },
+      { "name": "Robótica", "isTutor": false }
+    ]
+  }
+]

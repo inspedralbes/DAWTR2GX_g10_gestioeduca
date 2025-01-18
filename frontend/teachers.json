@@ -1,0 +1,30 @@
+[
+    {
+      "id_teacher": "1",
+      "name": "Laura",
+      "email": "laura.teacher@example.com",
+      "assignatures": [
+        { "name": "Matemáticas", "isTutor": true },
+        { "name": "Física", "isTutor": false }
+      ]
+    },
+    {
+      "id_teacher": "2",
+      "name": "Antonio",
+      "email": "antonio.teacher@example.com",
+      "assignatures": [
+        { "name": "Historia", "isTutor": false },
+        { "name": "Geografía", "isTutor": true }
+      ]
+    },
+    {
+      "id_teacher": "3",
+      "name": "Carmen",
+      "email": "carmen.teacher@example.com",
+      "assignatures": [
+        { "name": "Lengua", "isTutor": true },
+        { "name": "Literatura", "isTutor": false }
+      ]
+    }
+  ]
+  

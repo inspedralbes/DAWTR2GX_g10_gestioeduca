@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "text": "M'agrada: Busca els tres nens i nenes de la llista que t'acoursen més"
+  },
+  {
+    "id": 2,
+    "text": "No m'agrada: Busca tres nens i nenes que no t'agradin"
+  },
+  {
+    "id": 3,
+    "text": "Fa córrer rumors: Busca tres nens i nenes que parlen malament d'una persona"
+  },
+  {
+    "id": 4,
+    "text": "Ajuda els altres: Busca tres nens i nenes que fan coses bones per als altres"
+  },
+  {
+    "id": 5,
+    "text": "Dóna empentes: Busca tres nens i nenes que peguen o donen puntades de peu"
+  },
+  {
+    "id": 6,
+    "text": "No deixa participar: Busca tres nens i nenes que fan fora algú del joc"
+  },
+  {
+    "id": 7,
+    "text": "Anima els altres: Busca tres nens i nenes que animen els companys"
+  },
+  {
+    "id": 8,
+    "text": "Insulta: Busca tres nens i nenes que insulten o se'n burlen"
+  },
+  {
+    "id": 9,
+    "text": "A qui donen empentes?: Busca tres nens i nenes que reben empentes"
+  },
+  {
+    "id": 10,
+    "text": "A qui insulten o ridiculitzen?: Busca tres nens i nenes que pateixen insults"
+  },
+  {
+    "id": 11,
+    "text": "A qui no deixen participar?: Busca tres nens i nenes que estan sols"
+  },
+  {
+    "id": 12,
+    "text": "Els meus amics / amigues: Busca els teus tres millors amics"
+  }
+]
